@@ -1,0 +1,20 @@
+{
+  "kind": "collectionType",
+  "collectionName": "authors",
+  "info": {
+    "name": "Authors"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "NameOfTheAuthor": {
+      "type": "string"
+    },
+    "RelationBooks": {
+      "via": "RelationAuthor",
+      "collection": "books"
+    }
+  }
+}

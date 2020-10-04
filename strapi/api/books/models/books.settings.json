@@ -28,6 +28,25 @@
       ],
       "plugin": "upload",
       "required": false
+    },
+    "Author": {
+      "type": "string",
+      "required": true
+    },
+    "Description": {
+      "type": "text"
+    },
+    "categories": {
+      "collection": "categories",
+      "via": "books",
+      "dominant": true
+    },
+    "RelationAuthor": {
+      "model": "authors",
+      "via": "RelationBooks"
+    },
+    "SequelBooks": {
+      "collection": "books"
     }
   }
 }
