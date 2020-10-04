@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "books",
+  "info": {
+    "name": "Books"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "NameOfTheBook": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "Price": {
+      "type": "integer",
+      "required": true
+    },
+    "PhotoOfTheBook": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    }
+  }
+}
