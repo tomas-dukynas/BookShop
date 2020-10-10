@@ -43,37 +43,40 @@ export default function useAuth() {
     },
   );
 
-  const auth = React.useMemo(() => ({
-    login: async (email, password) => {
-      console.log('login', email, password);
-      const { data } = await axios.post(`${BASE_URL}/auth/local`, {
-        identifier: email,
-        password,
-      });
-      const user = {
-        email: data.user.email,
-        token: data.jwt,
-      };
-      dispatch(createAction('SET_USER', user));
-    },
-    logout: async () => {
-      dispatch(createAction('REMOVE_USER'));
-    },
-    register: async (email, password) => {
-      // await Sleep(2000);
-      const response = await axios.post(`${BASE_URL}/auth/local/register`, {
-        username: email,
-        email,
-        password,
-      });
+  const auth = React.useMemo(
+    () => ({
+      login: async (email, password) => {
+        console.log('login', email, password);
+        const { data } = await axios.post(`${BASE_URL}/auth/local`, {
+          identifier: email,
+          password,
+        });
+        const user = {
+          email: data.user.email,
+          token: data.jwt,
+        };
+        dispatch(createAction('SET_USER', user));
+      },
+      logout: async () => {
+        dispatch(createAction('REMOVE_USER'));
+      },
+      register: async (email, password) => {
+        // await Sleep(2000);
+        const response = await axios.post(`${BASE_URL}/auth/local/register`, {
+          username: email,
+          email,
+          password,
+        });
 
-      const { data } = response;
-      const user = {
-        email: data.user.email,
-        token: data.jwt,
-      };
-      dispatch(createAction('SET_USER', user));
-    },
-  }));
+        const { data } = response;
+        const user = {
+          email: data.user.email,
+          token: data.jwt,
+        };
+        dispatch(createAction('SET_USER', user));
+      },
+    }),
+    [],
+  );
   return { auth, state };
 }

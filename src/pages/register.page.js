@@ -13,7 +13,8 @@ const Register = () => {
   const [error, setError] = React.useState('');
   const history = useHistory();
 
-  function onButtonPress() {
+  function onButtonPress(event) {
+    event.preventDefault();
     if (CheckEmail.test(String(email).toLowerCase())) {
       if (CheckPassword.test(String(password).toLowerCase())) {
         (async () => {
@@ -61,7 +62,7 @@ const Register = () => {
         />
       </div>
 
-      <button type="submit" className="btn btn-primary btn-block" onClick={onButtonPress}>
+      <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Sign Up
       </button>
       <p className="forgot-password text-right">

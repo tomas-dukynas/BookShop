@@ -1,6 +1,33 @@
 import React from 'react';
+import AuthContext from '../context/AuthContext';
+import CheckEmail from '../components/CheckEmail';
 
 const Login = () => {
+  const { login } = React.useContext(AuthContext);
+  const [email, setEmail] = React.useState('test1@gmail.com');
+  const [password, setPassword] = React.useState('12345678');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
+
+  function onButtonPress(event) {
+    event.preventDefault();
+    if (CheckEmail.test(String(email).toLowerCase())) {
+      (async () => {
+        setLoading(true);
+        try {
+          await login(email, password);
+          console.log('yey');
+        } catch (e) {
+          console.log(e);
+          setError(e.message);
+          setLoading(false);
+        }
+      })();
+    } else {
+      setLoading(false);
+      setError('Invalid Email');
+    }
+  }
   return (
     <form>
       <h3>Sign In</h3>
@@ -8,13 +35,25 @@ const Login = () => {
       <div className="form-group">
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>Email address</label>
-        <input type="email" className="form-control" placeholder="Enter email" />
+        <input
+          type="email"
+          className="form-control"
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
       </div>
 
       <div className="form-group">
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>Password</label>
-        <input type="password" className="form-control" placeholder="Enter password" />
+        <input
+          type="password"
+          className="form-control"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
       </div>
 
       <div className="form-group">
@@ -27,7 +66,7 @@ const Login = () => {
         </div>
       </div>
 
-      <button type="submit" className="btn btn-primary btn-block">
+      <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Submit
       </button>
       <p className="forgot-password text-right">
