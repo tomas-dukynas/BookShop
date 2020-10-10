@@ -1,0 +1,8 @@
+.errorCont {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+.errorText {
+    color: red;
+    font-weight: bold;
+}
