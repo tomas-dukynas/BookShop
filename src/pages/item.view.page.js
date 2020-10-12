@@ -1,12 +1,7 @@
 import React from 'react';
-import AuthContext from '../context/AuthContext';
-import CheckEmail from '../components/CheckEmail';
 import '../Styles/ItemView.css';
-import Login from './login.page';
-import Register from './register.page';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import BASE_URL from '../config/IpAdress';
+
 
 
 const Book = [
@@ -77,11 +72,7 @@ function ExampleDescription(props) {
   )
 }
 
-function addViewCount(vie) {
-  // get data from strapi
-  // data++
-  //send data back to strapi
-}
+
 
 class ItemView extends React.Component {
 
@@ -124,15 +115,11 @@ class ItemView extends React.Component {
               <div className="leftSide">
                 <div className="nameDiv">
 
-                  {/*<h3 className="bookAuthor"> Antanas Škėma - Balta drobulė{ExampleData}</h3>*/}
                   <ExampleData Book={this.state.Book} className="bookAuthor"/>
-
 
                 </div>
                 <div className="mainBox">
                   <GetImage Book={this.state.Book} className="bookImage"/>
-                  {/*<img src="http://katekizmas.group.lt/text/lietuviai/skema/foto_balta_drobule.jpg" alt="" className="bookImage">*/}
-                  {/*</img>*/}
                 </div>
                 <div className="empty1">
 
@@ -140,10 +127,8 @@ class ItemView extends React.Component {
               </div>
             </th>
 
-
             <th>
               <div className="rightSide">
-                {/*<p className="price"> 15 € </p>*/}
                 <ExamplePrice Book={this.state.Book} className="price"/>
                 <table className="table1">
                   <thead>
@@ -161,10 +146,9 @@ class ItemView extends React.Component {
                 </table>
                 <div className="descriptionDiv">
                   <p className="description">Categories:</p>
-                  {/*<p className="categories">XX a. literatūra, Katastrofinis modernizmas</p>*/}
+
                   <ExampleCat Catego={this.state.Catego} className="description"/>
                   <p className="description">Description:</p>
-                  {/*<p className="categories">A.Škėma – modernus vakarietiškas rašytojas. Jo intelektualinis-psichologinis romanas “Balta drobulė” parašytas “sąmonės srauto” forma, su gausiomis iliuzijomis į pasaulinę ir lietuvių kultūrą, filosofiją, literatūrą, istoriją, mitologiją. A.Škėmos romano herojus Antanas Garšva praeina sudėtingą kančių, dvasinių sukrėtimų kelią. Tai tikras XXa. žmogus. Jis – intelektualas Emigranto padėtis neatitinka A. Garšvos dvasinio turinio ir interesų. IŠ to kyla ironiškas santykis su pasauliu ir savimi. Antano Garšvos samprotavimuose iškyla absurdiško, bjauraus pasaulio vaizdas. GarŠva – menininkas, savo gyvenimo kūrėjas. Jis daug kenčia, veržiasi iŠ vieniŠumo, trokŠta dieviŠkumo Šviesos, dvasinės atramos ir amžinybės. IŠ veikėjo gyvenimo supratimo, patirties, iŠ suvokto pasaulio vaizdo, iŠ kančių ir minčių bei iŠgyvenimų kyla ir romano problemos. GarŠva sprendžia amžinus būties klausimus, kokia gyvenimo prasmė, jei jos nėra – kam gyventi.</p>*/}
                   <ExampleDescription Book={this.state.Book} className="categories"/>
                 </div>
               </div>
@@ -177,63 +161,5 @@ class ItemView extends React.Component {
     );
   }
 }
-/*
-const View = () => {
 
-  return (
-    <div>
-      <table>
-          <tr>
-            <th>
-
-      <div className="leftSide">
-      <div className="nameDiv">
-
-        <h3 className="bookAuthor"> Antanas Škėma - Balta drobulė</h3>
-
-
-      </div>
-      <div className="mainBox">
-
-        <img src="http://katekizmas.group.lt/text/lietuviai/skema/foto_balta_drobule.jpg" alt="" className="bookImage">
-        </img>
-      </div>
-      <div className="empty1">
-
-      </div>
-      </div>
-            </th>
-
-
-          <th>
-            <div className="rightSide">
-              <p className="price"> 15 € </p>
-              <table className="table1">
-                <tr>
-                  <th>
-                    <form>
-                      <input type="number" className="number" min="1" value="1" ></input>
-                    </form>
-                  </th>
-                  <th>
-                    <button className="buttonAdd" >Add to cart</button>
-                  </th>
-                </tr>
-
-              </table>
-              <div className="descriptionDiv">
-                <p className="description">Categories:</p>
-                <p className="categories">XX a. literatūra, Katastrofinis modernizmas</p>
-
-                <p className="description">Description:</p>
-                <p className="categories">A.Škėma – modernus vakarietiškas rašytojas. Jo intelektualinis-psichologinis romanas “Balta drobulė” parašytas “sąmonės srauto” forma, su gausiomis iliuzijomis į pasaulinę ir lietuvių kultūrą, filosofiją, literatūrą, istoriją, mitologiją. A.Škėmos romano herojus Antanas Garšva praeina sudėtingą kančių, dvasinių sukrėtimų kelią. Tai tikras XXa. žmogus. Jis – intelektualas Emigranto padėtis neatitinka A. Garšvos dvasinio turinio ir interesų. IŠ to kyla ironiškas santykis su pasauliu ir savimi. Antano Garšvos samprotavimuose iškyla absurdiško, bjauraus pasaulio vaizdas. GarŠva – menininkas, savo gyvenimo kūrėjas. Jis daug kenčia, veržiasi iŠ vieniŠumo, trokŠta dieviŠkumo Šviesos, dvasinės atramos ir amžinybės. IŠ veikėjo gyvenimo supratimo, patirties, iŠ suvokto pasaulio vaizdo, iŠ kančių ir minčių bei iŠgyvenimų kyla ir romano problemos. GarŠva sprendžia amžinus būties klausimus, kokia gyvenimo prasmė, jei jos nėra – kam gyventi.</p>
-              </div>
-            </div>
-          </th>
-        </tr>
-      </table>
-</div>
-
-  );
-};*/
 export default ItemView;
