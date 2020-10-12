@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/book-counts",
+      "handler": "book-count.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/book-counts/count",
+      "handler": "book-count.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/book-counts/:id",
+      "handler": "book-count.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/book-counts",
+      "handler": "book-count.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/book-counts/:id",
+      "handler": "book-count.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/book-counts/:id",
+      "handler": "book-count.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
