@@ -1,5 +1,2 @@
-const Categories = [
-  {NameOfTheCategory: "Name"},
-  {NameOfTheCategory: "2nd Name"}
-];
+const Categories = [{ NameOfTheCategory: 'Name' }, { NameOfTheCategory: '2nd Name' }];
 export default Categories;
