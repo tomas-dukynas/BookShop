@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "book_counts",
+  "info": {
+    "name": "BookCount"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "IdOfBook": {
+      "type": "string"
+    },
+    "Counter": {
+      "type": "integer"
+    },
+    "book": {
+      "model": "books",
+      "via": "book_count"
+    }
+  }
+}

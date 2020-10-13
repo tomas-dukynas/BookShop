@@ -47,6 +47,10 @@
     },
     "SequelBooks": {
       "collection": "books"
+    },
+    "book_count": {
+      "via": "book",
+      "model": "book-count"
     }
   }
 }
