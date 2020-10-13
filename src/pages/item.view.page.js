@@ -2,75 +2,15 @@ import React from 'react';
 import '../Styles/ItemView.css';
 import axios from 'axios';
 
-
-
-const Book = [
-{id: 1, Author: "Antanas", NameOfTheBook: "THE NAME OF THE BOOK", Price: 6, PhotoOfTheBook: "https://gamepedia.cursecdn.com/fallout_gamepedia/d/d2/Pre-War_Book_03.png", Description: "A book"}
-];
-const Catego = [
-  {NameOfTheCategory: "Name"},
-  {NameOfTheCategory: "2nd Name"}
-];
-const ViewCount = [
-  {id: 1, IdOfBook: 1, Counter: 3}
-];
-
-function AddViewCount(props) {
-  const increaseView = props.ViewCount[0].Counter;
-
-  console.log("productname ", increaseView);
-  //const item = increaseView +1;
-  const item = {
-    id: props.ViewCount[0].id,
-    IdOfBook: props.ViewCount[0].IdOfBook,
-    Counter: increaseView +1
-  };
-
-  const add = axios.post('http://localhost:1337/Book-Counts', {item});
-  console.log("productname ", item);
-
-  return (
-    <p></p>
-  )
-}
-function ExampleCat(props) {
-  const productCatego = props.Catego[0].NameOfTheCategory;
-  const productCatego1 = props.Catego[1].NameOfTheCategory;
-
-  return (
-    <p className="categories">{productCatego}, {productCatego1}</p>
-  )
-}
-
-function ExampleData(props) {
-  //console.log("props", props);
-  const productBook = props.Book[0].NameOfTheBook;
-  const productAuthor = props.Book[0].Author;
-  //console.log("productname ", productBook);
-  return (
-    <h3 className="bookAuthor">{productAuthor} - {productBook}</h3>
-      )
-}
-
-function ExamplePrice(props) {
-  const productPrice = props.Book[0].Price;
-  return (
-    <p className="price"> {productPrice} € </p>
-  )
-}
-function GetImage(props) {
-  const imageSource = props.Book[0].PhotoOfTheBook.name;
-  return (
-    <img src={imageSource} alt="" className="bookImage">
-    </img>
-  )
-}
-function ExampleDescription(props) {
-  const productDescription = props.Book[0].Description;
-  return (
-    <p className="categories">{productDescription}</p>
-  )
-}
+import DataBook from '../functions.item.view/dataBook.js';
+import AddViewCount from "../functions.item.view/addViewCount.js";
+import DataCategories from "../functions.item.view/dataCategories.js";
+import DataPrice from "../functions.item.view/dataPrice.js";
+import GetImage from "../functions.item.view/getImage.js";
+import DataDescription from "../functions.item.view/dataDescription.js";
+import Book from "../functions.item.view/templateBook.js";
+import Categories from "../functions.item.view/templateCategories.js";
+import ViewCount from "../functions.item.view/templateViewCount.js";
 
 
 
@@ -78,7 +18,7 @@ class ItemView extends React.Component {
 
   state = {
     Book,
-    Catego,
+    Categories,
     ViewCount
   };
 
@@ -88,7 +28,7 @@ class ItemView extends React.Component {
       method: 'GET',
       url: 'http://localhost:1337/books'
     });
-    const productCatego = await axios({
+    const productCategories = await axios({
       method: 'GET',
       url: 'http://localhost:1337/categories'
     });
@@ -98,9 +38,9 @@ class ItemView extends React.Component {
     });
     console.log("App.res ", productRes);
     const Book = productRes.data;
-    const Catego = productCatego.data;
+    const Categories = productCategories.data;
     const ViewCount = increaseView.data;
-    this.setState({Book,Catego,ViewCount})
+    this.setState({Book,Categories,ViewCount})
   }
 
   render(){
@@ -115,7 +55,7 @@ class ItemView extends React.Component {
               <div className="leftSide">
                 <div className="nameDiv">
 
-                  <ExampleData Book={this.state.Book} className="bookAuthor"/>
+                  <DataBook Book={this.state.Book} className="bookAuthor"/>
 
                 </div>
                 <div className="mainBox">
@@ -129,7 +69,7 @@ class ItemView extends React.Component {
 
             <th>
               <div className="rightSide">
-                <ExamplePrice Book={this.state.Book} className="price"/>
+                <DataPrice Book={this.state.Book} className="price"/>
                 <table className="table1">
                   <thead>
                   <tr>
@@ -147,9 +87,9 @@ class ItemView extends React.Component {
                 <div className="descriptionDiv">
                   <p className="description">Categories:</p>
 
-                  <ExampleCat Catego={this.state.Catego} className="description"/>
+                  <DataCategories Categories={this.state.Categories} className="description"/>
                   <p className="description">Description:</p>
-                  <ExampleDescription Book={this.state.Book} className="categories"/>
+                  <DataDescription Book={this.state.Book} className="categories"/>
                 </div>
               </div>
             </th>

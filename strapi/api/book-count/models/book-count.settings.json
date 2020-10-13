@@ -14,10 +14,6 @@
     },
     "Counter": {
       "type": "integer"
-    },
-    "book": {
-      "model": "books",
-      "via": "book_count"
     }
   }
 }
