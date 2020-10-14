@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import BASE_URL from './config/IpAdress';
-import createAction from './utils/CreateAction';
-import Sleep from './utils/Sleep';
+import BASE_URL from '../config/IpAdress';
+import createAction from '../utils/CreateAction';
+import Sleep from '../utils/Sleep';
 
 export default function useAuth() {
   const [state, dispatch] = React.useReducer(
@@ -25,13 +25,10 @@ export default function useAuth() {
             ...state,
             loading: action.payload,
           };
-        case 'SET_CUPS':
+        case 'SET_CART':
           return {
             ...state,
-            user: {
-              ...state.user,
-              cups: { ...action.payload },
-            },
+            cart: action.payload,
           };
         default:
           return state;
@@ -74,6 +71,15 @@ export default function useAuth() {
           token: data.jwt,
         };
         dispatch(createAction('SET_USER', user));
+      },
+      addToCart: async (id) => {
+        const response = await axios({
+          method: 'GET',
+          url: `http://localhost:1337/books/${id}`,
+        });
+        const cart = response.data;
+        console.log(cart);
+        dispatch(createAction('SET_CART', cart));
       },
     }),
     [],
