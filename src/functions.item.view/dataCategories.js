@@ -1,10 +1,8 @@
 import React from 'react';
 
-export default function DataCategories(props) {
-  // eslint-disable-next-line react/destructuring-assignment
-  const productCategories = props.Categories[0].NameOfTheCategory;
-  // eslint-disable-next-line react/destructuring-assignment
-  const productCategories1 = props.Categories[1].NameOfTheCategory;
+export default function DataCategories({ Categories }) {
+  const productCategories = Categories[0]?.NameOfTheCategory;
+  const productCategories1 = Categories[0]?.NameOfTheCategory;
 
   return (
     <p className="categories">
