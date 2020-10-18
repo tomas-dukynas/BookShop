@@ -45,7 +45,7 @@ const NavBar = () => {
               <Route path="/sign-in" component={Login} />
               <Route path="/sign-up" component={Register} />
               <Route path="/list-view" component={ListView} />
-              {/* <Route path="/shopping-bag" component={ShoppingBag} /> */}
+              <Route path="/shopping-bag" component={ShoppingBag} />
             </Switch>
           </div>
         </div>
