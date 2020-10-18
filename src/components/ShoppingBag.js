@@ -35,7 +35,7 @@ const ShoppingBag = () => {
                             className="quantity"
                             min="0"
                             name="quantity"
-                            value="1"
+                            defaultValue="1"
                             type="number"
                           />
                           {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}

@@ -3,6 +3,8 @@ import '../Styles/ItemView.css';
 import axios from 'axios';
 /* eslint-disable react/destructuring-assignment */
 
+//import id from 'book.list.page';
+
 import DataBook from '../functions.item.view/dataBook';
 import AddViewCount from '../functions.item.view/addViewCount';
 import DataCategories from '../functions.item.view/dataCategories';

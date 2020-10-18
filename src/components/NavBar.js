@@ -4,6 +4,7 @@ import Login from '../pages/login.page';
 import Register from '../pages/register.page';
 import ItemView from '../pages/item.view.page';
 import ShoppingBag from './ShoppingBag';
+import ListView from '../pages/book.list.page';
 
 const NavBar = () => {
   return (
@@ -13,6 +14,9 @@ const NavBar = () => {
           <div className="container">
             <Link className="navbar-brand" to="/sign-in">
               BookShop
+            </Link>
+            <Link className="navbar-brand" to="/list-view">
+              Book List
             </Link>
             <Link className="navbar-brand" to="/item-view">
               Item view
@@ -43,6 +47,7 @@ const NavBar = () => {
               <Route exact path="/" component={Login} />
               <Route path="/sign-in" component={Login} />
               <Route path="/sign-up" component={Register} />
+              <Route path="/list-view" component={ListView} />
               <Route path="/item-view" component={ItemView} />
               <Route path="/shopping-bag" component={ShoppingBag} />
             </Switch>
