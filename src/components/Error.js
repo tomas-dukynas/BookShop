@@ -1,5 +1,4 @@
 import React from 'react';
-
 // Error message
 // eslint-disable-next-line react/prop-types
 export default function Error({ error }) {

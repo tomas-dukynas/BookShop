@@ -16,7 +16,6 @@ const App = () => {
       </CartContext.Provider>
     );
   };
-
   return <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>;
 };
 
