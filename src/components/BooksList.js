@@ -74,6 +74,7 @@ export default function BooksList({ books, categories, viewCount }) {
       name={name}
       categories={categories}
       viewCount={viewCount}
+      setShow={setShow}
     />
   );
 }

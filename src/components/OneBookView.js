@@ -6,7 +6,17 @@ import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 
-const OneBookView = ({ id, img, price, author, description, name, categories, viewCount }) => {
+const OneBookView = ({
+  id,
+  img,
+  price,
+  author,
+  description,
+  name,
+  categories,
+  viewCount,
+  setShow,
+}) => {
   const { addToCart } = React.useContext(AuthContext);
 
   const addToShoppingBag = () => {
@@ -16,6 +26,9 @@ const OneBookView = ({ id, img, price, author, description, name, categories, vi
   return (
     <div className="uth-inner">
       <AddViewCount ViewCount={viewCount} />
+      <button type="button" className="buttonAdd" onClick={() => setShow(false)}>
+        Go back
+      </button>
       <table>
         <thead>
           <tr>

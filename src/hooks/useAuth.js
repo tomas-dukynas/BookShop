@@ -40,6 +40,7 @@ export default function useAuth() {
     },
   );
 
+  const cart = [];
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
@@ -73,11 +74,8 @@ export default function useAuth() {
         dispatch(createAction('SET_USER', user));
       },
       addToCart: async (id) => {
-        const response = await axios({
-          method: 'GET',
-          url: `http://localhost:1337/books/${id}`,
-        });
-        const cart = response.data;
+        const response = await axios.get(`http://localhost:1337/books/${id}`, {});
+        cart.push(response.data);
         console.log(cart);
         dispatch(createAction('SET_CART', cart));
       },
