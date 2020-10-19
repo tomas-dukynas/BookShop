@@ -10,6 +10,8 @@ export default function BooksList({ books, categories, viewCount }) {
   const [author, setAuthor] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [name, setName] = React.useState('');
+  const [categories1, setCategories1] = React.useState('');
+  const [categories2, setCategories2] = React.useState('');
 
   const handleOnPress = (book) => {
     setShow(true);
@@ -19,6 +21,7 @@ export default function BooksList({ books, categories, viewCount }) {
     setAuthor(book.Author);
     setDescription(book.Description);
     setName(book.NameOfTheBook);
+    setCategories1(book.categories)//[0].NameOfTheCategory);
   };
 
   const listItems = books.map((book) => {
@@ -72,7 +75,7 @@ export default function BooksList({ books, categories, viewCount }) {
       author={author}
       description={description}
       name={name}
-      categories={categories}
+      categories1={categories1}
       viewCount={viewCount}
       setShow={setShow}
     />

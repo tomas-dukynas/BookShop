@@ -1,8 +1,14 @@
 import React from 'react';
 import CartContext from '../context/CartContext';
+import ListCart from './CartList'
+import '../Styles/BookList.css';
 
 const ShoppingBag = () => {
   const cart = React.useContext(CartContext);
+
+
+  const len = cart?.length;
+
   return (
     <section>
       <div className="row">
@@ -10,55 +16,12 @@ const ShoppingBag = () => {
           <div className="mb-3">
             <div className="pt-4 wish-list">
               <h5 className="mb-4">
-                Cart (<span>1</span> items)
+                Cart (<span>{len}</span> items)
               </h5>
 
-              <div className="row mb-4">
-                <div className="col-md-5 col-lg-3 col-xl-3">
-                  <div className="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-                    <img className="img-fluid w-100" src={cart?.PhotoOfTheBook.name} alt="Sample" />
-                  </div>
-                </div>
-                <div className="col-md-7 col-lg-9 col-xl-9">
-                  <div>
-                    <div className="d-flex justify-content-between">
-                      <div>
-                        <h5>{cart?.NameOfTheBook}</h5>
-                        <h6>{cart?.Author}</h6>
-                        <p className="mb-3 text-muted text-uppercase small">{cart?.Description}</p>
-                      </div>
-                      <div>
-                        <div className="def-number-input number-input safari_only mb-0 w-100">
-                          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                          <button type="button" className="minus decrease" />
-                          <input
-                            className="quantity"
-                            min="0"
-                            name="quantity"
-                            defaultValue="1"
-                            type="number"
-                          />
-                          {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
-                          <button type="button" className="plus increase" />
-                        </div>
-                        <small id="passwordHelpBlock" className="form-text text-muted text-center">
-                          (Note, 1 piece)
-                        </small>
-                      </div>
-                    </div>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <i className="fas fa-trash-alt mr-1" /> Remove item{' '}
-                      </div>
-                      <p className="mb-0">
-                        <span>
-                          <strong id="summary">{cart?.Price} €</strong>
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+
+              <ListCart cart={cart}/>
+
 
               <p className="text-primary mb-0">
                 <i className="fas fa-info-circle mr-1" /> Do not delay the purchase, adding items to
