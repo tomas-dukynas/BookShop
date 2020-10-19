@@ -7,7 +7,7 @@ export default function ListCart(cart) {
   if(cart) {
 
 
-    const listCart = cart.cart?.map((cart1) => {
+    const listCart = cart?.cart?.map((cart1) => {
       return (
         <li>
           <div className="row mb-4">

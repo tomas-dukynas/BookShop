@@ -45,7 +45,7 @@ const OneBookView = ({
             </th>
             <th>
               <div className="rightSide">
-                {price}€
+                <h4 className="price">{price}€</h4>
                 <table className="table1">
                   <thead>
                     <tr>
