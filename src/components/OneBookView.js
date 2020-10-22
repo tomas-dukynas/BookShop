@@ -13,7 +13,7 @@ const OneBookView = ({
   author,
   description,
   name,
-  categories,
+  categories1,
   viewCount,
   setShow,
 }) => {
@@ -25,17 +25,18 @@ const OneBookView = ({
 
   return (
     <div className="uth-inner">
-      <AddViewCount ViewCount={viewCount} />
+      <AddViewCount ViewCount={viewCount} id={id} />
       <button type="button" className="buttonAdd" onClick={() => setShow(false)}>
         Go back
       </button>
+      <div className="bookAuthor">{author} - {name}</div>
       <table>
         <thead>
           <tr>
             <th>
               <div className="leftSide">
-                <div className="nameDiv">{author}</div>
-                <div className="bookName">{name}</div>
+
+                {/*<div className="bookName">{name}</div>*/}
                 <div className="mainBox">
                   <Image img={img} />
                 </div>
@@ -44,7 +45,7 @@ const OneBookView = ({
             </th>
             <th>
               <div className="rightSide">
-                {price}€
+                <h4 className="price">{price}€</h4>
                 <table className="table1">
                   <thead>
                     <tr>
@@ -63,7 +64,7 @@ const OneBookView = ({
                 </table>
                 <div className="descriptionDiv">
                   <p className="description">Categories:</p>
-                  <BookCategories categories={categories} className="description" />
+                  <BookCategories categories1={categories1} className="description" />
                   <p className="description">Description:</p>
                   <BookDescription description={description} />
                 </div>

@@ -5,7 +5,7 @@
 }
 
 body {
-  background: #1C8EF9 !important;
+  background: #1C8EF9; /*!important;*/
   min-height: 100vh;
   display: flex;
   font-weight: 400;
@@ -71,4 +71,9 @@ body, html, .App, #root, .auth-wrapper {
 
 .forgot-password a {
   color: #167bff;
+}
+button {
+  background-color: white !important;
+  border-color: gray !important;
+  color: #000 !important;
 }

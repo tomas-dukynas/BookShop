@@ -12,6 +12,7 @@ const AllBooks = () => {
       .get('http://localhost:1337/books')
       .then(({ data }) => {
         setListBooks(data);
+
       })
       .catch((e) => console.log(e));
     axios
@@ -24,9 +25,11 @@ const AllBooks = () => {
       .get('http://localhost:1337/Book-Counts')
       .then(({ data }) => {
         setViewCount(data);
+        
       })
       .catch((e) => console.log(e));
   }, []);
+
   return (
     <div>
       <BooksList books={listBooks} categories={categories} viewCount={viewCount} />

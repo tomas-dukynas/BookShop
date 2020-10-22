@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from '../pages/login.page';
 import Register from '../pages/register.page';
-import '../Styles/ItemView.css';
+//import '../Styles/ItemView.css';
 import ShoppingBag from './ShoppingBag';
 import ListView from '../pages/book.list.page';
 
