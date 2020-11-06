@@ -2,12 +2,14 @@ import React from 'react';
 //import '../Styles/BookList.css';
 
 
+
 export default function ListCart(cart) {
 
   if(cart) {
 
 
     const listCart = cart?.cart?.map((cart1) => {
+      console.log(cart1);
       return (
         <li>
           <div className="row mb-4">

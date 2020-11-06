@@ -4,6 +4,9 @@ import AuthContext from '../context/AuthContext';
 import CheckPassword from '../components/CheckPassword';
 import CheckEmail from '../components/CheckEmail';
 import Error from '../components/Error';
+import {Redirect} from 'react-router-dom';
+import Login from '../pages/login.page';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 const Register = () => {
   const { register } = React.useContext(AuthContext);
@@ -21,6 +24,10 @@ const Register = () => {
           setLoading(true);
           try {
             await register(email, password);
+            console.log("success");
+            window.location.href = "/sign-in";
+
+
           } catch (e) {
             setError(e.message);
             setLoading(false);
