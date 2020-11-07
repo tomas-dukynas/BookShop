@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../Styles/BookList.css';
 import OneBookView from './OneBookView';
 
-export default function BooksList({ books, categories, viewCount }) {
+export default function BooksList({ books, categories, viewCount, number }) {
   const [show, setShow] = React.useState(false);
   const [id, setId] = React.useState(null);
   const [img, setImg] = React.useState('');
@@ -11,20 +11,39 @@ export default function BooksList({ books, categories, viewCount }) {
   const [description, setDescription] = React.useState('');
   const [name, setName] = React.useState('');
   const [categories1, setCategories1] = React.useState('');
-  const [categories2, setCategories2] = React.useState('');
+  //const [categories2, setCategories2] = React.useState('');
+  //const [quantity,setNumber] = React.useState('');
 
   const handleOnPress = (book) => {
     setShow(true);
     setId(book.id);
-    setImg(book.PhotoOfTheBook.name);
+    if(book.PhotoOfTheBook?.name){
+      setImg(book.PhotoOfTheBook.name);
+    }
+    else {
+      setImg("https://www.liweddings.com/themes/default/assets/images/no-image.png");
+    }
     setPrice(book.Price);
     setAuthor(book.Author);
     setDescription(book.Description);
     setName(book.NameOfTheBook);
-    setCategories1(book.categories)//[0].NameOfTheCategory);
+    setCategories1(book.categories); //[0].NameOfTheCategory);
+    //console.log(book.Author);
+    /*const good = number.map((num) => {
+      if(num.id === book.id){
+        setNumber(num.number);
+        console.log(num.number, " num.number");
+        return num
+      }
+      else return null
+    });*/
+
+    //setNumber(good);
+    //console.log(good)
   };
 
   const listItems = books.map((book) => {
+    let imgURL = book.PhotoOfTheBook?.name;
     return (
       <div className="mainDiv" key={book.id}>
         <li>
@@ -34,7 +53,7 @@ export default function BooksList({ books, categories, viewCount }) {
                 <tr>
                   <th>
                     <div>
-                      <img src={book.PhotoOfTheBook.name} alt="" className="bookImageCard" />
+                      <img src={imgURL} alt="" className="bookImageCard" />
                     </div>
                   </th>
                   <th>
@@ -78,6 +97,8 @@ export default function BooksList({ books, categories, viewCount }) {
       categories1={categories1}
       viewCount={viewCount}
       setShow={setShow}
+      //number={number}
+      //quantity={quantity}
     />
   );
 }

@@ -20,7 +20,7 @@ const ShoppingBag = () => {
               </h5>
 
 
-              <ListCart cart={cart}/>
+              <ListCart cart={cart} />
 
 
               <p className="text-primary mb-0">
