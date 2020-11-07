@@ -1,13 +1,12 @@
 import React from 'react';
-import CartContext from '../context/CartContext';
-import ListCart from './CartList'
+import ListCart from './CartList';
 import '../Styles/BookList.css';
+import UserContext from '../context/UserContext';
+import CartContext from '../context/CartContext';
 
 const ShoppingBag = () => {
-  const cart = React.useContext(CartContext);
-
-
-  const len = cart?.length;
+  const state = React.useContext(UserContext);
+  const len = state?.cart?.length;
 
   return (
     <section>
@@ -18,11 +17,7 @@ const ShoppingBag = () => {
               <h5 className="mb-4">
                 Cart (<span>{len}</span> items)
               </h5>
-
-
-              <ListCart cart={cart} />
-
-
+              <ListCart cart={state?.cart} />
               <p className="text-primary mb-0">
                 <i className="fas fa-info-circle mr-1" /> Do not delay the purchase, adding items to
                 your cart does not mean booking them.

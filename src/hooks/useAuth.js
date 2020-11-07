@@ -41,6 +41,7 @@ export default function useAuth() {
   );
 
   const cart = [];
+  let newCart = [];
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
@@ -53,6 +54,7 @@ export default function useAuth() {
           email: data.user.email,
           token: data.jwt,
         };
+        console.log(user);
         dispatch(createAction('SET_USER', user));
       },
       logout: async () => {
@@ -73,11 +75,26 @@ export default function useAuth() {
         };
         dispatch(createAction('SET_USER', user));
       },
-      addToCart: async (id) => {
-        const response = await axios.get(`http://localhost:1337/books/${id}`, {});
-        cart.push(response.data);
+      addToCart: async (oneBook) => {
+        let count = 1;
+        let contains = false;
+        cart.forEach((book, index) => {
+          if (book.id === oneBook.id) {
+            contains = true;
+            // eslint-disable-next-line no-plusplus
+            count++;
+            newCart = cart.slice(index, index + 1);
+          }
+        });
+        const book = Object.assign(oneBook);
+        book.count = count;
+        cart.push(book);
+        if (!contains) {
+          newCart.push(book);
+        }
+        dispatch(createAction('SET_CART', newCart));
+        console.log(newCart);
         console.log(cart);
-        dispatch(createAction('SET_CART', cart));
       },
     }),
     [],

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
 
-//const [loggedIn, setLoggedIn] = useState(false);
+// const [loggedIn, setLoggedIn] = useState(false);
 /*
 function IfLogged (loggedIn) {
   console.log(loggedIn);
@@ -15,7 +15,7 @@ const Logged =(loggedIn)=> {
   return loggedIn;
 };
 */
-//export const test = loggedIn;
+// export const test = loggedIn;
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
@@ -27,34 +27,12 @@ const Login = () => {
   const loge = React.createContext(false);
   const log11 = React.useContext(loge);
   function onButtonPress(event) {
-
-
-
     event.preventDefault();
     if (CheckEmail.test(String(email).toLowerCase())) {
       (async () => {
         setLoading(true);
         try {
           await login(email, password);
-          console.log('yey');
-
-          setLoggedIn(true);
-          //IfLogged(loggedIn);
-          //Logged(loggedIn);
-
-          //log11(true);
-
-          /*this.props.history.push({
-            pathname: '/navBar',
-            data: loggedIn // your data array of objects
-          });*/
-
-
-
-          window.location.href = "/list-view";
-          //console.log(loggedIn ," after redirect");
-
-          return loggedIn;
         } catch (e) {
           console.log(e);
           setError(e.message);
@@ -67,7 +45,6 @@ const Login = () => {
     }
   }
   return (
-
     <form>
       <h3>Sign In</h3>
 
@@ -116,8 +93,3 @@ const Login = () => {
   );
 };
 export default Login;
-
-
-
-
-
