@@ -1,11 +1,16 @@
 import React from 'react';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import useAuth from './hooks/useAuth';
 import AuthContext from './context/AuthContext';
 import NavBar from './components/NavBar';
-import CartContext from './context/CartContext';
 import UserContext from './context/UserContext';
+
+const stripePromise = loadStripe(
+  'pk_test_51HlCOSLzMQ3V6wEcRLjjYFMw7RxivPRSLwhAeEiVuV2cjmQiIHBttfrWZtdNdzvzoeK9fYQAHTIDCUuIHKXM5bCE00PnHlaeF2',
+);
 
 const App = () => {
   const { auth, state } = useAuth();
@@ -21,7 +26,11 @@ const App = () => {
       </UserContext.Provider>
     );
   };
-  return <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>;
+  return (
+    <Elements stripe={stripePromise}>
+      <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
+    </Elements>
+  );
 };
 
 export default App;

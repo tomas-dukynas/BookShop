@@ -6,6 +6,7 @@ import ShoppingBag from './ShoppingBag';
 import ListView from '../pages/book.list.page';
 import UserContext from '../context/UserContext';
 import AuthContext from '../context/AuthContext';
+import CheckoutForm from './CheckoutForm';
 
 const Hide = () => {
   const state = React.useContext(UserContext);
@@ -69,6 +70,7 @@ const NavBar = () => {
               <Route path="/sign-up" component={Register} />
               <Route path="/list-view" component={ListView} />
               <Route path="/shopping-bag" component={ShoppingBag} />
+              <Route path="/checkout" component={CheckoutForm} />
             </Switch>
           </div>
         </div>

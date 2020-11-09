@@ -2,11 +2,16 @@ import React from 'react';
 import ListCart from './CartList';
 import '../Styles/BookList.css';
 import UserContext from '../context/UserContext';
-import CartContext from '../context/CartContext';
+import { useHistory } from 'react-router-dom';
 
 const ShoppingBag = () => {
   const state = React.useContext(UserContext);
   const len = state?.cart?.length;
+  const history = useHistory();
+
+  const checkout = () => {
+    history.push('/checkout');
+  };
 
   return (
     <section>
@@ -83,7 +88,7 @@ const ShoppingBag = () => {
                 </li>
               </ul>
 
-              <button type="button" className="btn btn-primary btn-block">
+              <button type="button" className="btn btn-primary btn-block" onClick={checkout}>
                 go to checkout
               </button>
             </div>
