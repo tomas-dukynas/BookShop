@@ -10,6 +10,7 @@ import {
 import { logEvent, Result, ErrorResult } from './utilCheckout';
 import '../Styles/Checkout.css';
 import BASE_URL from '../config/IpAdress';
+import UserContext from '../context/UserContext';
 
 const ELEMENT_OPTIONS = {
   style: {
@@ -27,6 +28,7 @@ const CheckoutForm = () => {
   const [postal, setPostal] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
+  const state = React.useContext(UserContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -40,7 +42,7 @@ const CheckoutForm = () => {
 
     try {
       const { data: clientSecret } = await axios.post(`${BASE_URL}/stripe/checkout`, {
-        amount: 100,
+        amount: state?.price * 100,
       });
       const payload = await stripe.createPaymentMethod({
         type: 'card',
@@ -75,6 +77,7 @@ const CheckoutForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Amount to pay: ${state?.price}</h2>
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label htmlFor="name">Full Name</label>
       <input

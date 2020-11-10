@@ -15,7 +15,6 @@ export default function BooksList({ books, categories, viewCount, number }) {
     }
     setShow(true);
     setBook(book);
-    console.log(book);
   };
 
   const listItems = books.map((book) => {
