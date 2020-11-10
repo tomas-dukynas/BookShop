@@ -1,21 +1,8 @@
 import React, { useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
+import { useHistory } from 'react-router-dom';
 
-//const [loggedIn, setLoggedIn] = useState(false);
-/*
-function IfLogged (loggedIn) {
-  console.log(loggedIn);
-  return loggedIn;
-
-}
-const Logged =(loggedIn)=> {
-  //export const test = loggedIn;
-  //return loggedIn;
-  return loggedIn;
-};
-*/
-//export const test = loggedIn;
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
@@ -25,7 +12,7 @@ const Login = () => {
   const [error, setError] = React.useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const loge = React.createContext(false);
-  const log11 = React.useContext(loge);
+  const history = useHistory();
   function onButtonPress(event) {
 
 
@@ -37,24 +24,10 @@ const Login = () => {
         try {
           await login(email, password);
           console.log('yey');
-
           setLoggedIn(true);
-          //IfLogged(loggedIn);
-          //Logged(loggedIn);
 
-          //log11(true);
+          history.push('/list-view');
 
-          /*this.props.history.push({
-            pathname: '/navBar',
-            data: loggedIn // your data array of objects
-          });*/
-
-
-
-          window.location.href = "/list-view";
-          //console.log(loggedIn ," after redirect");
-
-          return loggedIn;
         } catch (e) {
           console.log(e);
           setError(e.message);

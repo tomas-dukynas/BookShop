@@ -24,9 +24,10 @@ const Register = () => {
           setLoading(true);
           try {
             await register(email, password);
-            console.log("success");
-            window.location.href = "/sign-in";
 
+            console.log("success");
+
+            history.push('/sign-in');
 
           } catch (e) {
             setError(e.message);
