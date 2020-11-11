@@ -1,21 +1,9 @@
 import React, { useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
+import { useHistory } from 'react-router-dom';
 
-// const [loggedIn, setLoggedIn] = useState(false);
-/*
-function IfLogged (loggedIn) {
-  console.log(loggedIn);
-  return loggedIn;
 
-}
-const Logged =(loggedIn)=> {
-  //export const test = loggedIn;
-  //return loggedIn;
-  return loggedIn;
-};
-*/
-// export const test = loggedIn;
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
@@ -25,7 +13,7 @@ const Login = () => {
   const [error, setError] = React.useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const loge = React.createContext(false);
-  const log11 = React.useContext(loge);
+  const history = useHistory();
   function onButtonPress(event) {
     event.preventDefault();
     if (CheckEmail.test(String(email).toLowerCase())) {
@@ -33,6 +21,13 @@ const Login = () => {
         setLoading(true);
         try {
           await login(email, password);
+
+          console.log('yey');
+          setLoggedIn(true);
+
+          history.push('/list-view');
+
+
         } catch (e) {
           console.log(e);
           setError(e.message);
