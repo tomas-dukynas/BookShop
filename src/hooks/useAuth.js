@@ -30,6 +30,11 @@ export default function useAuth() {
             ...state,
             cart: action.payload,
           };
+        case 'SET_TOTAL_PRICE':
+          return {
+            ...state,
+            price: action.payload,
+          };
         default:
           return state;
       }
@@ -41,6 +46,8 @@ export default function useAuth() {
   );
 
   const cart = [];
+  let totalPrice = 0;
+  const newCart = [];
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
@@ -53,6 +60,7 @@ export default function useAuth() {
           email: data.user.email,
           token: data.jwt,
         };
+        console.log(user);
         dispatch(createAction('SET_USER', user));
       },
       logout: async () => {
@@ -73,11 +81,68 @@ export default function useAuth() {
         };
         dispatch(createAction('SET_USER', user));
       },
-      addToCart: async (id) => {
-        const response = await axios.get(`http://localhost:1337/books/${id}`, {});
-        cart.push(response.data);
-        console.log(cart);
-        dispatch(createAction('SET_CART', cart));
+      addToCart: (oneBook) => {
+        let contains = false;
+        let count = 1;
+        totalPrice += oneBook.Price;
+        const book = Object.assign(oneBook);
+        cart.forEach((bookO) => {
+          if (bookO.id === oneBook.id) {
+            contains = true;
+            // eslint-disable-next-line no-plusplus
+            count++;
+          }
+        });
+        book.count = count;
+        cart.push(book);
+        if (!contains) {
+          book.count = 1;
+          newCart.push(book);
+        }
+        dispatch(createAction('SET_CART', newCart));
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+      },
+      removeFromCart: (oneBook) => {
+        const book = Object.assign(oneBook);
+        newCart.forEach((bookO, index) => {
+          if (bookO.id === oneBook.id) {
+            newCart.splice(index, 1);
+          }
+        });
+
+        cart.forEach((bookO, index) => {
+          if (bookO.id === oneBook.id) {
+            cart.splice(index);
+            console.log(cart.splice(index));
+          }
+        });
+
+        totalPrice -= book.Price * book.count;
+        // eslint-disable-next-line no-plusplus
+        book.count--;
+        dispatch(createAction('SET_CART', newCart));
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+      },
+      decreaseCountAndPrice: (oneBook) => {
+        const book = Object.assign(oneBook);
+        cart.forEach((bookO, index) => {
+          if (bookO.id === oneBook.id) {
+            cart.splice(index, 1);
+          }
+        });
+        // eslint-disable-next-line no-plusplus
+        book.count--;
+        totalPrice -= book.Price;
+        dispatch(createAction('SET_CART', newCart));
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+      },
+      increaseCountAndPrice: (oneBook) => {
+        const book = Object.assign(oneBook);
+        // eslint-disable-next-line no-plusplus
+        book.count++;
+        totalPrice += book.Price;
+        dispatch(createAction('SET_CART', newCart));
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
     }),
     [],

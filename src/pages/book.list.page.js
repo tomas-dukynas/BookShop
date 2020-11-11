@@ -9,14 +9,20 @@ const AllBooks = () => {
   const [categories, setCategories] = React.useState([]);
   const [viewCount, setViewCount] = React.useState(0);
 
+
   const [bookList, setBookList] = React.useState([]);
+
+  // const [number, setNumber] = React.useState(0);
+
 
   React.useEffect(() => {
     axios
       .get('http://localhost:1337/books')
       .then(({ data }) => {
         setListBooks(data);
+
         setBookList(data);
+
       })
       .catch((e) => console.log(e));
     axios
@@ -29,7 +35,7 @@ const AllBooks = () => {
       .get('http://localhost:1337/Book-Counts')
       .then(({ data }) => {
         setViewCount(data);
-        //console.log(data);
+        // console.log(data);
       })
       .catch((e) => console.log(e));
   }, []);

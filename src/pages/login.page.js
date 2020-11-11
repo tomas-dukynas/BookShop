@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
+
 import { useHistory } from 'react-router-dom';
 import Error from './register.page';
 import Spinner from 'react-bootstrap/Spinner';
 import '../Styles/Error.css';
+
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
@@ -22,9 +24,9 @@ const Login = () => {
         setLoading(true);
         try {
           await login(email, password);
+
           console.log('yey');
           setLoggedIn(true);
-
           history.push('/list-view');
         } catch (e) {
           console.log(e);
