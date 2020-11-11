@@ -10,15 +10,11 @@ import UserContext from './context/UserContext';
 
 import CartContext from './context/CartContext';
 
-
 const stripePromise = loadStripe(
   'pk_test_51HlCOSLzMQ3V6wEcRLjjYFMw7RxivPRSLwhAeEiVuV2cjmQiIHBttfrWZtdNdzvzoeK9fYQAHTIDCUuIHKXM5bCE00PnHlaeF2',
 );
 
 
-const stripePromise = loadStripe(
-  'pk_test_51HlCOSLzMQ3V6wEcRLjjYFMw7RxivPRSLwhAeEiVuV2cjmQiIHBttfrWZtdNdzvzoeK9fYQAHTIDCUuIHKXM5bCE00PnHlaeF2',
-);
 
 const App = () => {
   const { auth, state, effect } = useAuth();
@@ -34,15 +30,16 @@ const App = () => {
         <NavBar />
       </UserContext.Provider>
 
-        <NavBar />
-      </UserContext.Provider>
-    ) : (
+
+    ) ;
+    {/*: (
       <UserContext.Provider value={state}>
         <NavBar />
       </UserContext.Provider>
 
-    );
+    );*/}
   };
+  //<AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
   return (
     <Elements stripe={stripePromise}>
 
@@ -50,7 +47,7 @@ const App = () => {
         <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
       </CartContext.Provider>
 
-      <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
+
 
     </Elements>
   );

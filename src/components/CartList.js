@@ -14,8 +14,6 @@ export default function ListCart({ cart }) {
 
               <img className="img-fluid w-100" src={cart1?.PhotoOfTheBook.name} alt="Sample" />
 
-              <img className="img-fluid w-100" src={cart1?.PhotoOfTheBook?.name} alt="Sample" />
-
             </div>
           </div>
           <div className="col-md-7 col-lg-9 col-xl-9">
