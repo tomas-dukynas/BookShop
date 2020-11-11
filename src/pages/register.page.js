@@ -12,10 +12,14 @@ import CheckPassword from '../components/CheckPassword';
 import CheckEmail from '../components/CheckEmail';
 import Error from '../components/Error';
 
+
 import Spinner from 'react-bootstrap/Spinner';
 import { Redirect } from 'react-router-dom';
 import Login from '../pages/login.page';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
+import Login from './login.page';
+
 
 
 import Login from './login.page';

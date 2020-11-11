@@ -7,21 +7,13 @@ import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 
+
 import Modal from 'react-modal';
 
-const OneBookView = ({
-  id,
-  img,
-  price,
-  author,
-  description,
-  name,
-  categories1,
-  viewCount,
-  setShow,
-  //quantity
-}) => {
+
+const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart } = React.useContext(AuthContext);
+
 
   const addToShoppingBag = () => {
     // not called, addToCard called directly to create pop up
@@ -39,10 +31,12 @@ const OneBookView = ({
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart } = React.useContext(AuthContext);
 
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
     <div className="uth-inner">
+
 
       <div className="toHide">
         <div>
@@ -115,6 +109,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                     <p className="description">Description:</p>
                     <BookDescription description={description} />
                   </div>
+
 
       <div>
         <Modal
