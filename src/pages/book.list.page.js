@@ -9,7 +9,9 @@ const AllBooks = () => {
   const [categories, setCategories] = React.useState([]);
   const [viewCount, setViewCount] = React.useState(0);
 
+
   const [bookList, setBookList] = React.useState([]);
+
 
 
   React.useEffect(() => {
@@ -17,6 +19,7 @@ const AllBooks = () => {
       .get('http://localhost:1337/books')
       .then(({ data }) => {
         setListBooks(data);
+
         setBookList(data);
       })
       .catch((e) => console.log(e));
@@ -30,7 +33,7 @@ const AllBooks = () => {
       .get('http://localhost:1337/Book-Counts')
       .then(({ data }) => {
         setViewCount(data);
-        //console.log(data);
+        // console.log(data);
       })
       .catch((e) => console.log(e));
   }, []);

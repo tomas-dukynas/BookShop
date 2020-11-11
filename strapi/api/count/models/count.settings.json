@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "counts",
+  "info": {
+    "name": "Count"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "countBook": {
+      "type": "integer",
+      "required": true
+    },
+    "BooksID": {
+      "type": "string",
+      "required": true
+    }
+  }
+}

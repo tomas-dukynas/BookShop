@@ -4,6 +4,7 @@ import CheckEmail from '../components/CheckEmail';
 import { useHistory } from 'react-router-dom';
 
 
+
 const Login = () => {
   const { login } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState('test1@gmail.com');
@@ -14,19 +15,18 @@ const Login = () => {
   const loge = React.createContext(false);
   const history = useHistory();
   function onButtonPress(event) {
-
-
-
     event.preventDefault();
     if (CheckEmail.test(String(email).toLowerCase())) {
       (async () => {
         setLoading(true);
         try {
           await login(email, password);
+
           console.log('yey');
           setLoggedIn(true);
 
           history.push('/list-view');
+
 
         } catch (e) {
           console.log(e);
@@ -40,7 +40,6 @@ const Login = () => {
     }
   }
   return (
-
     <form>
       <h3>Sign In</h3>
 
@@ -89,8 +88,3 @@ const Login = () => {
   );
 };
 export default Login;
-
-
-
-
-
