@@ -11,7 +11,6 @@ const AllBooks = () => {
 
   const [bookList, setBookList] = React.useState([]);
 
-
   React.useEffect(() => {
     axios
       .get('http://localhost:1337/books')
@@ -69,10 +68,14 @@ const AllBooks = () => {
     const [searchTermCategories, setSearchTermCategories] = React.useState('');
     const [searchResultsCategories, setSearchResultsCategories] = React.useState([]);
     let arrayOfBooks = [];
-    useEffect(() => {
-      setSearchTermCategories('');
-    }, []);
+    /*
+    React.useEffect((event) => {
+      console.log(event);
+      //setSearchTermCategories(event.target.value);
+    }, [searchTermCategories]);*/
+
     const handleChangeCategories = (event) => {
+      //console.log(event);
       setSearchTermCategories(event.target.value);
 
       if (array.includes(searchTermCategories)) {
@@ -118,7 +121,6 @@ const AllBooks = () => {
       }
 
       if (array.length !== 0 && uniqueBooks.length !== 0) {
-
         //setBookList(uniqueBooks);
       } else if (array.length === 0 && bookList.length !== 0) {
         //niekas nekeiciama ir rodoma bookList

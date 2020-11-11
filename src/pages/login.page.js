@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
 import { useHistory } from 'react-router-dom';
-
+import Error from './register.page';
+import Spinner from 'react-bootstrap/Spinner';
+import '../Styles/Error.css';
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
@@ -14,9 +16,6 @@ const Login = () => {
   const loge = React.createContext(false);
   const history = useHistory();
   function onButtonPress(event) {
-
-
-
     event.preventDefault();
     if (CheckEmail.test(String(email).toLowerCase())) {
       (async () => {
@@ -27,23 +26,25 @@ const Login = () => {
           setLoggedIn(true);
 
           history.push('/list-view');
-
         } catch (e) {
           console.log(e);
-          setError(e.message);
+          //setError(e.message);
+          setError('Invalid Email or Password');
           setLoading(false);
         }
       })();
     } else {
       setLoading(false);
-      setError('Invalid Email');
+      setError('Invalid Email or Password');
     }
   }
   return (
-
     <form>
       <h3>Sign In</h3>
 
+      <div className="errorCont">
+        <h2 className="errorText">{error}</h2>
+      </div>
       <div className="form-group">
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label>Email address</label>
@@ -80,6 +81,7 @@ const Login = () => {
 
       <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Submit
+        { loading ?  <Spinner animation="border" /> : ""}
       </button>
       <p className="forgot-password text-right">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -89,8 +91,3 @@ const Login = () => {
   );
 };
 export default Login;
-
-
-
-
-
