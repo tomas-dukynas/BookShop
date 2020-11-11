@@ -7,14 +7,13 @@ import useAuth from './hooks/useAuth';
 import AuthContext from './context/AuthContext';
 import NavBar from './components/NavBar';
 import UserContext from './context/UserContext';
-import CartContext from './context/CartContext';
 
 const stripePromise = loadStripe(
   'pk_test_51HlCOSLzMQ3V6wEcRLjjYFMw7RxivPRSLwhAeEiVuV2cjmQiIHBttfrWZtdNdzvzoeK9fYQAHTIDCUuIHKXM5bCE00PnHlaeF2',
 );
 
 const App = () => {
-  const { auth, state, effect } = useAuth();
+  const { auth, state } = useAuth();
 
   const renderScreens = () => {
     return typeof state.user === 'undefined' ? (
@@ -29,9 +28,7 @@ const App = () => {
   };
   return (
     <Elements stripe={stripePromise}>
-      <CartContext.Provider value={effect}>
-        <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
-      </CartContext.Provider>
+      <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
     </Elements>
   );
 };
