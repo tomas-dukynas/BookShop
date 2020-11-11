@@ -1,5 +1,6 @@
 .mainDiv {
     height: 100%;
+
 }
 .cardDiv {
 
@@ -39,7 +40,8 @@ ln, li, ul {
     height: 50px;
 }
 body {
-    background-color: #ffffff ;
+   /* background-color: greenyellow ;*/
+
 }
 
 .auth-wrapper {
@@ -53,6 +55,8 @@ body {
 .auth-inner {
     width: 1200px;
     height: 950px;
+    /*overflow: auto;*/
+
     margin: auto;
     margin-top: 90px;
     margin-bottom: 50px;
@@ -62,6 +66,7 @@ body {
     border-radius: 15px;
     /*transition: all .3s;*/
     box-shadow: none;
+
 }
 .searchField {
 

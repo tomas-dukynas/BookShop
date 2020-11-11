@@ -12,7 +12,18 @@ import CheckPassword from '../components/CheckPassword';
 import CheckEmail from '../components/CheckEmail';
 import Error from '../components/Error';
 
+
+import Spinner from 'react-bootstrap/Spinner';
+import { Redirect } from 'react-router-dom';
+import Login from '../pages/login.page';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+
 import Login from './login.page';
+
+
+
+import Login from './login.page';
+
 
 const Register = () => {
   const { register } = React.useContext(AuthContext);
@@ -31,7 +42,7 @@ const Register = () => {
           try {
             await register(email, password);
 
-            console.log("success");
+            console.log('success');
 
             history.push('/sign-in');
 
@@ -49,6 +60,7 @@ const Register = () => {
       setError('Invalid email or password');
     }
   }
+  console.log(loading);
 
   return (
     <form>
@@ -78,12 +90,16 @@ const Register = () => {
 
       <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Sign Up
+
+        { loading ?  <Spinner animation="border" /> : ""}
       </button>
       <p className="forgot-password text-right">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         Already registered <a href="#">sign in?</a>
       </p>
+
     </form>
+
   );
 };
 export default Register;
