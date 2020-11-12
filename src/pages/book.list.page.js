@@ -21,6 +21,7 @@ const AllBooks = () => {
         setListBooks(data);
 
         setBookList(data);
+
       })
       .catch((e) => console.log(e));
     axios
@@ -72,10 +73,14 @@ const AllBooks = () => {
     const [searchTermCategories, setSearchTermCategories] = React.useState('');
     const [searchResultsCategories, setSearchResultsCategories] = React.useState([]);
     let arrayOfBooks = [];
-    useEffect(() => {
-      setSearchTermCategories('');
-    }, []);
+    /*
+    React.useEffect((event) => {
+      console.log(event);
+      //setSearchTermCategories(event.target.value);
+    }, [searchTermCategories]);*/
+
     const handleChangeCategories = (event) => {
+      //console.log(event);
       setSearchTermCategories(event.target.value);
 
       if (array.includes(searchTermCategories)) {
@@ -121,7 +126,6 @@ const AllBooks = () => {
       }
 
       if (array.length !== 0 && uniqueBooks.length !== 0) {
-
         //setBookList(uniqueBooks);
       } else if (array.length === 0 && bookList.length !== 0) {
         //niekas nekeiciama ir rodoma bookList
@@ -149,7 +153,7 @@ const AllBooks = () => {
         );
       });
 
-      return <div className="categoriesDivBox">{categ}</div>;
+      return <tbody className="categoriesDivBox">{categ}</tbody>;
     }
   };
 
@@ -161,9 +165,9 @@ const AllBooks = () => {
             <th>
               <div className="filters">
                 <table>
-                  <tbody>
+
                     <Categ categories={categories} />
-                  </tbody>
+
                 </table>
               </div>
             </th>

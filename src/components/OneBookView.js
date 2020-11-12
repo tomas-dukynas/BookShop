@@ -7,12 +7,19 @@ import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 
+
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart } = React.useContext(AuthContext);
+
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   return (
     <div className="uth-inner">
+
+
+      <div className="toHide">
+
       <div>
         <Modal
           isOpen={modalIsOpen}
@@ -75,13 +82,17 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                   <BookCategories categories1={book.categories} className="description" />
                   <p className="description">Description:</p>
                   <BookDescription description={book.Description} />
+
                 </div>
               </div>
-            </th>
-          </tr>
-        </thead>
-      </table>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </div>
+
+
   );
 };
 
