@@ -39,10 +39,6 @@ ln, li, ul {
     width: 200px;
     height: 50px;
 }
-body {
-   /* background-color: greenyellow ;*/
-
-}
 
 .auth-wrapper {
     display: flex;
@@ -55,16 +51,9 @@ body {
 .auth-inner {
     width: 1200px;
     height: 950px;
-    /*overflow: auto;*/
-
-    margin: auto;
-    margin-top: 90px;
-    margin-bottom: 50px;
+    margin: 90px auto 50px;
     background: #ffffff;
-    /*box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);*/
-    /*padding: 40px 55px 45px 55px;*/
     border-radius: 15px;
-    /*transition: all .3s;*/
     box-shadow: none;
 
 }
@@ -75,7 +64,7 @@ body {
     padding: 6px 12px;
 }
 .searchDiv {
-    margin-left: 100px;
+    margin-left: 200px;
     margin-bottom: 30px;
 }
 
@@ -87,13 +76,17 @@ body {
 
 .categoriesDivBox {
     border-color: gray;
-    border-radius: 5px;
+    border-radius: 15px;
     border-style: solid;
     padding: 6px 12px;
     background-color: lightgray;
-}.filterBox {
+}
+
+.filterBox {
      display: inline;
      width: 15px;
      box-shadow: rgba(255, 255, 255, 255);
      margin: 5px;
  }
+
+

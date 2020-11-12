@@ -17,7 +17,7 @@ export default function BooksList({ books, categories, viewCount, number }) {
     setBook(book);
   };
 
-  const listItems = books.map((book) => {
+  const listItems = books?.map((book) => {
     const imgURL = book.PhotoOfTheBook?.name;
     return (
       <div className="mainDiv" key={book.id}>
