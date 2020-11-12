@@ -12,8 +12,6 @@ const AllBooks = () => {
 
   const [bookList, setBookList] = React.useState([]);
 
-  // const [number, setNumber] = React.useState(0);
-
 
 
   React.useEffect(() => {
@@ -155,7 +153,7 @@ const AllBooks = () => {
         );
       });
 
-      return <div className="categoriesDivBox">{categ}</div>;
+      return <tbody className="categoriesDivBox">{categ}</tbody>;
     }
   };
 
@@ -167,9 +165,9 @@ const AllBooks = () => {
             <th>
               <div className="filters">
                 <table>
-                  <tbody>
+
                     <Categ categories={categories} />
-                  </tbody>
+
                 </table>
               </div>
             </th>

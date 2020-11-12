@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
-
 import { useHistory } from 'react-router-dom';
 import Error from './register.page';
 import Spinner from 'react-bootstrap/Spinner';
@@ -85,12 +84,14 @@ const Login = () => {
 
       <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Submit
-        { loading ?  <Spinner animation="border" /> : ""}
+
+
       </button>
       <p className="forgot-password text-right">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         Forgot <a href="#">password?</a>
       </p>
+      { loading ?  <Spinner animation="border" className="spinner" /> : ""}
     </form>
   );
 };
