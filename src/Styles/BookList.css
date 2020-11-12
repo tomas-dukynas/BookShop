@@ -78,7 +78,7 @@ body {
 .searchDiv {
     /*background-color: greenyellow;*/
     /*height: 200px;*/
-    margin-left: 100px;
+    margin-left: 200px;
     margin-bottom: 30px;
 }
 .mainBOXLIST {
@@ -89,16 +89,22 @@ body {
     top: 100px;
     left: 10px;
     position: absolute;
+    width: 200px;
+
    /* margin-top: -1000px;
     margin-left: -200px;*/
     /*position: absolute;*/
-
+   
 
 }
 .categoriesDivBox {
     border-color: gray;
-    border-radius: 5px;
+    border-radius: 15px;
     border-style: solid;
     padding: 6px 12px;
-    background-color: lightgray;
+    background-color: white;
+    /*width: 300px;*/
+}
+.filterBox {
+    color: #000;
 }
