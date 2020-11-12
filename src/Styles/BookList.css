@@ -64,36 +64,31 @@ body {
     box-shadow: none;
 }
 .searchField {
-
     width: 600px;
     border-color: gray;
     border-radius: 5px;
     padding: 6px 12px;
 }
 .searchDiv {
-    /*background-color: greenyellow;*/
-    /*height: 200px;*/
     margin-left: 100px;
     margin-bottom: 30px;
 }
-.mainBOXLIST {
-    /*background-color: greenyellow;*/
-}
+
 .filters {
-   /* background-color: #1C8EF9;*/
     top: 100px;
     left: 10px;
-    position: absolute;
-   /* margin-top: -1000px;
-    margin-left: -200px;*/
-    /*position: absolute;*/
-
-
+    position: fixed;
 }
+
 .categoriesDivBox {
     border-color: gray;
     border-radius: 5px;
     border-style: solid;
     padding: 6px 12px;
     background-color: lightgray;
-}
+}.filterBox {
+     display: inline;
+     width: 15px;
+     box-shadow: rgba(255, 255, 255, 255);
+     margin: 5px;
+ }
