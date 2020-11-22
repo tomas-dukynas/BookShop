@@ -1,24 +1,11 @@
 import React from 'react';
-import {
-  useHistory,
-  Redirect,
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import CheckPassword from '../components/CheckPassword';
 import CheckEmail from '../components/CheckEmail';
 import Error from '../components/Error';
-import * as ReactBootStrap from 'react-bootstrap';
+
 import Spinner from 'react-bootstrap/Spinner';
-//import { Redirect } from 'react-router-dom';
-import Login from '../pages/login.page';
-//import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
-
-//import Login from './login.page';
 
 const Register = () => {
   const { register } = React.useContext(AuthContext);
@@ -84,16 +71,13 @@ const Register = () => {
 
       <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Sign Up
-
-        { loading ?  <Spinner animation="border" /> : ""}
+        {loading ? <Spinner animation="border" /> : ''}
       </button>
       <p className="forgot-password text-right">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         Already registered <a href="#">sign in?</a>
       </p>
-
     </form>
-
   );
 };
 export default Register;

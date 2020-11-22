@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
-import BooksList from '../components/BooksList';
+import React from 'react';
+
 import '../Styles/BookList.css';
 
 function SetState(searchTermCategories, categoriesArray, setCategoriesArray) {
@@ -32,10 +31,9 @@ export default function CategoriesFilter({
   setCategoriesArray,
 }) {
   const [searchTermCategories, setSearchTermCategories] = React.useState('');
-  const [searchResultsCategories, setSearchResultsCategories] = React.useState([]);
 
   let arrayOfBooks = [];
-  //console.log(categoriesArray, 'OUTSIDE BEFORE');
+
   React.useEffect(() => {
     console.log(searchTermCategories);
     console.log(categoriesArray);
@@ -43,7 +41,6 @@ export default function CategoriesFilter({
 
     console.log(categoriesArray);
   }, [searchTermCategories]);
-  //console.log(categoriesArray, "OUTSIDE");
 
   React.useEffect(() => {
     const books = listBooks?.map((book) => {
@@ -64,20 +61,16 @@ export default function CategoriesFilter({
         const filtered = arr.filter(function (el) {
           return el != null;
         });
-        //console.log(filtered);
+
         return arr;
       });
       return categ;
     });
 
-    const uniqueBooks = Array.from(new Set(arrayOfBooks)); // galutinai isfiltruota, sitas turime rodyti
+    const uniqueBooks = Array.from(new Set(arrayOfBooks));
     console.log(uniqueBooks);
-    if (uniqueBooks.length !== 0) {
-      //console.log(uniqueBooks); // rodomos galutines knygos
-    }
 
     if (categoriesArray?.length === 0 && bookList.length !== 0) {
-      //niekas nekeiciama ir rodoma bookList
       filterBooks(bookList);
     }
 
@@ -86,8 +79,6 @@ export default function CategoriesFilter({
     }
   }, [searchTermCategories]);
 
-  //console.log(array, 'OUTSIDE');
-  //console.log(categoriesArray, 'AFTER OUTSIDE');
   if (categories.length === 0) {
     return null;
   } else {

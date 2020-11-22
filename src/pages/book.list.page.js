@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
-import BooksList from '../components/BooksList';
 import '../Styles/BookList.css';
 import CategoriesFilter from '../components/CategoriesFilter';
 import AuthorsFilter from '../components/AuthorsFilter';
 import ReactPaginate from 'react-paginate';
 import OneBookView from '../components/OneBookView';
-import ReactDOM from 'react-dom';
-import Spinner from './login.page';
 
 let array = [];
 
@@ -16,12 +13,10 @@ const AllBooks = () => {
   const [categories, setCategories] = React.useState([]);
   const [viewCount, setViewCount] = React.useState(0);
 
-
   const [bookList, setBookList] = React.useState([]);
   const [authors, setAuthors] = React.useState([]);
   const [categoriesArray, setCategoriesArray] = React.useState([]);
   const [authorsArray, setAuthorsArray] = React.useState([]);
-
 
   React.useEffect(() => {
     axios
@@ -88,10 +83,6 @@ const AllBooks = () => {
     ) {
       setBookList(listBooks);
     }
-    //console.log(authors);
-    //console.log(listBooks);
-    //console.log(categoriesArray, "MAIN PAGE");
-    console.log(authorsArray, 'AUTHORS ARRAY');
   }, [searchResults, searchTerm, categoriesArray, authorsArray]);
 
   console.log(categoriesArray, 'CATEG ARRAY');
@@ -224,7 +215,6 @@ const AllBooks = () => {
                   ) : (
                     <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />
                   )}
-                  {/*<BooksList books={bookList} categories={categories} viewCount={viewCount} />*/}
                 </div>
               </div>
             </th>
