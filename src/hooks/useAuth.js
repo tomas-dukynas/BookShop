@@ -174,7 +174,7 @@ export default function useAuth() {
       removeFromWish: (oneBook) => {
         wishList.forEach((bookO, index) => {
           if (bookO.id === oneBook.id) {
-            newCart.splice(index, 1);
+            wishList.splice(index, 1);
           }
         });
         dispatch(createAction('SET_WISH_LIST', wishList));

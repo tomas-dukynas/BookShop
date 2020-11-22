@@ -8,7 +8,7 @@ import AuthContext from '../context/AuthContext';
 const WishList = () => {
   const state = React.useContext(UserContext);
   const { removeFromWish } = React.useContext(AuthContext);
-  const len = state?.cart?.length;
+  const len = state?.wish?.length;
   const history = useHistory();
 
   return (
@@ -20,7 +20,7 @@ const WishList = () => {
               <h5 className="mb-4">
                 Wish List (<span>{len}</span> items)
               </h5>
-              <ListCart cart={state?.cart} removeFromCart={removeFromWish} isWish={true} />
+              <ListCart cart={state?.wish} removeFromCart={removeFromWish} isWish />
             </div>
           </div>
         </div>
