@@ -9,8 +9,6 @@ import AuthContext from '../context/AuthContext';
 
 
 
-const OneBookView = ({ book, viewCount, setShow, img }) => {
-  const { addToCart } = React.useContext(AuthContext);
 
 
 

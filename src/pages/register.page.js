@@ -13,7 +13,7 @@ import CheckEmail from '../components/CheckEmail';
 import Error from '../components/Error';
 import * as ReactBootStrap from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner';
-import { Redirect } from 'react-router-dom';
+//import { Redirect } from 'react-router-dom';
 import Login from '../pages/login.page';
 //import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
