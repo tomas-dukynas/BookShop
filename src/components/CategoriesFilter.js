@@ -35,17 +35,13 @@ export default function CategoriesFilter({
   let arrayOfBooks = [];
 
   React.useEffect(() => {
-    console.log(searchTermCategories);
-    console.log(categoriesArray);
     SetState(searchTermCategories, categoriesArray, setCategoriesArray);
-
-    console.log(categoriesArray);
   }, [searchTermCategories]);
 
   React.useEffect(() => {
     const books = listBooks?.map((book) => {
       const categ = book.categories.map((cat) => {
-        const arr = categoriesArray.map((ar) => {
+        const arr = array.map((ar) => {
           if (ar.toString() === cat.NameOfTheCategory.toString()) {
             if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
               arrayOfBooks[0] = book;
@@ -68,6 +64,7 @@ export default function CategoriesFilter({
     });
 
     const uniqueBooks = Array.from(new Set(arrayOfBooks));
+
     console.log(uniqueBooks);
 
     if (categoriesArray?.length === 0 && bookList.length !== 0) {
@@ -77,6 +74,8 @@ export default function CategoriesFilter({
     if (uniqueBooks.length !== 0) {
       filterBooks(uniqueBooks);
     }
+
+    filterBooks(uniqueBooks);
   }, [searchTermCategories]);
 
   if (categories.length === 0) {

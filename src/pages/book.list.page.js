@@ -89,7 +89,6 @@ const AllBooks = () => {
 
   const PER_PAGE = 5;
   const [currentPage, setCurrentPage] = React.useState(0);
-  //const [data, setData] = React.useState([]);
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
   }
@@ -107,6 +106,19 @@ const AllBooks = () => {
     setShow(true);
     setBook(book);
   };
+
+  if (
+    searchTerm.length !== 0 &&
+    listBooks !== bookList &&
+    searchResults !== bookList &&
+    searchResults.length === 0
+  ) {
+    setBookList(searchResults);
+  } else if (searchResults.length !== 0 && searchResults !== bookList) {
+    setBookList(searchResults);
+  } else if (searchTerm.length === 0 && array.length === 0 && bookList.length === 0) {
+    setBookList(listBooks);
+  }
 
   const offset = currentPage * PER_PAGE;
   const currentPageData = bookList.slice(offset, offset + PER_PAGE).map((book) => {

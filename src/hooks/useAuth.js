@@ -45,9 +45,9 @@ export default function useAuth() {
     },
   );
 
-  const cart = [];
+  let cart = [];
   let totalPrice = 0;
-  const newCart = [];
+  let newCart = [];
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
@@ -141,6 +141,13 @@ export default function useAuth() {
         // eslint-disable-next-line no-plusplus
         book.count++;
         totalPrice += book.Price;
+        dispatch(createAction('SET_CART', newCart));
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+      },
+      resetCartAndPrice: () => {
+        cart = [];
+        totalPrice = 0;
+        newCart = [];
         dispatch(createAction('SET_CART', newCart));
         dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
