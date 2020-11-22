@@ -30,6 +30,7 @@ export default function CategoriesFilter({
   categoriesArray,
   setCategoriesArray,
 }) {
+
   const [searchTermCategories, setSearchTermCategories] = React.useState('');
 
   let arrayOfBooks = [];
