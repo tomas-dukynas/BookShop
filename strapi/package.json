@@ -11,6 +11,7 @@
   },
   "devDependencies": {},
   "dependencies": {
+    "dotenv": "^8.2.0",
     "knex": "<0.20.0",
     "sqlite3": "latest",
     "strapi": "3.1.7",
@@ -21,6 +22,7 @@
     "strapi-plugin-email": "3.1.7",
     "strapi-plugin-upload": "3.1.7",
     "strapi-plugin-users-permissions": "3.1.7",
+    "strapi-provider-email-sendgrid": "^3.3.3",
     "strapi-utils": "3.1.7",
     "stripe": "^8.120.0"
   },

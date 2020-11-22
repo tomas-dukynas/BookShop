@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
-import { useHistory } from 'react-router-dom';
-import Error from './register.page';
-import Spinner from 'react-bootstrap/Spinner';
 import '../Styles/Error.css';
-
-
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
@@ -28,10 +25,9 @@ const Login = () => {
           console.log('yey');
           setLoggedIn(true);
           history.push('/list-view');
-
         } catch (e) {
           console.log(e);
-          //setError(e.message);
+          // setError(e.message);
           setError('Invalid Email or Password');
           setLoading(false);
         }
@@ -84,14 +80,12 @@ const Login = () => {
 
       <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Submit
-
-
       </button>
       <p className="forgot-password text-right">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         Forgot <a href="#">password?</a>
       </p>
-      { loading ?  <Spinner animation="border" className="spinner" /> : ""}
+      {loading ? <Spinner animation="border" className="spinner" /> : ''}
     </form>
   );
 };

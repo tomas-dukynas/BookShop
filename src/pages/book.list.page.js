@@ -47,8 +47,8 @@ const AllBooks = () => {
   React.useEffect(() => {
     const results = listBooks?.filter(
       (person) =>
-        person.Author.toString().toLowerCase().includes(searchTerm) ||
-        person.NameOfTheBook.toString().toLocaleLowerCase().includes(searchTerm),
+        person.Author.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        person.NameOfTheBook.toString().toLocaleLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     setSearchResults(results);
