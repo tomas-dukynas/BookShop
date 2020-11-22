@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Modal from 'react-modal';
+import Spinner from 'react-bootstrap/Spinner';
+import { useHistory } from 'react-router-dom';
 import {
   CardNumberElement,
   CardCvcElement,
@@ -11,6 +14,7 @@ import { logEvent, Result, ErrorResult } from './utilCheckout';
 import '../Styles/Checkout.css';
 import BASE_URL from '../config/IpAdress';
 import UserContext from '../context/UserContext';
+import AuthContext from '../context/AuthContext';
 
 const ELEMENT_OPTIONS = {
   style: {
@@ -24,21 +28,26 @@ const ELEMENT_OPTIONS = {
 const CheckoutForm = () => {
   const elements = useElements();
   const stripe = useStripe();
+  const { resetCartAndPrice } = React.useContext(AuthContext);
   const [name, setName] = useState('');
   const [postal, setPostal] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loading, setLoading] = React.useState(false);
   const state = React.useContext(UserContext);
-
+  const history = useHistory();
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    setLoading(true);
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
       return;
     }
     const cardElement = elements.getElement(CardNumberElement);
+
+    console.log('CARD NUM', cardElement);
 
     try {
       const { data: clientSecret } = await axios.post(`${BASE_URL}/stripe/checkout`, {
@@ -56,10 +65,16 @@ const CheckoutForm = () => {
       });
 
       const confirmedCardPayment = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: payload.paymentMethod.id,
+        payment_method: payload.paymentMethod?.id,
       });
 
       console.log(confirmedCardPayment);
+      if (confirmedCardPayment) {
+        setLoading(false);
+        if (!confirmedCardPayment.error) {
+          setModalIsOpen(true);
+        }
+      }
 
       if (payload.error) {
         console.log('[error]', payload.error);
@@ -72,11 +87,40 @@ const CheckoutForm = () => {
       }
     } catch (err) {
       console.log(err);
+      if (err === '500') {
+        setErrorMessage('Wrong card number');
+      }
+      setErrorMessage(err.messages);
     }
+  };
+  const handleModalClose = async () => {
+    setModalIsOpen(false);
+    history.push('/list-view');
+    await axios.get(`${BASE_URL}/email`);
+    resetCartAndPrice();
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <button
+        type="button"
+        onClick={() => history.push('/list-view')}
+        className="buttonClose"
+        style={{ marginBottom: '20px' }}
+      >
+        Back to books
+      </button>
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        ariaHideApp={false}
+        className="popup"
+      >
+        <h2 className="popupH2"> Thank you for buying!</h2>
+        <button type="button" onClick={handleModalClose} className="buttonClose">
+          Close
+        </button>
+      </Modal>
       <h2>Amount to pay: ${state?.price}</h2>
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label htmlFor="name">Full Name</label>
@@ -132,9 +176,13 @@ const CheckoutForm = () => {
       />
       {errorMessage && <ErrorResult>{errorMessage}</ErrorResult>}
       {paymentMethod && <Result>Got PaymentMethod: {paymentMethod.id}</Result>}
-      <button type="submit" disabled={!stripe}>
-        Pay
-      </button>
+      {loading ? (
+        <Spinner animation="border" className="spinner" />
+      ) : (
+        <button type="submit" disabled={!stripe}>
+          Pay
+        </button>
+      )}
     </form>
   );
 };

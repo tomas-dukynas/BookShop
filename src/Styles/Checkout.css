@@ -132,3 +132,36 @@ More info: https://stripe.com/docs/stripe-js/reference#element-options
 .StripeElementFpx {
     padding: 0;
 }
+
+.popup {
+    /*align-self: center;*/
+    height: 200px;
+    width: 500px;
+    background-color: white;
+    margin-top: 200px;
+    margin-left: 500px;
+    text-align: center;
+
+    border-style: solid;
+    border-color: gray;
+    border-radius: 15px;
+}
+.popupH2 {
+    /*align-self: center;*/
+    font-weight: 400;
+    font-family: 'Fira Sans', sans-serif;
+
+
+    line-height: 100px;
+    text-align: center;
+
+}
+.buttonClose {
+    margin-top: 20px;
+    background-color: white;/* #1C8EF9;*/
+    /*border-style: none;*/
+    border-color: gray;
+    border-radius: 5px;
+    width: 200px;
+    height: 50px;
+}

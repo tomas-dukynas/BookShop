@@ -84,10 +84,13 @@ const ShoppingBag = () => {
                   </span>
                 </li>
               </ul>
-
-              <button type="button" className="btn btn-primary btn-block" onClick={checkout}>
-                go to checkout
-              </button>
+              {state.price ? (
+                <button type="button" className="btn btn-primary btn-block" onClick={checkout}>
+                  go to checkout
+                </button>
+              ) : (
+                ''
+              )}
             </div>
           </div>
           <div className="mb-3">
