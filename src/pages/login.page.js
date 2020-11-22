@@ -7,6 +7,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import '../Styles/Error.css';
 
 
+
 const Login = () => {
   const { login } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState('test1@gmail.com');
@@ -26,7 +27,6 @@ const Login = () => {
 
           console.log('yey');
           setLoggedIn(true);
-
           history.push('/list-view');
 
         } catch (e) {
@@ -84,12 +84,14 @@ const Login = () => {
 
       <button type="submit" className="btn btn-primary btn-block" onClick={(e) => onButtonPress(e)}>
         Submit
-        { loading ?  <Spinner animation="border" /> : ""}
+
+
       </button>
       <p className="forgot-password text-right">
         {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         Forgot <a href="#">password?</a>
       </p>
+      { loading ?  <Spinner animation="border" className="spinner" /> : ""}
     </form>
   );
 };
