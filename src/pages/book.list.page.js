@@ -15,10 +15,13 @@ const AllBooks = () => {
   const [listBooks, setListBooks] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [viewCount, setViewCount] = React.useState(0);
+
+
   const [bookList, setBookList] = React.useState([]);
   const [authors, setAuthors] = React.useState([]);
   const [categoriesArray, setCategoriesArray] = React.useState([]);
   const [authorsArray, setAuthorsArray] = React.useState([]);
+
 
   React.useEffect(() => {
     axios

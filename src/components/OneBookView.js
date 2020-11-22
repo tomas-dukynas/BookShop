@@ -8,9 +8,14 @@ import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 
 
+
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart } = React.useContext(AuthContext);
 
+
+
+const OneBookView = ({ book, viewCount, setShow, img }) => {
+  const { addToCart } = React.useContext(AuthContext);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -68,7 +73,6 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                             onClick={() => {
                               setModalIsOpen(true);
                               addToCart(book);
-
                             }}
                           >
                             Add to cart

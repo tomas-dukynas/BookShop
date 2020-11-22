@@ -1,13 +1,17 @@
 import React from 'react';
-import CartContext from '../context/CartContext';
-import ListCart from './CartList'
+import { useHistory } from 'react-router-dom';
+import UserContext from '../context/UserContext';
+import ListCart from './CartList';
 import '../Styles/BookList.css';
 
 const ShoppingBag = () => {
-  const cart = React.useContext(CartContext);
+  const state = React.useContext(UserContext);
+  const len = state?.cart?.length;
+  const history = useHistory();
 
-
-  const len = cart?.length;
+  const checkout = () => {
+    history.push('/checkout');
+  };
 
   return (
     <section>
@@ -18,11 +22,7 @@ const ShoppingBag = () => {
               <h5 className="mb-4">
                 Cart (<span>{len}</span> items)
               </h5>
-
-
-              <ListCart cart={cart} />
-
-
+              <ListCart cart={state?.cart} />
               <p className="text-primary mb-0">
                 <i className="fas fa-info-circle mr-1" /> Do not delay the purchase, adding items to
                 your cart does not mean booking them.
@@ -69,7 +69,7 @@ const ShoppingBag = () => {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                   Temporary amount
-                  <span>$25.98</span>
+                  <span>${state.price}</span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center px-0">
                   Shipping
@@ -78,17 +78,14 @@ const ShoppingBag = () => {
                 <li className="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
                   <div>
                     <strong>The total amount of</strong>
-                    <strong>
-                      <p className="mb-0">(including VAT)</p>
-                    </strong>
                   </div>
                   <span>
-                    <strong>$53.98</strong>
+                    <strong>${state.price}</strong>
                   </span>
                 </li>
               </ul>
 
-              <button type="button" className="btn btn-primary btn-block">
+              <button type="button" className="btn btn-primary btn-block" onClick={checkout}>
                 go to checkout
               </button>
             </div>

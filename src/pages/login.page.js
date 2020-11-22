@@ -6,6 +6,7 @@ import Error from './register.page';
 import Spinner from 'react-bootstrap/Spinner';
 import '../Styles/Error.css';
 
+
 const Login = () => {
   const { login } = React.useContext(AuthContext);
   const [email, setEmail] = React.useState('test1@gmail.com');
@@ -22,10 +23,12 @@ const Login = () => {
         setLoading(true);
         try {
           await login(email, password);
+
           console.log('yey');
           setLoggedIn(true);
 
           history.push('/list-view');
+
         } catch (e) {
           console.log(e);
           //setError(e.message);

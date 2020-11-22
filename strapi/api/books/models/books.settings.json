@@ -47,6 +47,10 @@
     },
     "SequelBooks": {
       "collection": "books"
+    },
+    "count": {
+      "type": "integer",
+      "required": true
     }
   }
 }
