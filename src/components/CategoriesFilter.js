@@ -3,11 +3,58 @@ import axios from 'axios';
 import BooksList from '../components/BooksList';
 import '../Styles/BookList.css';
 
+
+function SetState(searchTermCategories, categoriesArray, setCategoriesArray) {
+  if (searchTermCategories) {
+    if (categoriesArray.toString().includes(searchTermCategories.toString())) {
+      let ArrCat = categoriesArray.filter((a) => a.toString() !== searchTermCategories.toString());
+      setCategoriesArray(ArrCat);
+      console.log('REMOVED');
+    } else {
+      if (categoriesArray[0] === '') {
+        setCategoriesArray(searchTermCategories);
+      } else {
+        let ArrCat = categoriesArray;
+        ArrCat.push(searchTermCategories);
+        setCategoriesArray(ArrCat);
+      }
+    }
+  }
+  return categoriesArray;
+}
+
+export default function CategoriesFilter({
+  categories,
+  bookList,
+  listBooks,
+  array,
+  filterBooks,
+  categoriesArray,
+  setCategoriesArray,
+}) {
+
 export default function CategoriesFilter({ categories, bookList, listBooks, array, filterBooks }) {
+
   const [searchTermCategories, setSearchTermCategories] = React.useState('');
   const [searchResultsCategories, setSearchResultsCategories] = React.useState([]);
 
   let arrayOfBooks = [];
+
+  //console.log(categoriesArray, 'OUTSIDE BEFORE');
+  React.useEffect(() => {
+    console.log(searchTermCategories);
+    console.log(categoriesArray);
+    SetState(searchTermCategories, categoriesArray, setCategoriesArray);
+
+    console.log(categoriesArray);
+  }, [searchTermCategories]);
+  //console.log(categoriesArray, "OUTSIDE");
+
+  React.useEffect(() => {
+    const books = listBooks?.map((book) => {
+      const categ = book.categories.map((cat) => {
+        const arr = categoriesArray.map((ar) => {
+
 
   React.useEffect(() => {
     console.log(searchTermCategories);
@@ -32,6 +79,7 @@ export default function CategoriesFilter({ categories, bookList, listBooks, arra
     const books = listBooks?.map((book) => {
       const categ = book.categories.map((cat) => {
         const arr = array.map((ar) => {
+
           if (ar.toString() === cat.NameOfTheCategory.toString()) {
             if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
               arrayOfBooks[0] = book;
@@ -55,23 +103,39 @@ export default function CategoriesFilter({ categories, bookList, listBooks, arra
 
     const uniqueBooks = Array.from(new Set(arrayOfBooks)); // galutinai isfiltruota, sitas turime rodyti
 
+    console.log(uniqueBooks);
+
     if (uniqueBooks.length !== 0) {
       //console.log(uniqueBooks); // rodomos galutines knygos
     }
+
+
+    if (categoriesArray?.length === 0 && bookList.length !== 0) {
 
     /*if (array.length !== 0 && uniqueBooks.length !== 0) {
       //setBookList(uniqueBooks);
     } */
     if (array.length === 0 && bookList.length !== 0) {
+
       //niekas nekeiciama ir rodoma bookList
       filterBooks(bookList);
     }
+
+
+    if (uniqueBooks.length !== 0) {
+      filterBooks(uniqueBooks);
+    }
+  }, [searchTermCategories]);
+
+  //console.log(array, 'OUTSIDE');
+  //console.log(categoriesArray, 'AFTER OUTSIDE');
 
     setSearchResultsCategories(uniqueBooks);
 
     filterBooks(uniqueBooks);
   }, [searchTermCategories]);
   //console.log(array, 'OUTSIDE');
+
 
   if (categories.length === 0) {
     return null;

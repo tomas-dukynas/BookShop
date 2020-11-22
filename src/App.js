@@ -15,7 +15,6 @@ const stripePromise = loadStripe(
 );
 
 
-
 const App = () => {
   const { auth, state, effect } = useAuth();
 
@@ -29,6 +28,15 @@ const App = () => {
       <UserContext.Provider value={state}>
         <NavBar />
       </UserContext.Provider>
+
+    );
+  };
+  return (
+    <Elements stripe={stripePromise}>
+      <CartContext.Provider value={effect}>
+        <AuthContext.Provider value={auth}>{renderScreens()}</AuthContext.Provider>
+      </CartContext.Provider>
+
 
 
     ) ;

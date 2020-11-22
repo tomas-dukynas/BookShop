@@ -1,6 +1,6 @@
 .mainDiv {
     height: 100%;
-
+    margin-left: 30px;
 }
 .cardDiv {
 
@@ -46,6 +46,7 @@ ln, li, ul {
     flex-direction: column;
     text-align: left;
     box-shadow: none;
+    z-index:1;
 }
 
 .auth-inner {
@@ -55,7 +56,7 @@ ln, li, ul {
     background: #ffffff;
     border-radius: 15px;
     box-shadow: none;
-
+    z-index:1;
 }
 .searchField {
     width: 600px;
@@ -80,6 +81,7 @@ ln, li, ul {
     border-style: solid;
     padding: 6px 12px;
     background-color: lightgray;
+
 }
 
 .filterBox {
@@ -88,5 +90,46 @@ ln, li, ul {
      box-shadow: rgba(255, 255, 255, 255);
      margin: 5px;
  }
+
+.noBooks {
+    top: 300px;
+    z-index:-1;
+    position: absolute;
+}
+.pagination {
+    /*display: flex;*/
+    /*left: -100px;*/
+    justify-content: space-around;
+    list-style: none;
+    cursor: pointer;
+}
+
+.pagination a {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid gray;
+    color: gray;
+}
+
+.pagination__link {
+    font-weight: bold;
+}
+
+.pagination__link--active a {
+    color: #fff;
+    background: gray;
+}
+
+.pagination__link--disabled a {
+    color: rgb(198, 197, 202);
+    border: 1px solid rgb(198, 197, 202);
+}
+.paginatorList {
+    left: 260px;
+    position: absolute;
+
+}
+
+
 
 
