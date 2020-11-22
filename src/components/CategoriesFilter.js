@@ -33,7 +33,7 @@ export default function CategoriesFilter({
   setCategoriesArray,
 }) {
 
-export default function CategoriesFilter({ categories, bookList, listBooks, array, filterBooks }) {
+
 
   const [searchTermCategories, setSearchTermCategories] = React.useState('');
   const [searchResultsCategories, setSearchResultsCategories] = React.useState([]);
