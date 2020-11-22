@@ -2,20 +2,30 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 import BooksList from '../components/BooksList';
 import '../Styles/BookList.css';
+import CategoriesFilter from '../components/CategoriesFilter';
+import AuthorsFilter from '../components/AuthorsFilter';
+import ReactPaginate from 'react-paginate';
+import OneBookView from '../components/OneBookView';
 import ReactDOM from 'react-dom';
+import Spinner from './login.page';
+
+let array = [];
 
 const AllBooks = () => {
   const [listBooks, setListBooks] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [viewCount, setViewCount] = React.useState(0);
-
   const [bookList, setBookList] = React.useState([]);
+  const [authors, setAuthors] = React.useState([]);
+  const [categoriesArray, setCategoriesArray] = React.useState([]);
+  const [authorsArray, setAuthorsArray] = React.useState([]);
 
   React.useEffect(() => {
     axios
       .get('http://localhost:1337/books')
       .then(({ data }) => {
         setListBooks(data);
+
         setBookList(data);
       })
       .catch((e) => console.log(e));
@@ -29,7 +39,13 @@ const AllBooks = () => {
       .get('http://localhost:1337/Book-Counts')
       .then(({ data }) => {
         setViewCount(data);
-        //console.log(data);
+        // console.log(data);
+      })
+      .catch((e) => console.log(e));
+    axios
+      .get('http://localhost:1337/authors')
+      .then(({ data }) => {
+        setAuthors(data);
       })
       .catch((e) => console.log(e));
   }, []);
@@ -44,113 +60,104 @@ const AllBooks = () => {
   React.useEffect(() => {
     const results = listBooks?.filter(
       (person) =>
-        person.Author.toString().toLowerCase().includes(searchTerm) ||
-        person.NameOfTheBook.toString().toLocaleLowerCase().includes(searchTerm),
+        person.Author.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+        person.NameOfTheBook.toString().toLocaleLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     setSearchResults(results);
   }, [searchTerm]);
 
-  if (
-    searchTerm.length !== 0 &&
-    listBooks !== bookList &&
-    searchResults !== bookList &&
-    searchResults.length === 0
-  ) {
-    setBookList(searchResults);
-  } else if (searchResults.length !== 0 && searchResults !== bookList) {
-    setBookList(searchResults);
+  React.useEffect(() => {
+    if (
+      searchTerm.length !== 0 &&
+      listBooks !== bookList &&
+      searchResults !== bookList &&
+      searchResults.length === 0
+    ) {
+      setBookList(searchResults);
+    } else if (searchResults.length !== 0 && searchResults !== bookList) {
+      setBookList(searchResults);
+    } else if (
+      searchTerm.length === 0 &&
+      categoriesArray.length === 0 &&
+      bookList !== listBooks &&
+      authorsArray.length === 0
+    ) {
+      setBookList(listBooks);
+    }
+    //console.log(authors);
+    //console.log(listBooks);
+    //console.log(categoriesArray, "MAIN PAGE");
+    console.log(authorsArray, 'AUTHORS ARRAY');
+  }, [searchResults, searchTerm, categoriesArray, authorsArray]);
+
+  console.log(categoriesArray, 'CATEG ARRAY');
+
+  const PER_PAGE = 5;
+  const [currentPage, setCurrentPage] = React.useState(0);
+  //const [data, setData] = React.useState([]);
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
   }
 
-  let array = [];
+  const [show, setShow] = React.useState(false);
+  const [oneBook, setBook] = React.useState({});
+  const [img, setImg] = React.useState('');
 
-  const Categ = ({ categories }) => {
-    const [searchTermCategories, setSearchTermCategories] = React.useState('');
-    const [searchResultsCategories, setSearchResultsCategories] = React.useState([]);
-    let arrayOfBooks = [];
-    /*
-    React.useEffect((event) => {
-      console.log(event);
-      //setSearchTermCategories(event.target.value);
-    }, [searchTermCategories]);*/
-
-    const handleChangeCategories = (event) => {
-      //console.log(event);
-      setSearchTermCategories(event.target.value);
-
-      if (array.includes(searchTermCategories)) {
-        array = array.filter((a) => a.toString() !== searchTermCategories.toString());
-      } else {
-        if (array[0] === '') {
-          array[0] = searchTermCategories;
-        } else {
-          array.push(searchTermCategories);
-        }
-      }
-    };
-
-    React.useEffect(() => {
-      const books = bookList.map((book) => {
-        const categ = book.categories.map((cat) => {
-          const arr = array.map((ar) => {
-            if (ar.toString() === cat.NameOfTheCategory.toString()) {
-              if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
-                arrayOfBooks[0] = book;
-              } else {
-                arrayOfBooks.push(book);
-              }
-
-              return book;
-            } else {
-              return null;
-            }
-          });
-          const filtered = arr.filter(function (el) {
-            return el != null;
-          });
-          //console.log(filtered);
-          return arr;
-        });
-        return categ;
-      });
-
-      const uniqueBooks = Array.from(new Set(arrayOfBooks)); // galutinai isfiltruota, sitas turime rodyti
-
-      if (uniqueBooks.length !== 0) {
-        console.log(uniqueBooks); // rodomos galutines knygos
-      }
-
-      if (array.length !== 0 && uniqueBooks.length !== 0) {
-        //setBookList(uniqueBooks);
-      } else if (array.length === 0 && bookList.length !== 0) {
-        //niekas nekeiciama ir rodoma bookList
-      }
-
-      setSearchResultsCategories(uniqueBooks);
-    }, [searchTermCategories]);
-
-    if (categories.length === 0) {
-      return null;
+  const handleOnPress = (book) => {
+    if (book.PhotoOfTheBook?.name) {
+      setImg(book.PhotoOfTheBook.name);
     } else {
-      const categ = categories?.map((cat) => {
-        return (
-          <tr>
-            <td>
-              <input
-                type="checkbox"
-                className="filterBox"
-                value={cat.NameOfTheCategory || ' '}
-                onChange={handleChangeCategories}
-              />
-              {cat.NameOfTheCategory}
-            </td>
-          </tr>
-        );
-      });
-
-      return <div className="categoriesDivBox">{categ}</div>;
+      setImg('https://www.liweddings.com/themes/default/assets/images/no-image.png');
     }
+    setShow(true);
+    setBook(book);
   };
+
+  const offset = currentPage * PER_PAGE;
+  const currentPageData = bookList.slice(offset, offset + PER_PAGE).map((book) => {
+    const imgURL = book.PhotoOfTheBook?.name;
+
+    return (
+      <div className="mainDiv" key={book.id}>
+        <li>
+          <div className="cardDiv">
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    <div>
+                      <img src={imgURL} alt="" className="bookImageCard" />
+                    </div>
+                  </th>
+                  <th>
+                    <div className="nameDivCard">
+                      <h4>{book.Author}</h4>
+                      <h4>{book.NameOfTheBook}</h4>
+                    </div>
+                  </th>
+                  <th>
+                    <div className="priceDivCard">
+                      <h4>{book.Price} €</h4>
+                      <button
+                        type="button"
+                        className="buttonViewMore"
+                        onClick={() => handleOnPress(book)}
+                      >
+                        View More
+                      </button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </li>
+      </div>
+    );
+  });
+
+  const pageCount = Math.ceil(bookList.length / PER_PAGE);
 
   return (
     <div>
@@ -160,9 +167,25 @@ const AllBooks = () => {
             <th>
               <div className="filters">
                 <table>
-                  <tbody>
-                    <Categ categories={categories} />
-                  </tbody>
+                  <CategoriesFilter
+                    categories={categories}
+                    bookList={bookList}
+                    listBooks={listBooks}
+                    array={array}
+                    filterBooks={(e) => setBookList(e)}
+                    categoriesArray={categoriesArray}
+                    setCategoriesArray={(e) => setCategoriesArray(e)}
+                  />
+                  <br />
+                  <AuthorsFilter
+                    authors={authors}
+                    bookList={bookList}
+                    listBooks={listBooks}
+                    array={array}
+                    filterBooks={(e) => setBookList(e)}
+                    authorsArray={authorsArray}
+                    setAuthorsArray={(e) => setAuthorsArray(e)}
+                  />
                 </table>
               </div>
             </th>
@@ -176,9 +199,29 @@ const AllBooks = () => {
                     value={searchTerm}
                     onChange={handleChange}
                   />
+                  <h3 className="noBooks">No Books To Display</h3>
                 </div>
                 <div>
-                  <BooksList books={bookList} categories={categories} viewCount={viewCount} />
+                  {!show ? (
+                    <div className="paginatorList">
+                      {currentPageData}
+
+                      <ReactPaginate
+                        previousLabel={'← Previous'}
+                        nextLabel={'Next →'}
+                        pageCount={pageCount}
+                        onPageChange={handlePageClick}
+                        containerClassName={'pagination'}
+                        previousLinkClassName={'pagination__link'}
+                        nextLinkClassName={'pagination__link'}
+                        disabledClassName={'pagination__link--disabled'}
+                        activeClassName={'pagination__link--active'}
+                      />
+                    </div>
+                  ) : (
+                    <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />
+                  )}
+                  {/*<BooksList books={bookList} categories={categories} viewCount={viewCount} />*/}
                 </div>
               </div>
             </th>

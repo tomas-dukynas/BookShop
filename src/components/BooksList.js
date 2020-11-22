@@ -1,49 +1,26 @@
-import React, {useState} from 'react';
+import React from 'react';
 import '../Styles/BookList.css';
 import OneBookView from './OneBookView';
+import ReactPaginate from "react-paginate";
+
 
 export default function BooksList({ books, categories, viewCount, number }) {
   const [show, setShow] = React.useState(false);
-  const [id, setId] = React.useState(null);
+  const [oneBook, setBook] = React.useState({});
   const [img, setImg] = React.useState('');
-  const [price, setPrice] = React.useState(null);
-  const [author, setAuthor] = React.useState('');
-  const [description, setDescription] = React.useState('');
-  const [name, setName] = React.useState('');
-  const [categories1, setCategories1] = React.useState('');
-  //const [categories2, setCategories2] = React.useState('');
-  //const [quantity,setNumber] = React.useState('');
 
   const handleOnPress = (book) => {
-    setShow(true);
-    setId(book.id);
-    if(book.PhotoOfTheBook?.name){
+    if (book.PhotoOfTheBook?.name) {
       setImg(book.PhotoOfTheBook.name);
+    } else {
+      setImg('https://www.liweddings.com/themes/default/assets/images/no-image.png');
     }
-    else {
-      setImg("https://www.liweddings.com/themes/default/assets/images/no-image.png");
-    }
-    setPrice(book.Price);
-    setAuthor(book.Author);
-    setDescription(book.Description);
-    setName(book.NameOfTheBook);
-    setCategories1(book.categories); //[0].NameOfTheCategory);
-    //console.log(book.Author);
-    /*const good = number.map((num) => {
-      if(num.id === book.id){
-        setNumber(num.number);
-        console.log(num.number, " num.number");
-        return num
-      }
-      else return null
-    });*/
-
-    //setNumber(good);
-    //console.log(good)
+    setShow(true);
+    setBook(book);
   };
 
-  const listItems = books.map((book) => {
-    let imgURL = book.PhotoOfTheBook?.name;
+  const listItems = books?.map((book) => {
+    const imgURL = book.PhotoOfTheBook?.name;
     return (
       <div className="mainDiv" key={book.id}>
         <li>
@@ -86,19 +63,104 @@ export default function BooksList({ books, categories, viewCount, number }) {
   if (!show) {
     return <ul>{listItems}</ul>;
   }
-  return (
-    <OneBookView
-      id={id}
-      img={img}
-      price={price}
-      author={author}
-      description={description}
-      name={name}
-      categories1={categories1}
-      viewCount={viewCount}
-      setShow={setShow}
-      //number={number}
-      //quantity={quantity}
-    />
-  );
+  return <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />;
 }
+
+/*
+const BookList = ({ books, categories, viewCount, number }) => {
+  const [show, setShow] = React.useState(false);
+  const [oneBook, setBook] = React.useState({});
+  const [img, setImg] = React.useState('');
+
+  const handleOnPress = (book) => {
+    if (book.PhotoOfTheBook?.name) {
+      setImg(book.PhotoOfTheBook.name);
+    } else {
+      setImg('https://www.liweddings.com/themes/default/assets/images/no-image.png');
+    }
+    setShow(true);
+    setBook(book);
+  };
+
+  const listItems = books?.map((book) => {
+    const imgURL = book.PhotoOfTheBook?.name;
+    return (
+      <div className="mainDiv" key={book.id}>
+        <li>
+          <div className="cardDiv">
+            <table>
+              <thead>
+              <tr>
+                <th>
+                  <div>
+                    <img src={imgURL} alt="" className="bookImageCard" />
+                  </div>
+                </th>
+                <th>
+                  <div className="nameDivCard">
+                    <h4>{book.Author}</h4>
+                    <h4>{book.NameOfTheBook}</h4>
+                  </div>
+                </th>
+                <th>
+                  <div className="priceDivCard">
+                    <h4>{book.Price} €</h4>
+                    <button
+                      type="button"
+                      className="buttonViewMore"
+                      onClick={() => handleOnPress(book)}
+                    >
+                      View More
+                    </button>
+                  </div>
+                </th>
+              </tr>
+              </thead>
+            </table>
+          </div>
+        </li>
+      </div>
+    );
+  });
+
+  /*const PER_PAGE = 3;
+  const [currentPage, setCurrentPage] = React.useState(0);
+  //const [data, setData] = React.useState([]);
+  function handlePageClick({ selected: selectedPage }) {
+    setCurrentPage(selectedPage);
+  }
+  const offset = currentPage * PER_PAGE;
+  /*const currentPageData = listBooks
+    .slice(offset, offset + PER_PAGE)
+    .map((boo) => <h3> {boo.NameOfTheBook} </h3>);*/
+  /*const currentPageData = listItems?.slice(offset, offset + PER_PAGE);
+  //.map((Boo) => <Boo/>);
+
+  const pageCount = Math.ceil(currentPageData?.length / PER_PAGE);*/
+/*
+  if (!show) {
+    return (<ul>{listItems}</ul>);
+
+  }
+  return <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />;
+
+};
+export default BookList;
+*/
+{/*<div>
+
+        <div className="paginatorList">{currentPageData}
+          <ReactPaginate
+            previousLabel={"← Previous"}
+            nextLabel={"Next →"}
+            pageCount={pageCount}
+            onPageChange={handlePageClick}
+            containerClassName={"pagination"}
+            previousLinkClassName={"pagination__link"}
+            nextLinkClassName={"pagination__link"}
+            disabledClassName={"pagination__link--disabled"}
+            activeClassName={"pagination__link--active"}
+          />
+        </div>
+      </div>
+  );*/}
