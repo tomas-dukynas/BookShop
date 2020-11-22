@@ -46,7 +46,7 @@ ln, li, ul {
     flex-direction: column;
     text-align: left;
     box-shadow: none;
-    z-index:1;
+    z-index:0;
 }
 
 .auth-inner {
@@ -56,7 +56,7 @@ ln, li, ul {
     background: #ffffff;
     border-radius: 15px;
     box-shadow: none;
-    z-index:1;
+    z-index:0;
 }
 .searchField {
     width: 600px;

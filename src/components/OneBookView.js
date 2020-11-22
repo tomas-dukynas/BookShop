@@ -6,28 +6,28 @@ import BookCategories from './BookCategories';
 import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
-
+import SuccesModal from './SuccessModal';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
-  const { addToCart } = React.useContext(AuthContext);
+  const { addToCart, addToWish } = React.useContext(AuthContext);
 
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
+  const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
 
   return (
     <div className="uth-inner">
       <div className="toHide">
         <div>
-          <Modal
-            isOpen={modalIsOpen}
-            onRequestClose={() => setModalIsOpen(false)}
-            ariaHideApp={false}
-            className="popup"
-          >
-            <h2 className="popupH2"> Added to cart</h2>
-            <button type="button" onClick={() => setModalIsOpen(false)} className="buttonClose">
-              Close
-            </button>
-          </Modal>
+          <SuccesModal
+            modalIsOpen={cartModalIsOpen}
+            setModalIsOpen={setCartModalIsOpen}
+            text="Book was added to cart"
+          />
+          <SuccesModal
+            modalIsOpen={wishModalIsOpen}
+            setModalIsOpen={setWishModalIsOpen}
+            text="Book was added to wishlist"
+          />
         </div>
         <AddViewCount ViewCount={viewCount} id={book.id} />
         <button type="button" className="buttonAdd" onClick={() => setShow(false)}>
@@ -62,11 +62,21 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                               type="button"
                               className="buttonAdd"
                               onClick={() => {
-                                setModalIsOpen(true);
+                                setCartModalIsOpen(true);
                                 addToCart(book);
                               }}
                             >
                               Add to cart
+                            </button>
+                            <button
+                              type="button"
+                              className="buttonAdd"
+                              onClick={() => {
+                                setWishModalIsOpen(true);
+                                addToWish(book);
+                              }}
+                            >
+                              Add to wishlist
                             </button>
                           </th>
                         </tr>

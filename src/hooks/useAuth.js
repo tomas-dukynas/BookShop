@@ -35,6 +35,11 @@ export default function useAuth() {
             ...state,
             price: action.payload,
           };
+        case 'SET_WISH_LIST':
+          return {
+            ...state,
+            wish: action.payload,
+          };
         default:
           return state;
       }
@@ -48,6 +53,8 @@ export default function useAuth() {
   let cart = [];
   let totalPrice = 0;
   let newCart = [];
+  const wishList = [];
+
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
@@ -150,6 +157,27 @@ export default function useAuth() {
         newCart = [];
         dispatch(createAction('SET_CART', newCart));
         dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+      },
+      addToWish: (oneBook) => {
+        let contains = false;
+        const book = Object.assign(oneBook);
+        wishList.forEach((bookO) => {
+          if (bookO.id === oneBook.id) {
+            contains = true;
+          }
+        });
+        if (!contains) {
+          wishList.push(book);
+        }
+        dispatch(createAction('SET_WISH_LIST', wishList));
+      },
+      removeFromWish: (oneBook) => {
+        wishList.forEach((bookO, index) => {
+          if (bookO.id === oneBook.id) {
+            newCart.splice(index, 1);
+          }
+        });
+        dispatch(createAction('SET_WISH_LIST', wishList));
       },
     }),
     [],

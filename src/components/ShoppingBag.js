@@ -3,9 +3,11 @@ import { useHistory } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import ListCart from './CartList';
 import '../Styles/BookList.css';
+import AuthContext from '../context/AuthContext';
 
 const ShoppingBag = () => {
   const state = React.useContext(UserContext);
+  const { removeFromCart } = React.useContext(AuthContext);
   const len = state?.cart?.length;
   const history = useHistory();
 
@@ -22,7 +24,7 @@ const ShoppingBag = () => {
               <h5 className="mb-4">
                 Cart (<span>{len}</span> items)
               </h5>
-              <ListCart cart={state?.cart} />
+              <ListCart cart={state?.cart} removeFromCart={removeFromCart} isWish={false} />
               <p className="text-primary mb-0">
                 <i className="fas fa-info-circle mr-1" /> Do not delay the purchase, adding items to
                 your cart does not mean booking them.

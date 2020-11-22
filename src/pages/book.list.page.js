@@ -1,12 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import '../Styles/BookList.css';
+import ReactPaginate from 'react-paginate';
 import CategoriesFilter from '../components/CategoriesFilter';
 import AuthorsFilter from '../components/AuthorsFilter';
-import ReactPaginate from 'react-paginate';
 import OneBookView from '../components/OneBookView';
 
-let array = [];
+const array = [];
 
 const AllBooks = () => {
   const [listBooks, setListBooks] = React.useState([]);
@@ -81,10 +81,10 @@ const AllBooks = () => {
     ) {
       setBookList(listBooks);
     }
-    console.log(authorsArray, 'AUTHORS ARRAY');
+    // console.log(authorsArray, 'AUTHORS ARRAY');
   }, [searchResults, searchTerm, categoriesArray, authorsArray]);
 
-  console.log(categoriesArray, 'CATEG ARRAY');
+  // console.log(categoriesArray, 'CATEG ARRAY');
 
   const PER_PAGE = 5;
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -217,21 +217,21 @@ const AllBooks = () => {
                       {currentPageData}
 
                       <ReactPaginate
-                        previousLabel={'← Previous'}
-                        nextLabel={'Next →'}
+                        previousLabel="← Previous"
+                        nextLabel="Next →"
                         pageCount={pageCount}
                         onPageChange={handlePageClick}
-                        containerClassName={'pagination'}
-                        previousLinkClassName={'pagination__link'}
-                        nextLinkClassName={'pagination__link'}
-                        disabledClassName={'pagination__link--disabled'}
-                        activeClassName={'pagination__link--active'}
+                        containerClassName="pagination"
+                        previousLinkClassName="pagination__link"
+                        nextLinkClassName="pagination__link"
+                        disabledClassName="pagination__link--disabled"
+                        activeClassName="pagination__link--active"
                       />
                     </div>
                   ) : (
                     <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />
                   )}
-                  {/*<BooksList books={bookList} categories={categories} viewCount={viewCount} />*/}
+                  {/* <BooksList books={bookList} categories={categories} viewCount={viewCount} /> */}
                 </div>
               </div>
             </th>

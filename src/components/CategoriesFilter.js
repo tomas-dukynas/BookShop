@@ -4,17 +4,17 @@ import '../Styles/BookList.css';
 function SetState(searchTermCategories, categoriesArray, setCategoriesArray) {
   if (searchTermCategories) {
     if (categoriesArray.toString().includes(searchTermCategories.toString())) {
-      let ArrCat = categoriesArray.filter((a) => a.toString() !== searchTermCategories.toString());
+      const ArrCat = categoriesArray.filter(
+        (a) => a.toString() !== searchTermCategories.toString(),
+      );
       setCategoriesArray(ArrCat);
       console.log('REMOVED');
+    } else if (categoriesArray[0] === '') {
+      setCategoriesArray(searchTermCategories);
     } else {
-      if (categoriesArray[0] === '') {
-        setCategoriesArray(searchTermCategories);
-      } else {
-        let ArrCat = categoriesArray;
-        ArrCat.push(searchTermCategories);
-        setCategoriesArray(ArrCat);
-      }
+      const ArrCat = categoriesArray;
+      ArrCat.push(searchTermCategories);
+      setCategoriesArray(ArrCat);
     }
   }
   return categoriesArray;
@@ -31,7 +31,7 @@ export default function CategoriesFilter({
 }) {
   const [searchTermCategories, setSearchTermCategories] = React.useState('');
 
-  let arrayOfBooks = [];
+  const arrayOfBooks = [];
 
   React.useEffect(() => {
     SetState(searchTermCategories, categoriesArray, setCategoriesArray);
@@ -49,14 +49,13 @@ export default function CategoriesFilter({
             }
 
             return book;
-          } else {
-            return null;
           }
+          return null;
         });
         const filtered = arr.filter(function (el) {
           return el != null;
         });
-        //console.log(filtered);
+        // console.log(filtered);
         return arr;
       });
       return categ;
@@ -79,25 +78,25 @@ export default function CategoriesFilter({
 
   if (categories.length === 0) {
     return null;
-  } else {
-    const categ = categories?.map((cat) => {
-      return (
-        <tr>
-          <td>
-            <label>
-              <input
-                type="checkbox"
-                className="filterBox"
-                value={cat.NameOfTheCategory || ' '}
-                onChange={(e) => setSearchTermCategories(e.target.value)}
-              />
-              {cat.NameOfTheCategory}
-            </label>
-          </td>
-        </tr>
-      );
-    });
-
-    return <tbody className="categoriesDivBox">{categ}</tbody>;
   }
+  const categ = categories?.map((cat) => {
+    return (
+      <tr>
+        <td>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label>
+            <input
+              type="checkbox"
+              className="filterBox"
+              value={cat.NameOfTheCategory || ' '}
+              onChange={(e) => setSearchTermCategories(e.target.value)}
+            />
+            {cat.NameOfTheCategory}
+          </label>
+        </td>
+      </tr>
+    );
+  });
+
+  return <tbody className="categoriesDivBox">{categ}</tbody>;
 }
