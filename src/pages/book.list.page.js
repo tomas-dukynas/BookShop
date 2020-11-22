@@ -1,18 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import axios from 'axios';
-import BooksList from '../components/BooksList';
 import '../Styles/BookList.css';
 import CategoriesFilter from '../components/CategoriesFilter';
-
 import AuthorsFilter from '../components/AuthorsFilter';
 import ReactPaginate from 'react-paginate';
 import OneBookView from '../components/OneBookView';
 
-import ReactDOM from 'react-dom';
-import Spinner from './login.page';
-
 let array = [];
-
 
 const AllBooks = () => {
   const [listBooks, setListBooks] = React.useState([]);
@@ -24,13 +18,11 @@ const AllBooks = () => {
   const [categoriesArray, setCategoriesArray] = React.useState([]);
   const [authorsArray, setAuthorsArray] = React.useState([]);
 
-
   React.useEffect(() => {
     axios
       .get('http://localhost:1337/books')
       .then(({ data }) => {
         setListBooks(data);
-
         setBookList(data);
       })
       .catch((e) => console.log(e));
@@ -44,15 +36,12 @@ const AllBooks = () => {
       .get('http://localhost:1337/Book-Counts')
       .then(({ data }) => {
         setViewCount(data);
-        // console.log(data);
-
       })
       .catch((e) => console.log(e));
     axios
       .get('http://localhost:1337/authors')
       .then(({ data }) => {
         setAuthors(data);
-
       })
       .catch((e) => console.log(e));
   }, []);
@@ -92,9 +81,6 @@ const AllBooks = () => {
     ) {
       setBookList(listBooks);
     }
-    //console.log(authors);
-    //console.log(listBooks);
-    //console.log(categoriesArray, "MAIN PAGE");
     console.log(authorsArray, 'AUTHORS ARRAY');
   }, [searchResults, searchTerm, categoriesArray, authorsArray]);
 
@@ -102,7 +88,6 @@ const AllBooks = () => {
 
   const PER_PAGE = 5;
   const [currentPage, setCurrentPage] = React.useState(0);
-  //const [data, setData] = React.useState([]);
   function handlePageClick({ selected: selectedPage }) {
     setCurrentPage(selectedPage);
   }
@@ -130,12 +115,14 @@ const AllBooks = () => {
     setBookList(searchResults);
   } else if (searchResults.length !== 0 && searchResults !== bookList) {
     setBookList(searchResults);
-  } else if (searchTerm.length === 0 && array.length === 0 && bookList.length === 0) {
-    //setBookList(listBooks);
+  } else if (
+    searchTerm.length === 0 &&
+    array.length === 0 &&
+    bookList.length === 0 &&
+    bookList !== listBooks
+  ) {
+    setBookList(listBooks);
   }
-
-  //console.log(array, "MAIN PAGE");
-
 
   const offset = currentPage * PER_PAGE;
   const currentPageData = bookList.slice(offset, offset + PER_PAGE).map((book) => {
@@ -196,7 +183,6 @@ const AllBooks = () => {
                     listBooks={listBooks}
                     array={array}
                     filterBooks={(e) => setBookList(e)}
-
                     categoriesArray={categoriesArray}
                     setCategoriesArray={(e) => setCategoriesArray(e)}
                   />
