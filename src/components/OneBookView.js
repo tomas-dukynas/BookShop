@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import '../Styles/ItemView.css';
-import Modal from 'react-modal';
 import AddViewCount from '../functions.item.view/addViewCount';
 import BookCategories from './BookCategories';
 import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
-import SuccesModal from './SuccessModal';
+import SuccessModal from './SuccessModal';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);
-
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
 
@@ -18,15 +16,17 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
     <div className="uth-inner">
       <div className="toHide">
         <div>
-          <SuccesModal
+          <SuccessModal
             modalIsOpen={cartModalIsOpen}
             setModalIsOpen={setCartModalIsOpen}
             text="Book was added to cart"
+            handleModalClose={() => setCartModalIsOpen(false)}
           />
-          <SuccesModal
+          <SuccessModal
             modalIsOpen={wishModalIsOpen}
             setModalIsOpen={setWishModalIsOpen}
             text="Book was added to wishlist"
+            handleModalClose={() => setWishModalIsOpen(false)}
           />
         </div>
         <AddViewCount ViewCount={viewCount} id={book.id} />

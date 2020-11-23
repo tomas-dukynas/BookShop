@@ -12,21 +12,19 @@ export default function AuthorsFilter({
 }) {
   const [searchTermAuthors, setSearchTermAuthors] = React.useState('');
 
-  let arrayOfBooks = [];
+  const arrayOfBooks = [];
 
   React.useEffect(() => {
     if (searchTermAuthors) {
       if (authorsArray?.toString().includes(searchTermAuthors.toString())) {
-        let ArrAut = authorsArray.filter((a) => a.toString() !== searchTermAuthors.toString());
+        const ArrAut = authorsArray.filter((a) => a.toString() !== searchTermAuthors.toString());
         setAuthorsArray(ArrAut);
+      } else if (authorsArray[0] === '') {
+        setAuthorsArray(searchTermAuthors);
       } else {
-        if (authorsArray[0] === '') {
-          setAuthorsArray(searchTermAuthors);
-        } else {
-          let ArrAut = authorsArray;
-          ArrAut.push(searchTermAuthors);
-          setAuthorsArray(ArrAut);
-        }
+        const ArrAut = authorsArray;
+        ArrAut.push(searchTermAuthors);
+        setAuthorsArray(ArrAut);
       }
     }
   }, [searchTermAuthors]);
@@ -42,11 +40,10 @@ export default function AuthorsFilter({
           }
 
           return book;
-        } else {
-          return null;
         }
+        return null;
       });
-      const filtered = arr.filter(function (el) {
+      const filtered = arr.filter((el) => {
         return el != null;
       });
 
@@ -66,25 +63,25 @@ export default function AuthorsFilter({
 
   if (authors.length === 0) {
     return null;
-  } else {
-    const autho = authors?.map((aut) => {
-      return (
-        <tr>
-          <td>
-            <label>
-              <input
-                type="checkbox"
-                className="filterBox"
-                value={aut.NameOfTheAuthor || ' '}
-                onChange={(e) => setSearchTermAuthors(e.target.value)}
-              />
-              {aut.NameOfTheAuthor}
-            </label>
-          </td>
-        </tr>
-      );
-    });
-
-    return <tbody className="categoriesDivBox">{autho}</tbody>;
   }
+  const autho = authors?.map((aut) => {
+    return (
+      <tr>
+        <td>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label>
+            <input
+              type="checkbox"
+              className="filterBox"
+              value={aut.NameOfTheAuthor || ' '}
+              onChange={(e) => setSearchTermAuthors(e.target.value)}
+            />
+            {aut.NameOfTheAuthor}
+          </label>
+        </td>
+      </tr>
+    );
+  });
+
+  return <tbody className="categoriesDivBox">{autho}</tbody>;
 }

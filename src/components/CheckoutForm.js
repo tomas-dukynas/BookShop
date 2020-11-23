@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Modal from 'react-modal';
 import Spinner from 'react-bootstrap/Spinner';
 import { useHistory } from 'react-router-dom';
 import {
@@ -15,6 +14,7 @@ import '../Styles/Checkout.css';
 import BASE_URL from '../config/IpAdress';
 import UserContext from '../context/UserContext';
 import AuthContext from '../context/AuthContext';
+import SuccessModal from './SuccessModal';
 
 const ELEMENT_OPTIONS = {
   style: {
@@ -96,7 +96,13 @@ const CheckoutForm = () => {
   const handleModalClose = async () => {
     setModalIsOpen(false);
     history.push('/list-view');
-    await axios.get(`${BASE_URL}/email`);
+    await axios.post(`${BASE_URL}/email`, {
+      to: state.user ? state.user.email : 'tomas.dukynas@gmail.com',
+      from: 'tomas.dukynas@gmail.com',
+      replyTo: 'tomas.dukynas@gmail.com',
+      subject: 'Successful purchase',
+      text: `${name || 'Customer'} Thank you for buying!!!`,
+    });
     resetCartAndPrice();
   };
 
@@ -110,17 +116,12 @@ const CheckoutForm = () => {
       >
         Back to books
       </button>
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={() => setModalIsOpen(false)}
-        ariaHideApp={false}
-        className="popup"
-      >
-        <h2 className="popupH2"> Thank you for buying!</h2>
-        <button type="button" onClick={handleModalClose} className="buttonClose">
-          Close
-        </button>
-      </Modal>
+      <SuccessModal
+        modalIsOpen={modalIsOpen}
+        setModalIsOpen={setModalIsOpen}
+        text="Thank you for buying!"
+        handleModalClose={handleModalClose}
+      />
       <h2>Amount to pay: ${state?.price}</h2>
       {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
       <label htmlFor="name">Full Name</label>
