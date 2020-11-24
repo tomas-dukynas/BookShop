@@ -1,25 +1,6 @@
 import React from 'react';
 import '../Styles/BookList.css';
-/*
-function SetState(searchTermCategories, categoriesArray, setCategoriesArray) {
 
-  if (searchTermCategories) {
-    if (categoriesArray.toString().includes(searchTermCategories.toString())) {
-      const ArrCat = categoriesArray.filter(
-        (a) => a.toString() !== searchTermCategories.toString(),
-      );
-      setCategoriesArray(ArrCat);
-      console.log('REMOVED');
-    } else if (categoriesArray[0] === '') {
-      setCategoriesArray(searchTermCategories);
-    } else {
-      const ArrCat = categoriesArray;
-      ArrCat.push(searchTermCategories);
-      setCategoriesArray(ArrCat);
-    }
-  }
-  return categoriesArray;
-}*/
 
 export default function CategoriesFilter({
   categories,
@@ -62,7 +43,7 @@ export default function CategoriesFilter({
 */
   React.useEffect(() => {
     const books = listBooks?.map((book) => {
-      const categ = book.categories.map((cat) => {
+      return book.categories.map((cat) => {
         const arr = categoriesArray.map((ar) => {
           if (ar.toString() === cat.NameOfTheCategory.toString()) {
             if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
@@ -75,18 +56,17 @@ export default function CategoriesFilter({
           }
           return null;
         });
-        const filtered = arr.filter(function (el) {
+        const filtered = arr.filter((el) => {
           return el != null;
         });
         // console.log(filtered);
         return arr;
       });
-      return categ;
     });
 
     const uniqueBooks = Array.from(new Set(arrayOfBooks));
 
-    console.log(uniqueBooks);
+    // console.log(uniqueBooks);
 
     if (categoriesArray?.length === 0 && bookList.length !== 0) {
       filterBooks(bookList);
@@ -113,7 +93,10 @@ export default function CategoriesFilter({
               className="filterBox"
               value={cat.NameOfTheCategory || ' '}
 
+
               onChange={(e) => OnCheckBoxPress(e.target.value)}
+
+
             />
             {cat.NameOfTheCategory}
           </label>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const SuccesModal = ({ modalIsOpen, setModalIsOpen, text }) => {
+const SuccessModal = ({ modalIsOpen, setModalIsOpen, text, handleModalClose }) => {
   return (
     <Modal
       isOpen={modalIsOpen}
@@ -10,10 +10,10 @@ const SuccesModal = ({ modalIsOpen, setModalIsOpen, text }) => {
       className="popup"
     >
       <h2 className="popupH2">{text}</h2>
-      <button type="button" onClick={() => setModalIsOpen(false)} className="buttonClose">
+      <button type="button" onClick={handleModalClose} className="buttonClose">
         Close
       </button>
     </Modal>
   );
 };
-export default SuccesModal;
+export default SuccessModal;
