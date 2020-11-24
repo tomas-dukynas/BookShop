@@ -8,6 +8,7 @@ import UserContext from '../context/UserContext';
 import AuthContext from '../context/AuthContext';
 import CheckoutForm from './CheckoutForm';
 import WishList from './WishList';
+import OrderTracking from './OrderTracking';
 
 const Hide = () => {
   const state = React.useContext(UserContext);
@@ -62,6 +63,9 @@ const NavBar = () => {
             <Link className="navbar-brand" to="/wish-list">
               Wish List
             </Link>
+            <Link className="navbar-brand" to="/order-tracking">
+              Order tracking
+            </Link>
             <Hide />
           </div>
         </nav>
@@ -76,6 +80,7 @@ const NavBar = () => {
               <Route path="/shopping-bag" component={ShoppingBag} />
               <Route path="/wish-list" component={WishList} />
               <Route path="/checkout" component={CheckoutForm} />
+              <Route path="/order-tracking" component={OrderTracking} />
             </Switch>
           </div>
         </div>

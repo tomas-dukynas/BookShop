@@ -1,26 +1,6 @@
 import React from 'react';
 import '../Styles/BookList.css';
 
-function SetState(searchTermCategories, categoriesArray, setCategoriesArray) {
-  console.log(categoriesArray);
-  console.log(searchTermCategories);
-  if (searchTermCategories) {
-    if (categoriesArray.toString().includes(searchTermCategories.toString())) {
-      const ArrCat = categoriesArray.filter(
-        (a) => a.toString() !== searchTermCategories.toString(),
-      );
-      setCategoriesArray(ArrCat);
-      console.log('REMOVED');
-    } else if (categoriesArray[0] === '') {
-      setCategoriesArray(searchTermCategories);
-    } else {
-      const ArrCat = categoriesArray;
-      ArrCat.push(searchTermCategories);
-      setCategoriesArray(ArrCat);
-    }
-  }
-  return categoriesArray;
-}
 
 export default function CategoriesFilter({
   categories,
@@ -35,10 +15,32 @@ export default function CategoriesFilter({
 
   const arrayOfBooks = [];
 
+
+
+  const OnCheckBoxPress = (value) => {
+    //console.log(value, " FUN");
+
+    setSearchTermCategories(value);
+
+    if (categoriesArray.toString().includes(value.toString())) {
+      const ArrCat = categoriesArray.filter(
+        (a) => a.toString() !== value.toString(),
+      );
+      setCategoriesArray(ArrCat);
+      console.log('REMOVED');
+    } else if (categoriesArray[0] === '') {
+      setCategoriesArray(value);
+    } else {
+      const ArrCat = categoriesArray;
+      ArrCat.push(value);
+      setCategoriesArray(ArrCat);
+    }
+  };
+  /*
   React.useEffect(() => {
     SetState(searchTermCategories, categoriesArray, setCategoriesArray);
   }, [searchTermCategories]);
-
+*/
   React.useEffect(() => {
     const books = listBooks?.map((book) => {
       return book.categories.map((cat) => {
@@ -90,10 +92,11 @@ export default function CategoriesFilter({
               type="checkbox"
               className="filterBox"
               value={cat.NameOfTheCategory || ' '}
-              onChange={(e) => {
-                setSearchTermCategories(e.target.value);
-                console.log(e.target.value);
-              }}
+
+
+              onChange={(e) => OnCheckBoxPress(e.target.value)}
+
+
             />
             {cat.NameOfTheCategory}
           </label>
