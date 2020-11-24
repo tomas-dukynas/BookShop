@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "ratings",
+  "info": {
+    "name": "Ratings"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "IdOfBook": {
+      "type": "string"
+    },
+    "NumberOfRatings": {
+      "type": "integer"
+    },
+    "SumOfStars": {
+      "type": "integer"
+    },
+    "book": {
+      "model": "books"
+    }
+  }
+}

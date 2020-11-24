@@ -1,18 +1,89 @@
 import React, { useState } from 'react';
 import '../Styles/ItemView.css';
 import Modal from 'react-modal';
+import ReactStars from 'react-rating-stars-component';
 import AddViewCount from '../functions.item.view/addViewCount';
 import BookCategories from './BookCategories';
 import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 import SuccesModal from './SuccessModal';
+import axios from 'axios';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);
 
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
+  const [ratings, setRatings] = useState([]);
+  //const [rerender, SetRerender] = useState(false);
+  /*
+  React.useEffect(() => {
+    console.log("**");
+    axios
+      .get('http://localhost:1337/ratings')
+      .then(({ data }) => {
+        data.map((rating) => {
+          if (rating.IdOfBook.toString() === book.id.toString()) {
+            console.log("NEW",rating);
+            return setRatings(rating);
+          }
+        });
+      })
+      .catch((e) => console.log(e));
+  }, [rerender]);*/
+
+  //console.log(rerender);
+  React.useEffect(() => {
+    axios
+      .get('http://localhost:1337/ratings')
+      .then(({ data }) => {
+        data.map((rating) => {
+          if (rating.IdOfBook.toString() === book.id.toString()) {
+            console.log(rating);
+            return setRatings(rating);
+          }
+        });
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  let stars = (ratings.SumOfStars / ratings.NumberOfRatings).toFixed(2);
+
+  if (isNaN(stars)) {
+    stars = 0;
+  }
+
+  const ratingChanged = (newRating) => {
+    console.log(ratings);
+
+    const increaseRatings = ratings?.NumberOfRatings;
+    const increaseStars = ratings?.SumOfStars;
+
+    const add = axios.put('http://localhost:1337/ratings/' + ratings.id, {
+      NumberOfRatings: increaseRatings + 1,
+      SumOfStars: increaseStars + newRating,
+    })
+      .finally(() => {
+        console.log("i should go second");
+        axios
+          .get('http://localhost:1337/ratings')
+          .then(({ data }) => {
+            data.map((rating) => {
+              if (rating.IdOfBook.toString() === book.id.toString()) {
+                console.log("NEW",rating);
+                return setRatings(rating);
+              }
+            });
+          })
+          .catch((e) => console.log(e));
+      });
+
+    //const data = post
+    //setRatings(ratings);
+   //React.forceUpdate();
+    //SetRerender(true);
+  };
 
   return (
     <div className="uth-inner">
@@ -44,7 +115,21 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                   <div className="mainBox">
                     <Image img={img} />
                   </div>
-                  <div className="empty1" />
+                  <div className="empty1">
+                    <ReactStars
+                      count={5}
+                      onChange={ratingChanged}
+                      size={60}
+                      isHalf={false}
+                      emptyIcon={<i className="far fa-star"></i>}
+                      halfIcon={<i className="fa fa-star-half-alt"></i>}
+                      fullIcon={<i className="fa fa-star"></i>}
+                      activeColor="#ffd700"
+                    />
+                    <p>
+                      {stars} stars (total of {ratings.NumberOfRatings} ratings)
+                    </p>
+                  </div>
                 </div>
               </th>
               <th>

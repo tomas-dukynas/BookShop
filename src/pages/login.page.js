@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import AuthContext from '../context/AuthContext';
 import CheckEmail from '../components/CheckEmail';
-import '../Styles/Error.css';
+
 
 const Login = () => {
   const { login } = React.useContext(AuthContext);
