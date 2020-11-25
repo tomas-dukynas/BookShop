@@ -133,5 +133,8 @@ ln, li, ul {
 .orderH3{
     text-align: right;
 }
-
+.inputDiv{
+    display: inline;
+    margin-right: 30px;
+}
 
