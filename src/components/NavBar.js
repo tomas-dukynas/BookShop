@@ -16,7 +16,7 @@ const Hide = () => {
     logout();
   };
 
-  return typeof state?.user === 'undefined' ? (
+  return typeof state.user === 'undefined' ? (
     <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
@@ -45,6 +45,7 @@ const Hide = () => {
 };
 
 const NavBar = () => {
+  const state = React.useContext(UserContext);
   return (
     <Router>
       <div className="App">
@@ -59,9 +60,11 @@ const NavBar = () => {
             <Link className="navbar-brand" to="/shopping-bag">
               Shopping Bag
             </Link>
-            <Link className="navbar-brand" to="/wish-list">
-              Wish List
-            </Link>
+            {state.user && (
+              <Link className="navbar-brand" to="/wish-list">
+                WishList
+              </Link>
+            )}
             <Hide />
           </div>
         </nav>

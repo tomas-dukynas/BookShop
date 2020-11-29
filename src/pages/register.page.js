@@ -1,18 +1,10 @@
 import React from 'react';
-import {
-  useHistory,
-  Redirect,
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 import AuthContext from '../context/AuthContext';
 import CheckPassword from '../components/CheckPassword';
 import CheckEmail from '../components/CheckEmail';
 import Error from '../components/Error';
-import Spinner from 'react-bootstrap/Spinner';
-
 
 const Register = () => {
   const { register } = React.useContext(AuthContext);
