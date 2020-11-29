@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/ItemView.css';
-import Modal from 'react-modal';
 import ReactStars from 'react-rating-stars-component';
 import AddViewCount from '../functions.item.view/addViewCount';
 import BookCategories from './BookCategories';
@@ -15,7 +14,7 @@ import CommentList from './CommentList';
 import CommentsInput from './CommentsInput';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
-  const { addToCart, addToWish, addComment } = React.useContext(AuthContext);
+  const { addToCart, addToWish } = React.useContext(AuthContext);
   const state = React.useContext(UserContext);
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
@@ -48,7 +47,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
         .catch((e) => console.log(e));
 
       if (!contains) {
-        const response = await axios.post(
+        await axios.post(
           `${BASE_URL}/wish-lists`,
           {
             ListOfBooks: { arrayOfBooks: [book] },
@@ -92,8 +91,9 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
         );
       }
     }
+  };
 
-React.useEffect(() => {
+  React.useEffect(() => {
     axios
       .get('http://localhost:1337/ratings')
       .then(({ data }) => {
@@ -119,38 +119,37 @@ React.useEffect(() => {
     const increaseRatings = ratings?.NumberOfRatings;
     const increaseStars = ratings?.SumOfStars;
 
-    const add = axios.put('http://localhost:1337/ratings/' + ratings.id, {
-      NumberOfRatings: increaseRatings + 1,
-      SumOfStars: increaseStars + newRating,
-    })
+    axios
+      .put(`http://localhost:1337/ratings/${ratings.id}`, {
+        NumberOfRatings: increaseRatings + 1,
+        SumOfStars: increaseStars + newRating,
+      })
       .finally(() => {
-        console.log("i should go second");
+        console.log('i should go second');
         axios
           .get('http://localhost:1337/ratings')
           .then(({ data }) => {
             data.map((rating) => {
               if (rating.IdOfBook.toString() === book.id.toString()) {
-                console.log("NEW",rating);
+                console.log('NEW', rating);
                 return setRatings(rating);
               }
             });
           })
           .catch((e) => console.log(e));
       });
-
-
   };
 
   return (
     <div className="uth-inner">
       <div className="toHide">
         <div>
-          <SuccesModal
+          <SuccessModal
             modalIsOpen={cartModalIsOpen}
             setModalIsOpen={setCartModalIsOpen}
             text="Book was added to cart"
           />
-          <SuccesModal
+          <SuccessModal
             modalIsOpen={wishModalIsOpen}
             setModalIsOpen={setWishModalIsOpen}
             text="Book was added to wishlist"
@@ -184,20 +183,19 @@ React.useEffect(() => {
                     <Image img={img} />
                   </div>
                   {state.user && <CommentsInput bookId={book.id} />}
-                    <ReactStars
-                      count={5}
-                      onChange={ratingChanged}
-                      size={60}
-                      isHalf={false}
-                      emptyIcon={<i className="far fa-star"></i>}
-                      halfIcon={<i className="fa fa-star-half-alt"></i>}
-                      fullIcon={<i className="fa fa-star"></i>}
-                      activeColor="#ffd700"
-                    />
-                    <p>
-                      {stars} stars (total of {ratings.NumberOfRatings} ratings)
-                    </p>
-                  </div>
+                  <ReactStars
+                    count={5}
+                    onChange={ratingChanged}
+                    size={60}
+                    isHalf={false}
+                    emptyIcon={<i className="far fa-star" />}
+                    halfIcon={<i className="fa fa-star-half-alt" />}
+                    fullIcon={<i className="fa fa-star" />}
+                    activeColor="#ffd700"
+                  />
+                  <p>
+                    {stars} stars (total of {ratings.NumberOfRatings} ratings)
+                  </p>
                 </div>
               </th>
               <th>
