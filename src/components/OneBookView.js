@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../Styles/ItemView.css';
 import Modal from 'react-modal';
 import ReactStars from 'react-rating-stars-component';
@@ -7,17 +8,92 @@ import BookCategories from './BookCategories';
 import Image from './Image';
 import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
-import SuccesModal from './SuccessModal';
-import axios from 'axios';
+import SuccessModal from './SuccessModal';
+import UserContext from '../context/UserContext';
+import BASE_URL from '../config/IpAdress';
+import CommentList from './CommentList';
+import CommentsInput from './CommentsInput';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
-  const { addToCart, addToWish } = React.useContext(AuthContext);
-
+  const { addToCart, addToWish, addComment } = React.useContext(AuthContext);
+  const state = React.useContext(UserContext);
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
+  const [fullWishModalIsOpen, setFullWishModalIsOpen] = useState(false);
+  const [wishAlreadyModalIsOpen, setWishAlreadyModalIsOpen] = useState(false);
   const [ratings, setRatings] = useState([]);
 
-  React.useEffect(() => {
+  // eslint-disable-next-line no-shadow
+  const handleWishPress = async (book) => {
+    if (state.wish.length >= 5) {
+      setFullWishModalIsOpen(true);
+    } else {
+      let wishId = null;
+      let contains = false;
+      await axios
+        .get(`${BASE_URL}/wish-lists`, {
+          headers: {
+            Authorization: `Bearer ${state.user?.token}`,
+          },
+        })
+        .then(({ data }) => {
+          console.log(data);
+          data.forEach((item) => {
+            if (item.UsersEmail === state.user?.email) {
+              contains = true;
+              wishId = item.id;
+            }
+          });
+        })
+        .catch((e) => console.log(e));
+
+      if (!contains) {
+        const response = await axios.post(
+          `${BASE_URL}/wish-lists`,
+          {
+            ListOfBooks: { arrayOfBooks: [book] },
+            UsersEmail: state.user?.email,
+            user: state.user?.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${state.user?.token}`,
+            },
+          },
+        );
+        setWishModalIsOpen(true);
+      } else {
+        const newWish = state.wish;
+        let contain = false;
+        state.wish.forEach((item) => {
+          if (book.id === item.id) {
+            contain = true;
+            setWishAlreadyModalIsOpen(true);
+          }
+        });
+
+        if (!contain) {
+          newWish.push(book);
+          setWishModalIsOpen(true);
+          addToWish(newWish);
+        }
+        await axios.put(
+          `${BASE_URL}/wish-lists/${wishId}`,
+          {
+            ListOfBooks: { arrayOfBooks: state.wish },
+            UsersEmail: state.user?.email,
+            user: state.user?.email,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${state.user?.token}`,
+            },
+          },
+        );
+      }
+    }
+
+React.useEffect(() => {
     axios
       .get('http://localhost:1337/ratings')
       .then(({ data }) => {
@@ -79,6 +155,18 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
             setModalIsOpen={setWishModalIsOpen}
             text="Book was added to wishlist"
           />
+          <SuccessModal
+            modalIsOpen={fullWishModalIsOpen}
+            setModalIsOpen={setFullWishModalIsOpen}
+            text="Your wishlist is full, maximum 5 items"
+            handleModalClose={() => setFullWishModalIsOpen(false)}
+          />
+          <SuccessModal
+            modalIsOpen={wishAlreadyModalIsOpen}
+            setModalIsOpen={setWishAlreadyModalIsOpen}
+            text="Your wishlist already has this item"
+            handleModalClose={() => setWishAlreadyModalIsOpen(false)}
+          />
         </div>
         <AddViewCount ViewCount={viewCount} id={book.id} />
         <button type="button" className="buttonAdd" onClick={() => setShow(false)}>
@@ -95,7 +183,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                   <div className="mainBox">
                     <Image img={img} />
                   </div>
-                  <div className="empty1">
+                  {state.user && <CommentsInput bookId={book.id} />}
                     <ReactStars
                       count={5}
                       onChange={ratingChanged}
@@ -133,16 +221,15 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                             >
                               Add to cart
                             </button>
-                            <button
-                              type="button"
-                              className="buttonAdd"
-                              onClick={() => {
-                                setWishModalIsOpen(true);
-                                addToWish(book);
-                              }}
-                            >
-                              Add to wishlist
-                            </button>
+                            {state.user && (
+                              <button
+                                type="button"
+                                className="buttonAdd"
+                                onClick={() => handleWishPress(book)}
+                              >
+                                Add to wishlist
+                              </button>
+                            )}
                           </th>
                         </tr>
                       </thead>
@@ -154,6 +241,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                     <p className="description">Description:</p>
                     <BookDescription description={book.Description} />
                   </div>
+                  <CommentList comments={book.comments} />
                 </div>
               </th>
             </tr>

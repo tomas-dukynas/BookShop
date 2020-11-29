@@ -2,9 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import '../Styles/BookList.css';
 import ReactPaginate from 'react-paginate';
+import { useHistory } from 'react-router-dom';
 import CategoriesFilter from '../components/CategoriesFilter';
 import AuthorsFilter from '../components/AuthorsFilter';
 import OneBookView from '../components/OneBookView';
+import AuthContext from '../context/AuthContext';
+import UserContext from '../context/UserContext';
+import BASE_URL from '../config/IpAdress';
 
 const array = [];
 
@@ -12,11 +16,38 @@ const AllBooks = () => {
   const [listBooks, setListBooks] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [viewCount, setViewCount] = React.useState(0);
-
   const [bookList, setBookList] = React.useState([]);
   const [authors, setAuthors] = React.useState([]);
   const [categoriesArray, setCategoriesArray] = React.useState([]);
   const [authorsArray, setAuthorsArray] = React.useState([]);
+  const [show, setShow] = React.useState(false);
+  const [oneBook, setBook] = React.useState({});
+  const [img, setImg] = React.useState('');
+  const { addToWish, addComment } = React.useContext(AuthContext);
+  const state = React.useContext(UserContext);
+
+  const history = useHistory();
+
+  React.useEffect(() => {
+    let isUserPresent = false;
+    axios
+      .get(`${BASE_URL}/wish-lists`, {
+        headers: {
+          Authorization: `Bearer ${state.user?.token}`,
+        },
+      })
+      .then(({ data }) => {
+        data.forEach((item) => {
+          if (item.UsersEmail === state.user?.email) {
+            addToWish(item.ListOfBooks.arrayOfBooks);
+            isUserPresent = true;
+          }
+        });
+        if (!isUserPresent) {
+          addToWish([]);
+        }
+      });
+  }, []);
 
   React.useEffect(() => {
     axios
@@ -44,8 +75,8 @@ const AllBooks = () => {
         setAuthors(data);
       })
       .catch((e) => console.log(e));
+  }, [show]);
 
-  }, []);
 
   const [searchTerm, setSearchTerm] = React.useState('');
   const [searchResults, setSearchResults] = React.useState([]);
@@ -93,10 +124,6 @@ const AllBooks = () => {
     setCurrentPage(selectedPage);
   }
 
-  const [show, setShow] = React.useState(false);
-  const [oneBook, setBook] = React.useState({});
-  const [img, setImg] = React.useState('');
-
   const handleOnPress = (book) => {
     if (book.PhotoOfTheBook?.name) {
       setImg(book.PhotoOfTheBook.name);
@@ -105,6 +132,11 @@ const AllBooks = () => {
     }
     setShow(true);
     setBook(book);
+    const comments = [];
+    book.comments.forEach((item) => {
+      comments.push(item.comment);
+    });
+    addComment(comments);
   };
 
   if (
