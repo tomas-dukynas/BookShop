@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "trackings",
+  "info": {
+    "name": "Tracking"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "TrackingID": {
+      "type": "string"
+    },
+    "Status": {
+      "type": "enumeration",
+      "enum": [
+        "Pending",
+        "In_transit",
+        "Delivered",
+        "Returned"
+      ]
+    },
+    "Date": {
+      "type": "datetime"
+    },
+    "BookID": {
+      "type": "string"
+    }
+  }
+}

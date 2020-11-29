@@ -142,6 +142,7 @@ More info: https://stripe.com/docs/stripe-js/reference#element-options
     margin-left: 500px;
     text-align: center;
 
+
     border-style: solid;
     border-color: gray;
     border-radius: 15px;
@@ -164,4 +165,7 @@ More info: https://stripe.com/docs/stripe-js/reference#element-options
     border-radius: 5px;
     width: 200px;
     height: 50px;
+}
+.modal {
+    font-size: 10px;
 }

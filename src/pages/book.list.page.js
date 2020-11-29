@@ -44,6 +44,7 @@ const AllBooks = () => {
         setAuthors(data);
       })
       .catch((e) => console.log(e));
+
   }, []);
 
   const [searchTerm, setSearchTerm] = React.useState('');
@@ -166,6 +167,8 @@ const AllBooks = () => {
       </div>
     );
   });
+
+
 
   const pageCount = Math.ceil(bookList.length / PER_PAGE);
 

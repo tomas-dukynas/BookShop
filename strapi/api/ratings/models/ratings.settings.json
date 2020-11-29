@@ -10,13 +10,19 @@
   },
   "attributes": {
     "IdOfBook": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "NumberOfRatings": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0,
+      "required": true
     },
     "SumOfStars": {
-      "type": "integer"
+      "type": "integer",
+      "required": true,
+      "default": 0
     },
     "book": {
       "model": "books"

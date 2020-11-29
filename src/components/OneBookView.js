@@ -16,24 +16,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
   const [ratings, setRatings] = useState([]);
-  //const [rerender, SetRerender] = useState(false);
-  /*
-  React.useEffect(() => {
-    console.log("**");
-    axios
-      .get('http://localhost:1337/ratings')
-      .then(({ data }) => {
-        data.map((rating) => {
-          if (rating.IdOfBook.toString() === book.id.toString()) {
-            console.log("NEW",rating);
-            return setRatings(rating);
-          }
-        });
-      })
-      .catch((e) => console.log(e));
-  }, [rerender]);*/
 
-  //console.log(rerender);
   React.useEffect(() => {
     axios
       .get('http://localhost:1337/ratings')
@@ -79,10 +62,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
           .catch((e) => console.log(e));
       });
 
-    //const data = post
-    //setRatings(ratings);
-   //React.forceUpdate();
-    //SetRerender(true);
+
   };
 
   return (
