@@ -148,11 +148,13 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
             modalIsOpen={cartModalIsOpen}
             setModalIsOpen={setCartModalIsOpen}
             text="Book was added to cart"
+            handleModalClose={() => setCartModalIsOpen(false)}
           />
           <SuccessModal
             modalIsOpen={wishModalIsOpen}
             setModalIsOpen={setWishModalIsOpen}
             text="Book was added to wishlist"
+            handleModalClose={() => setWishModalIsOpen(false)}
           />
           <SuccessModal
             modalIsOpen={fullWishModalIsOpen}

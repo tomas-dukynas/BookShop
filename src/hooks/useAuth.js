@@ -3,6 +3,7 @@ import axios from 'axios';
 import BASE_URL from '../config/IpAdress';
 import createAction from '../utils/CreateAction';
 import Sleep from '../utils/Sleep';
+import { unmountComponentAtNode } from 'react-dom';
 
 export default function useAuth() {
   const [state, dispatch] = React.useReducer(
@@ -64,7 +65,6 @@ export default function useAuth() {
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
-        console.log('login', email, password);
         const { data } = await axios.post(`${BASE_URL}/auth/local`, {
           identifier: email,
           password,
@@ -72,8 +72,8 @@ export default function useAuth() {
         const user = {
           email: data.user.email,
           token: data.jwt,
+          id: data.user.id,
         };
-        console.log(user);
         dispatch(createAction('SET_USER', user));
       },
       logout: async () => {
@@ -171,6 +171,10 @@ export default function useAuth() {
       addComment: (comments) => {
         arrayCom = comments;
         dispatch(createAction('SET_COMMENTS', arrayCom));
+      },
+      setPrice: (newPrice) => {
+        totalPrice = newPrice;
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
     }),
     [],

@@ -59,6 +59,10 @@
     "comments": {
       "via": "user",
       "collection": "comments"
+    },
+    "promo_codes": {
+      "via": "user",
+      "collection": "promo-codes"
     }
   }
 }
