@@ -12,22 +12,31 @@ export default function AuthorsFilter({
 }) {
   const [searchTermAuthors, setSearchTermAuthors] = React.useState('');
 
-  const arrayOfBooks = [];
+  let arrayOfBooks = [];
 
-  React.useEffect(() => {
-    if (searchTermAuthors) {
-      if (authorsArray?.toString().includes(searchTermAuthors.toString())) {
-        const ArrAut = authorsArray.filter((a) => a.toString() !== searchTermAuthors.toString());
+  const OnCheckBoxPress = (value) => {
+    //console.log(value, " FUN");
+
+    setSearchTermAuthors(value);
+
+    if (value) {
+      if (authorsArray?.toString().includes(value.toString())) {
+        let ArrAut = authorsArray.filter((a) => a.toString() !== value.toString());
         setAuthorsArray(ArrAut);
-      } else if (authorsArray[0] === '') {
-        setAuthorsArray(searchTermAuthors);
       } else {
-        const ArrAut = authorsArray;
-        ArrAut.push(searchTermAuthors);
-        setAuthorsArray(ArrAut);
+        if (authorsArray[0] === '') {
+          setAuthorsArray(value);
+        } else {
+          let ArrAut = authorsArray;
+          ArrAut.push(value);
+          setAuthorsArray(ArrAut);
+        }
       }
     }
-  }, [searchTermAuthors]);
+
+
+  };
+
 
   React.useEffect(() => {
     const books = listBooks?.map((book) => {
@@ -40,10 +49,11 @@ export default function AuthorsFilter({
           }
 
           return book;
+        } else {
+          return null;
         }
-        return null;
       });
-      const filtered = arr.filter((el) => {
+      const filtered = arr.filter(function (el) {
         return el != null;
       });
 
@@ -63,25 +73,27 @@ export default function AuthorsFilter({
 
   if (authors.length === 0) {
     return null;
-  }
-  const autho = authors?.map((aut) => {
-    return (
-      <tr>
-        <td>
-          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-          <label>
-            <input
-              type="checkbox"
-              className="filterBox"
-              value={aut.NameOfTheAuthor || ' '}
-              onChange={(e) => setSearchTermAuthors(e.target.value)}
-            />
-            {aut.NameOfTheAuthor}
-          </label>
-        </td>
-      </tr>
-    );
-  });
+  } else {
+    const autho = authors?.map((aut) => {
+      return (
+        <tr>
+          <td>
+            <label>
+              <input
+                type="checkbox"
+                className="filterBox"
+                value={aut.NameOfTheAuthor || ' '}
 
-  return <tbody className="categoriesDivBox">{autho}</tbody>;
+                onChange={(e) => OnCheckBoxPress(e.target.value)}
+
+              />
+              {aut.NameOfTheAuthor}
+            </label>
+          </td>
+        </tr>
+      );
+    });
+
+    return <tbody className="categoriesDivBox">{autho}</tbody>;
+  }
 }

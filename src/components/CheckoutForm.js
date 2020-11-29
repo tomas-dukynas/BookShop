@@ -93,16 +93,47 @@ const CheckoutForm = () => {
       setErrorMessage(err.messages);
     }
   };
+
   const handleModalClose = async () => {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for (let i = 0; i < 7; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    let date = new Date();
+    let text = '';
+    console.log(result);
+    state.cart.map((book) => {
+      text = text + book.id + ',';
+    });
+    console.log(result);
+
+    axios
+      .post('http://localhost:1337/trackings', {
+        TrackingID: result.toString(),
+        Status: 'Pending',
+        BookID: text.toString(),
+        Date: date,
+      })
+      .then((response) => {
+        console.log(response, ' POSTED');
+      })
+      .catch((e) => console.log(e));
+
     setModalIsOpen(false);
     history.push('/list-view');
     await axios.post(`${BASE_URL}/email`, {
-      to: state.user ? state.user.email : 'tomas.dukynas@gmail.com',
+      to: state.user ? state.user.email : 'volungeviciuskarolis@gmail.com',
       from: 'tomas.dukynas@gmail.com',
       replyTo: 'tomas.dukynas@gmail.com',
       subject: 'Successful purchase',
-      text: `${name || 'Customer'} Thank you for buying!!!`,
+      text: `${
+        name || 'Customer'
+      } Thank you for buying!!! Your tracking ID is ${result} and it was sent to your email`,
     });
+
     resetCartAndPrice();
   };
 
@@ -117,9 +148,10 @@ const CheckoutForm = () => {
         Back to books
       </button>
       <SuccessModal
+        classname="modal"
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
-        text="Thank you for buying!"
+        text="Thank you for buying! Tracking ID has been sent to you via email."
         handleModalClose={handleModalClose}
       />
       <h2>Amount to pay: ${state?.price}</h2>

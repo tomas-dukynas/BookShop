@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/ItemView.css';
+import Modal from 'react-modal';
+import ReactStars from 'react-rating-stars-component';
 import AddViewCount from '../functions.item.view/addViewCount';
 import BookCategories from './BookCategories';
 import Image from './Image';
@@ -19,6 +21,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
   const [fullWishModalIsOpen, setFullWishModalIsOpen] = useState(false);
   const [wishAlreadyModalIsOpen, setWishAlreadyModalIsOpen] = useState(false);
+  const [ratings, setRatings] = useState([]);
 
   // eslint-disable-next-line no-shadow
   const handleWishPress = async (book) => {
@@ -89,23 +92,68 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
         );
       }
     }
+
+React.useEffect(() => {
+    axios
+      .get('http://localhost:1337/ratings')
+      .then(({ data }) => {
+        data.map((rating) => {
+          if (rating.IdOfBook.toString() === book.id.toString()) {
+            console.log(rating);
+            return setRatings(rating);
+          }
+        });
+      })
+      .catch((e) => console.log(e));
+  }, []);
+
+  let stars = (ratings.SumOfStars / ratings.NumberOfRatings).toFixed(2);
+
+  if (isNaN(stars)) {
+    stars = 0;
+  }
+
+  const ratingChanged = (newRating) => {
+    console.log(ratings);
+
+    const increaseRatings = ratings?.NumberOfRatings;
+    const increaseStars = ratings?.SumOfStars;
+
+    const add = axios.put('http://localhost:1337/ratings/' + ratings.id, {
+      NumberOfRatings: increaseRatings + 1,
+      SumOfStars: increaseStars + newRating,
+    })
+      .finally(() => {
+        console.log("i should go second");
+        axios
+          .get('http://localhost:1337/ratings')
+          .then(({ data }) => {
+            data.map((rating) => {
+              if (rating.IdOfBook.toString() === book.id.toString()) {
+                console.log("NEW",rating);
+                return setRatings(rating);
+              }
+            });
+          })
+          .catch((e) => console.log(e));
+      });
+
+
   };
 
   return (
     <div className="uth-inner">
       <div className="toHide">
         <div>
-          <SuccessModal
+          <SuccesModal
             modalIsOpen={cartModalIsOpen}
             setModalIsOpen={setCartModalIsOpen}
             text="Book was added to cart"
-            handleModalClose={() => setCartModalIsOpen(false)}
           />
-          <SuccessModal
+          <SuccesModal
             modalIsOpen={wishModalIsOpen}
             setModalIsOpen={setWishModalIsOpen}
             text="Book was added to wishlist"
-            handleModalClose={() => setWishModalIsOpen(false)}
           />
           <SuccessModal
             modalIsOpen={fullWishModalIsOpen}
@@ -136,6 +184,20 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                     <Image img={img} />
                   </div>
                   {state.user && <CommentsInput bookId={book.id} />}
+                    <ReactStars
+                      count={5}
+                      onChange={ratingChanged}
+                      size={60}
+                      isHalf={false}
+                      emptyIcon={<i className="far fa-star"></i>}
+                      halfIcon={<i className="fa fa-star-half-alt"></i>}
+                      fullIcon={<i className="fa fa-star"></i>}
+                      activeColor="#ffd700"
+                    />
+                    <p>
+                      {stars} stars (total of {ratings.NumberOfRatings} ratings)
+                    </p>
+                  </div>
                 </div>
               </th>
               <th>

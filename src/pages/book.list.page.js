@@ -77,6 +77,7 @@ const AllBooks = () => {
       .catch((e) => console.log(e));
   }, [show]);
 
+
   const [searchTerm, setSearchTerm] = React.useState('');
   const [searchResults, setSearchResults] = React.useState([]);
 
@@ -198,6 +199,8 @@ const AllBooks = () => {
       </div>
     );
   });
+
+
 
   const pageCount = Math.ceil(bookList.length / PER_PAGE);
 
