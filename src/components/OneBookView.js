@@ -9,6 +9,7 @@ import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 import SuccesModal from './SuccessModal';
 import axios from 'axios';
+import Spinner from './CheckoutForm';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);
@@ -16,6 +17,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
   const [wishModalIsOpen, setWishModalIsOpen] = useState(false);
   const [ratings, setRatings] = useState([]);
+  const [rated, setRated] = useState(true);
 
   React.useEffect(() => {
     axios
@@ -23,7 +25,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
       .then(({ data }) => {
         data.map((rating) => {
           if (rating.IdOfBook.toString() === book.id.toString()) {
-            console.log(rating);
+            //console.log(rating);
             return setRatings(rating);
           }
         });
@@ -38,23 +40,24 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   }
 
   const ratingChanged = (newRating) => {
-    console.log(ratings);
+    //console.log(ratings);
 
     const increaseRatings = ratings?.NumberOfRatings;
     const increaseStars = ratings?.SumOfStars;
+    setRated(false);
 
     const add = axios.put('http://localhost:1337/ratings/' + ratings.id, {
       NumberOfRatings: increaseRatings + 1,
       SumOfStars: increaseStars + newRating,
     })
       .finally(() => {
-        console.log("i should go second");
+        //console.log("i should go second");
         axios
           .get('http://localhost:1337/ratings')
           .then(({ data }) => {
             data.map((rating) => {
               if (rating.IdOfBook.toString() === book.id.toString()) {
-                console.log("NEW",rating);
+                //console.log("NEW",rating);
                 return setRatings(rating);
               }
             });
@@ -64,7 +67,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
 
 
   };
-
+  console.log(rated);
   return (
     <div className="uth-inner">
       <div className="toHide">
@@ -96,16 +99,31 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                     <Image img={img} />
                   </div>
                   <div className="empty1">
-                    <ReactStars
-                      count={5}
-                      onChange={ratingChanged}
-                      size={60}
-                      isHalf={false}
-                      emptyIcon={<i className="far fa-star"></i>}
-                      halfIcon={<i className="fa fa-star-half-alt"></i>}
-                      fullIcon={<i className="fa fa-star"></i>}
-                      activeColor="#ffd700"
-                    />
+                    {rated ? (
+                      <ReactStars
+                        count={5}
+                        onChange={ratingChanged}
+                        size={60}
+                        isHalf={false}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="#ffd700"
+                      />
+                    ) : (
+                      <ReactStars
+                        count={5}
+                        size={60}
+                        isHalf={false}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="#ffd700"
+                        value={stars}
+                        edit={rated}
+                      />
+                    )}
+
                     <p>
                       {stars} stars (total of {ratings.NumberOfRatings} ratings)
                     </p>

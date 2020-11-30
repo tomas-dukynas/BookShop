@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from 'react-modal';
+import '../Styles/Checkout.css';
 
 const SuccessModal = ({ modalIsOpen, setModalIsOpen, text, handleModalClose }) => {
   return (
@@ -9,7 +10,7 @@ const SuccessModal = ({ modalIsOpen, setModalIsOpen, text, handleModalClose }) =
       ariaHideApp={false}
       className="popup"
     >
-      <h2 className="popupH2">{text}</h2>
+      <h4 className="popupH2">{text}</h4>
       <button type="button" onClick={handleModalClose} className="buttonClose">
         Close
       </button>

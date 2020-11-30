@@ -11,9 +11,9 @@ export default function CategoriesFilter({
   categoriesArray,
   setCategoriesArray,
 }) {
-  const [searchTermCategories, setSearchTermCategories] = React.useState('');
+  const [searchTermCategories, setSearchTermCategories] = React.useState(false);
 
-  const arrayOfBooks = [];
+  let arrayOfBooks = [];
 
 
 
@@ -22,62 +22,99 @@ export default function CategoriesFilter({
 
     setSearchTermCategories(value);
 
-    if (categoriesArray.toString().includes(value.toString())) {
-      const ArrCat = categoriesArray.filter(
-        (a) => a.toString() !== value.toString(),
-      );
-      setCategoriesArray(ArrCat);
-      console.log('REMOVED');
-    } else if (categoriesArray[0] === '') {
-      setCategoriesArray(value);
-    } else {
-      const ArrCat = categoriesArray;
-      ArrCat.push(value);
-      setCategoriesArray(ArrCat);
+    if(value.toString()==='all')
+    {
+      filterBooks(listBooks);
+      setCategoriesArray(true);
     }
-  };
-  /*
-  React.useEffect(() => {
-    SetState(searchTermCategories, categoriesArray, setCategoriesArray);
-  }, [searchTermCategories]);
-*/
-  React.useEffect(() => {
-    const books = listBooks?.map((book) => {
-      return book.categories.map((cat) => {
-        const arr = categoriesArray.map((ar) => {
-          if (ar.toString() === cat.NameOfTheCategory.toString()) {
+    else {
+
+      if(categoriesArray===true){
+        setCategoriesArray(false)
+      }
+
+
+
+      //React.useEffect(() => {
+      /* const books = listBooks?.map((book) => {
+         return book.categories.map((cat) => {
+           const arr = categoriesArray.map((ar) => {
+             if (value.toString() === cat.NameOfTheCategory.toString()) {
+               if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
+                 arrayOfBooks[0] = book;
+               } else {
+                 arrayOfBooks.push(book);
+               }
+
+               return book;
+             }
+             return null;
+           });
+           const filtered = arr.filter((el) => {
+             return el != null;
+           });
+           // console.log(filtered);
+           return arr;
+         });
+       });*/
+      /*
+       const books = listBooks?.map((book) => {
+         return book.categories.map((cat) => {
+           const arr = categoriesArray.map((ar) => {
+             if (value.toString() === cat.NameOfTheCategory.toString()) {
+               if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
+                 arrayOfBooks[0] = book;
+               } else {
+                 arrayOfBooks.push(book);
+               }
+
+               return book;
+             }
+             return null;
+           });
+           const filtered = arr.filter((el) => {
+             return el != null;
+           });
+           // console.log(filtered);
+           return arr;
+         });
+       });*/
+
+      const boo = bookList?.map((book) => {
+        return book.categories?.map((cat) => {
+          if (value.toString() === cat.NameOfTheCategory.toString()) {
             if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
               arrayOfBooks[0] = book;
             } else {
               arrayOfBooks.push(book);
             }
-
-            return book;
           }
-          return null;
-        });
-        const filtered = arr.filter((el) => {
-          return el != null;
-        });
-        // console.log(filtered);
-        return arr;
+        })
       });
-    });
 
-    const uniqueBooks = Array.from(new Set(arrayOfBooks));
 
-    // console.log(uniqueBooks);
 
-    if (categoriesArray?.length === 0 && bookList.length !== 0) {
-      filterBooks(bookList);
-    }
+      const uniqueBooks = Array.from(new Set(arrayOfBooks));
+/*
+      arrayOfBooks=[];
+      const bo = uniqueBooks?.map((book) => {
+        const li = bookList?.map((book1) => {
+          if(book === book1) {
+            if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
+              arrayOfBooks[0] = book;
+            } else {
+              arrayOfBooks.push(book);
+            }
+          }
+        })
+      });
+*/
 
-    if (uniqueBooks.length !== 0) {
       filterBooks(uniqueBooks);
+      //filterBooks(arrayOfBooks);
     }
-
-    filterBooks(uniqueBooks);
-  }, [searchTermCategories]);
+  };
+  //}, [searchTermCategories]);
 
   if (categories.length === 0) {
     return null;
@@ -89,10 +126,10 @@ export default function CategoriesFilter({
           {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label>
             <input
-              type="checkbox"
+              type="radio"
               className="filterBox"
               value={cat.NameOfTheCategory || ' '}
-
+              name="categories"
 
               onChange={(e) => OnCheckBoxPress(e.target.value)}
 
@@ -105,5 +142,28 @@ export default function CategoriesFilter({
     );
   });
 
-  return <tbody className="categoriesDivBox">{categ}</tbody>;
+  return (
+  <tbody className="categoriesDivBox">
+
+      <tr>
+        <td>
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+          <label>
+            <input
+              type="radio"
+              className="filterBox"
+              value={ 'all'}
+              name="categories"
+
+              onChange={(e) => OnCheckBoxPress(e.target.value)}
+
+
+            />
+            All
+          </label>
+        </td>
+      </tr>
+      {categ}
+  </tbody>
+  ) ;
 }

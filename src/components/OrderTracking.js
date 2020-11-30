@@ -23,7 +23,7 @@ const OrderTracking = () => {
         setTrackingStatus(data);
         let string = data[0].Date.toString();
         let date1 = new Date(string);
-
+        //console.log(date1);
         let readableDate = date1.toUTCString();
         setDate(readableDate);
       })

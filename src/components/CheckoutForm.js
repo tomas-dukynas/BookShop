@@ -148,7 +148,7 @@ const CheckoutForm = () => {
         Back to books
       </button>
       <SuccessModal
-        classname="modal"
+        className="modal"
         modalIsOpen={modalIsOpen}
         setModalIsOpen={setModalIsOpen}
         text="Thank you for buying! Tracking ID has been sent to you via email."

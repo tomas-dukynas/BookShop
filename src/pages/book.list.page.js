@@ -15,8 +15,8 @@ const AllBooks = () => {
 
   const [bookList, setBookList] = React.useState([]);
   const [authors, setAuthors] = React.useState([]);
-  const [categoriesArray, setCategoriesArray] = React.useState([]);
-  const [authorsArray, setAuthorsArray] = React.useState([]);
+  const [categoriesArray, setCategoriesArray] = React.useState(true);
+  const [authorsArray, setAuthorsArray] = React.useState(true);
 
   React.useEffect(() => {
     axios
@@ -55,15 +55,17 @@ const AllBooks = () => {
   };
 
   React.useEffect(() => {
+
     const results = listBooks?.filter(
       (person) =>
         person.Author.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
-        person.NameOfTheBook.toString().toLocaleLowerCase().includes(searchTerm.toLowerCase()),
+        person.NameOfTheBook.toString().toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
     setSearchResults(results);
+    console.log(searchTerm);
   }, [searchTerm]);
-
+  console.log(bookList);
   React.useEffect(() => {
     if (
       searchTerm.length !== 0 &&
@@ -76,9 +78,9 @@ const AllBooks = () => {
       setBookList(searchResults);
     } else if (
       searchTerm.length === 0 &&
-      categoriesArray.length === 0 &&
+      categoriesArray === true &&
       bookList !== listBooks &&
-      authorsArray.length === 0
+      authorsArray === true
     ) {
       setBookList(listBooks);
     }
@@ -116,14 +118,15 @@ const AllBooks = () => {
     setBookList(searchResults);
   } else if (searchResults.length !== 0 && searchResults !== bookList) {
     setBookList(searchResults);
-  } else if (
+  }
+  /*else if (
     searchTerm.length === 0 &&
-    array.length === 0 &&
-    bookList.length === 0 &&
+    categoriesArray === true &&
+    authorsArray === true &&
     bookList !== listBooks
   ) {
     setBookList(listBooks);
-  }
+  }*/
 
   const offset = currentPage * PER_PAGE;
   const currentPageData = bookList.slice(offset, offset + PER_PAGE).map((book) => {
@@ -179,7 +182,9 @@ const AllBooks = () => {
           <tr>
             <th>
               <div className="filters">
+                <form>
                 <table>
+
                   <CategoriesFilter
                     categories={categories}
                     bookList={bookList}
@@ -200,6 +205,8 @@ const AllBooks = () => {
                     setAuthorsArray={(e) => setAuthorsArray(e)}
                   />
                 </table>
+
+                </form>
               </div>
             </th>
             <th>

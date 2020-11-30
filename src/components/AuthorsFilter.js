@@ -18,26 +18,59 @@ export default function AuthorsFilter({
     //console.log(value, " FUN");
 
     setSearchTermAuthors(value);
-
-    if (value) {
-      if (authorsArray?.toString().includes(value.toString())) {
-        let ArrAut = authorsArray.filter((a) => a.toString() !== value.toString());
-        setAuthorsArray(ArrAut);
-      } else {
-        if (authorsArray[0] === '') {
-          setAuthorsArray(value);
-        } else {
-          let ArrAut = authorsArray;
-          ArrAut.push(value);
-          setAuthorsArray(ArrAut);
-        }
-      }
+    if(value.toString()==='all')
+    {
+      filterBooks(listBooks);
+      setAuthorsArray(true);
     }
+    else {
+
+      if (authorsArray === true) {
+        setAuthorsArray(false)
+      }
 
 
+
+      const books = bookList?.map((book) => {
+
+          if (value.toString() === book.Author.toString()) {
+            if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
+              arrayOfBooks[0] = book;
+            } else {
+              arrayOfBooks.push(book);
+            }
+
+
+          } else {
+            return null;
+          }
+
+
+        });
+
+      const uniqueBooks = Array.from(new Set(arrayOfBooks));
+
+/*      arrayOfBooks = [];
+      const boo = uniqueBooks?.map((book) => {
+        const li = bookList?.map((book1) => {
+          if(book === book1) {
+            if (arrayOfBooks[0] === null || arrayOfBooks[0] === book) {
+              arrayOfBooks[0] = book;
+            } else {
+              arrayOfBooks.push(book);
+            }
+          }
+        })
+      });*/
+
+      filterBooks(uniqueBooks);
+      //filterBooks(arrayOfBooks);
+
+
+    }
   };
 
-
+/*
   React.useEffect(() => {
     const books = listBooks?.map((book) => {
       const arr = authorsArray.map((ar) => {
@@ -70,7 +103,7 @@ export default function AuthorsFilter({
       filterBooks(uniqueBooks);
     }
   }, [searchTermAuthors]);
-
+*/
   if (authors.length === 0) {
     return null;
   } else {
@@ -80,10 +113,10 @@ export default function AuthorsFilter({
           <td>
             <label>
               <input
-                type="checkbox"
+                type="radio"
                 className="filterBox"
                 value={aut.NameOfTheAuthor || ' '}
-
+                name="author"
                 onChange={(e) => OnCheckBoxPress(e.target.value)}
 
               />
@@ -94,6 +127,29 @@ export default function AuthorsFilter({
       );
     });
 
-    return <tbody className="categoriesDivBox">{autho}</tbody>;
+    return (
+      <tbody className="categoriesDivBox">
+        <tr>
+          <td>
+            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+            <label>
+              <input
+                type="radio"
+                className="filterBox"
+                value={ 'all'}
+                name="author"
+
+                onChange={(e) => OnCheckBoxPress(e.target.value)}
+
+
+              />
+              All
+            </label>
+          </td>
+        </tr>
+          {autho}
+      </tbody>
+    )
+
   }
 }
