@@ -9,7 +9,7 @@ import BookDescription from './BookDescription';
 import AuthContext from '../context/AuthContext';
 import SuccesModal from './SuccessModal';
 import axios from 'axios';
-import Spinner from './CheckoutForm';
+
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);

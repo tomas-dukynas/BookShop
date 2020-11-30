@@ -3,6 +3,7 @@ import axios from 'axios';
 import BASE_URL from '../config/IpAdress';
 import createAction from '../utils/CreateAction';
 import Sleep from '../utils/Sleep';
+import { unmountComponentAtNode } from 'react-dom';
 
 export default function useAuth() {
   const [state, dispatch] = React.useReducer(
@@ -40,6 +41,11 @@ export default function useAuth() {
             ...state,
             wish: action.payload,
           };
+        case 'SET_COMMENTS':
+          return {
+            ...state,
+            comments: action.payload,
+          };
         default:
           return state;
       }
@@ -53,12 +59,12 @@ export default function useAuth() {
   let cart = [];
   let totalPrice = 0;
   let newCart = [];
-  const wishList = [];
+  let wishList = [];
+  let arrayCom = [];
 
   const auth = React.useMemo(
     () => ({
       login: async (email, password) => {
-        console.log('login', email, password);
         const { data } = await axios.post(`${BASE_URL}/auth/local`, {
           identifier: email,
           password,
@@ -66,8 +72,8 @@ export default function useAuth() {
         const user = {
           email: data.user.email,
           token: data.jwt,
+          id: data.user.id,
         };
-        console.log(user);
         dispatch(createAction('SET_USER', user));
       },
       logout: async () => {
@@ -158,26 +164,17 @@ export default function useAuth() {
         dispatch(createAction('SET_CART', newCart));
         dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
-      addToWish: (oneBook) => {
-        let contains = false;
-        const book = Object.assign(oneBook);
-        wishList.forEach((bookO) => {
-          if (bookO.id === oneBook.id) {
-            contains = true;
-          }
-        });
-        if (!contains) {
-          wishList.push(book);
-        }
+      addToWish: (arrayOfBooks) => {
+        wishList = arrayOfBooks;
         dispatch(createAction('SET_WISH_LIST', wishList));
       },
-      removeFromWish: (oneBook) => {
-        wishList.forEach((bookO, index) => {
-          if (bookO.id === oneBook.id) {
-            wishList.splice(index, 1);
-          }
-        });
-        dispatch(createAction('SET_WISH_LIST', wishList));
+      addComment: (comments) => {
+        arrayCom = comments;
+        dispatch(createAction('SET_COMMENTS', arrayCom));
+      },
+      setPrice: (newPrice) => {
+        totalPrice = newPrice;
+        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
     }),
     [],

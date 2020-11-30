@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "wish_lists",
+  "info": {
+    "name": "WishList"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "ListOfBooks": {
+      "type": "json"
+    },
+    "UsersEmail": {
+      "type": "email",
+      "required": true,
+      "unique": true
+    }
+  }
+}

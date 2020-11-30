@@ -1,13 +1,17 @@
 import React from 'react';
+import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import ListCart from './CartList';
 import '../Styles/BookList.css';
 import AuthContext from '../context/AuthContext';
+import SuccessModal from './SuccessModal';
 
 const ShoppingBag = () => {
+  const [promo, setPromo] = React.useState('');
+  const [promoModal, setPromoModal] = React.useState(false);
   const state = React.useContext(UserContext);
-  const { removeFromCart } = React.useContext(AuthContext);
+  const { removeFromCart, setPrice } = React.useContext(AuthContext);
   const len = state?.cart?.length;
   const history = useHistory();
 
@@ -15,8 +19,44 @@ const ShoppingBag = () => {
     history.push('/checkout');
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    axios
+      .get('http://localhost:1337/promo-codes', {
+        headers: {
+          Authorization: `Bearer ${state.user?.token}`,
+        },
+      })
+      .then(({ data, status }) => {
+        data.forEach((item) => {
+          if (item.promoCode === promo) {
+            const newPrice = state.price - state.price * 0.15;
+            setPrice(newPrice);
+            setPromoModal(true);
+            axios
+              .delete(`http://localhost:1337/promo-codes/${item.id}`, {
+                headers: {
+                  Authorization: `Bearer ${state.user?.token}`,
+                },
+              })
+              // eslint-disable-next-line no-shadow
+              .then(({ status }) => {
+                console.log(status);
+              });
+          }
+        });
+      })
+      .catch((e) => console.log(e));
+  };
+
   return (
     <section>
+      <SuccessModal
+        modalIsOpen={promoModal}
+        setModalIsOpen={setPromoModal}
+        text="You got 15% discount!!!!"
+        handleModalClose={() => setPromoModal(false)}
+      />
       <div className="row">
         <div className="col-lg-8">
           <div className="mb-3">
@@ -95,26 +135,31 @@ const ShoppingBag = () => {
               )}
             </div>
           </div>
-          <div className="mb-3">
-            <div className="pt-4">
-              Add a discount code (optional)
-              <span>
-                <i className="fas fa-chevron-down pt-1" />
-              </span>
-              <div className="collapse" id="collapseExample">
+          {state.user && (
+            <div className="mb-3">
+              <div className="pt-4">
+                Add a discount code (optional)
+                <span>
+                  <i className="fas fa-chevron-down pt-1" />
+                </span>
                 <div className="mt-3">
                   <div className="md-form md-outline mb-0">
-                    <input
-                      type="text"
-                      id="discount-code"
-                      className="form-control font-weight-light"
-                      placeholder="Enter discount code"
-                    />
+                    <form onSubmit={handleSubmit}>
+                      <input
+                        type="text"
+                        id="discount-code"
+                        className="form-control font-weight-light"
+                        placeholder="Enter discount code"
+                        value={promo}
+                        onChange={(e) => setPromo(e.target.value)}
+                      />
+                      <button type="submit">Enter</button>
+                    </form>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "promo_codes",
+  "info": {
+    "name": "PromoCodes"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "promoCode": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "promo_codes"
+    }
+  }
+}

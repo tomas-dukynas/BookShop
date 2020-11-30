@@ -96,17 +96,24 @@ const CheckoutForm = () => {
 
   const handleModalClose = async () => {
     let result = '';
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
+    let promoCode = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 7; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
 
-    let date = new Date();
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < 5; i++) {
+      promoCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    const date = new Date();
     let text = '';
     console.log(result);
-    state.cart.map((book) => {
-      text = text + book.id + ',';
+    state.cart.forEach((book) => {
+      text = `${text + book.id},`;
     });
     console.log(result);
 
@@ -122,16 +129,34 @@ const CheckoutForm = () => {
       })
       .catch((e) => console.log(e));
 
+    axios
+      .post(
+        'http://localhost:1337/promo-codes',
+        {
+          promoCode,
+          user: state.user.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${state.user?.token}`,
+          },
+        },
+      )
+      .then((response) => {
+        console.log(response, ' POSTED');
+      })
+      .catch((e) => console.log(e));
+
     setModalIsOpen(false);
     history.push('/list-view');
     await axios.post(`${BASE_URL}/email`, {
-      to: state.user ? state.user.email : 'volungeviciuskarolis@gmail.com',
+      to: 'tomas.dukynas@gmail.com',
       from: 'tomas.dukynas@gmail.com',
       replyTo: 'tomas.dukynas@gmail.com',
       subject: 'Successful purchase',
       text: `${
         name || 'Customer'
-      } Thank you for buying!!! Your tracking ID is ${result} and it was sent to your email`,
+      } Thank you for buying!!! Your tracking ID is ${result} \n And your promo code is: ${promoCode}`,
     });
 
     resetCartAndPrice();

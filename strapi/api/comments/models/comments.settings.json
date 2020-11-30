@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "name": "Comments"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "comments"
+    },
+    "book": {
+      "model": "books",
+      "via": "comments"
+    },
+    "name": {
+      "type": "email",
+      "required": true
+    },
+    "comment": {
+      "type": "richtext",
+      "required": true
+    }
+  }
+}
