@@ -1,5 +1,6 @@
 import React from 'react';
 import BookCountInput from './BookCountInput';
+import '../Styles/LoginMobile.css';
 
 export default function ListCart({ cart, removeFromCart, isWish }) {
   const listCart = cart?.map((cart1) => {
@@ -14,9 +15,9 @@ export default function ListCart({ cart, removeFromCart, isWish }) {
           <div className="col-md-7 col-lg-9 col-xl-9">
             <div>
               <div className="d-flex justify-content-between">
-                <div>
-                  <h5>{cart1?.NameOfTheBook}</h5>
-                  <h6>{cart1?.Author}</h6>
+                <div className="someText">
+                  <h5 className="someText">{cart1?.NameOfTheBook}</h5>
+                  <h6 className="someText">{cart1?.Author}</h6>
                   {/* <p className="mb-3 text-muted text-uppercase small">{cart1?.Description}</p> */}
                 </div>
                 {isWish ? null : <BookCountInput book={cart1} />}
@@ -29,7 +30,7 @@ export default function ListCart({ cart, removeFromCart, isWish }) {
                 </div>
                 <p className="mb-0">
                   <span>
-                    <strong id="summary">{cart1?.Price} €</strong>
+                    <strong id="summary" className="someText">{cart1?.Price} €</strong>
                   </span>
                 </p>
               </div>

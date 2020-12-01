@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
+import '../Styles/LoginMobile.css';
+import '../Styles/Checkout.css';
 
 const SuccessModal = ({ modalIsOpen, setModalIsOpen, text, handleModalClose }) => {
   return (
