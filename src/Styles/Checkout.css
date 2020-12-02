@@ -168,3 +168,24 @@ More info: https://stripe.com/docs/stripe-js/reference#element-options
 .modal {
     font-size: 10px;
 }
+.popupShare {
+    /*align-self: center;*/
+    height: 500px;
+    width: 500px;
+    background-color: white;
+    margin-top: 200px;
+    margin-left: 500px;
+    text-align: center;
+
+
+    border-style: solid;
+    border-color: gray;
+    border-radius: 15px;
+}
+.input {
+    border-style: solid;
+    border-color: black;
+    width: 90%;
+    margin-left: 5%;
+
+}

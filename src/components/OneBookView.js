@@ -12,6 +12,9 @@ import UserContext from '../context/UserContext';
 import BASE_URL from '../config/IpAdress';
 import CommentList from './CommentList';
 import CommentsInput from './CommentsInput';
+import '../Styles/LoginMobile.css';
+
+import ShareModal from './ShareModal';
 
 const OneBookView = ({ book, viewCount, setShow, img }) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);
@@ -21,6 +24,10 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   const [fullWishModalIsOpen, setFullWishModalIsOpen] = useState(false);
   const [wishAlreadyModalIsOpen, setWishAlreadyModalIsOpen] = useState(false);
   const [ratings, setRatings] = useState([]);
+  const [rated, setRated] = useState(true);
+  const [shareModal, setShareModal] = useState(false);
+
+  const [modalIsOpenS, setModalIsOpenS] = useState(false);
 
   // eslint-disable-next-line no-shadow
   const handleWishPress = async (book) => {
@@ -115,7 +122,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
 
   const ratingChanged = (newRating) => {
     console.log(ratings);
-
+    setRated(false);
     const increaseRatings = ratings?.NumberOfRatings;
     const increaseStars = ratings?.SumOfStars;
 
@@ -125,13 +132,13 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
         SumOfStars: increaseStars + newRating,
       })
       .finally(() => {
-        console.log('i should go second');
+        //console.log('i should go second');
         axios
           .get('http://localhost:1337/ratings')
           .then(({ data }) => {
             data.map((rating) => {
               if (rating.IdOfBook.toString() === book.id.toString()) {
-                console.log('NEW', rating);
+                //console.log('NEW', rating);
                 return setRatings(rating);
               }
             });
@@ -143,7 +150,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   return (
     <div className="uth-inner">
       <div className="toHide">
-        <div>
+        <div className="infoModals">
           <SuccessModal
             modalIsOpen={cartModalIsOpen}
             setModalIsOpen={setCartModalIsOpen}
@@ -168,6 +175,13 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
             text="Your wishlist already has this item"
             handleModalClose={() => setWishAlreadyModalIsOpen(false)}
           />
+
+          <ShareModal
+            book={book}
+            modalIsOpenS={modalIsOpenS}
+            setModalIsOpenS={setModalIsOpenS}
+            handleModalClose={() => setModalIsOpenS(false)}
+          />
         </div>
         <AddViewCount ViewCount={viewCount} id={book.id} />
         <button type="button" className="buttonAdd" onClick={() => setShow(false)}>
@@ -184,20 +198,39 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                   <div className="mainBox">
                     <Image img={img} />
                   </div>
-                  {state.user && <CommentsInput bookId={book.id} />}
-                  <ReactStars
-                    count={5}
-                    onChange={ratingChanged}
-                    size={60}
-                    isHalf={false}
-                    emptyIcon={<i className="far fa-star" />}
-                    halfIcon={<i className="fa fa-star-half-alt" />}
-                    fullIcon={<i className="fa fa-star" />}
-                    activeColor="#ffd700"
-                  />
-                  <p>
-                    {stars} stars (total of {ratings.NumberOfRatings} ratings)
-                  </p>
+                  <div className="commentInput">
+                    {state.user && <CommentsInput bookId={book.id} />}
+                  </div>
+                  <div className="empty1">
+                    {rated ? (
+                      <ReactStars
+                        count={5}
+                        onChange={ratingChanged}
+                        size={60}
+                        isHalf={false}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="#ffd700"
+                      />
+                    ) : (
+                      <ReactStars
+                        count={5}
+                        size={60}
+                        isHalf={false}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="#ffd700"
+                        value={stars}
+                        edit={rated}
+                      />
+                    )}
+
+                    <p>
+                      {stars} stars (total of {ratings.NumberOfRatings} ratings)
+                    </p>
+                  </div>
                 </div>
               </th>
               <th>
@@ -211,25 +244,36 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                             <input type="number" className="number" min="1" defaultValue="1" />
                           </th>
                           <th>
-                            <button
-                              type="button"
-                              className="buttonAdd"
-                              onClick={() => {
-                                setCartModalIsOpen(true);
-                                addToCart(book);
-                              }}
-                            >
-                              Add to cart
-                            </button>
-                            {state.user && (
+                            <div className="buttonAddDiv">
                               <button
                                 type="button"
                                 className="buttonAdd"
-                                onClick={() => handleWishPress(book)}
+                                onClick={() => {
+                                  setCartModalIsOpen(true);
+                                  addToCart(book);
+                                }}
                               >
-                                Add to wishlist
+                                Add to cart
                               </button>
-                            )}
+                              {state.user && (
+                                <div>
+                                  <button
+                                    type="button"
+                                    className="buttonAdd"
+                                    onClick={() => handleWishPress(book)}
+                                  >
+                                    Add to wishlist
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="buttonAdd"
+                                    onClick={() => setModalIsOpenS(true)}
+                                  >
+                                    Share
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </th>
                         </tr>
                       </thead>
@@ -241,7 +285,9 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
                     <p className="description">Description:</p>
                     <BookDescription description={book.Description} />
                   </div>
-                  <CommentList comments={book.comments} />
+                  <div className="commentsDiv">
+                    <CommentList comments={book.comments} />
+                  </div>
                 </div>
               </th>
             </tr>

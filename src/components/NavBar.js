@@ -9,6 +9,7 @@ import AuthContext from '../context/AuthContext';
 import CheckoutForm from './CheckoutForm';
 import WishList from './WishList';
 import OrderTracking from './OrderTracking';
+import '../Styles/LoginMobile.css';
 
 const Hide = () => {
   const state = React.useContext(UserContext);
@@ -18,7 +19,7 @@ const Hide = () => {
   };
 
   return typeof state.user === 'undefined' ? (
-    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <div /*className="collapse navbar-collapse" */id="navbarTogglerDemo02">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/sign-in">
@@ -33,11 +34,11 @@ const Hide = () => {
       </ul>
     </div>
   ) : (
-    <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <div /*className="collapse navbar-collapse"*/ id="navbarTogglerDemo02">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <button type="button" className="nav-link" onClick={onClickLogOut}>
-            Logout
+             Logout
           </button>
         </li>
       </ul>

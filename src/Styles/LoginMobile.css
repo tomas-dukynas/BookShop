@@ -1,0 +1,245 @@
+@media only screen and (max-width: 600px) {
+    body {
+        /*background-color: lightblue;*/
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+
+    }
+    .App{
+        /*background-color: #1a93ca;*/
+        width: 100% !important;
+        text-align: left;
+    }
+    .fixed-top{
+        /*background-color: greenyellow;*/
+        width: 100%;
+        text-align: left;
+        position: relative;
+    }
+    .navbar-collapse {
+        /*background-color: yellow;*/
+        position: absolute;
+    }
+    .collapse {
+        /*background-color: yellow;*/
+        position: absolute;
+    }
+    .navbar-nav {
+        display: inline;
+    }
+    ul li{
+        width: auto;
+        float: left;
+        margin-right: 10px;
+    }
+    .nav-link{
+        margin: auto;
+        text-align: center;
+        padding: 0;
+    }
+    .auth-inner {
+        /*background-color: #666ee8 !important;*/
+        text-align: left !important;
+        width: 100% !important;
+        margin-top: -30px !important;
+    }
+    .img-fluid {
+        max-width: 60% !important;
+        height: auto !important;
+    }
+    .row {
+        /*background-color: greenyellow;*/
+    }
+    .quantity {
+        width: 40% !important;
+        margin-left: 50% !important;
+    }
+    .btnInp {
+        width: 40% !important;
+        font-weight: bold;
+        font-size: 150%;
+        margin-left: 50%;
+    }
+    .someText {
+        font-size: 120%;
+    }
+    .popup {
+        width: 70% !important;
+        /*height: 30% ;*/
+        position: absolute;
+        top: 0;
+        /*right: -20%;*/
+        /*left: -70%;*/
+        right: -20%;
+        transform: translate(-50%, -50%);
+
+    }
+    .popupH2 {
+        font-size: 130%;
+        line-height: 5 !important;
+    }
+    .filtersTable {
+        display: table-cell;
+    }
+    table tr > *{
+        display: block;
+    }
+    table tr {
+        display: table-cell;
+
+    }
+    th tr{
+        /*width: 80% !important;*/
+        /*background-color: #27a9e3;*/
+
+    }
+    .filters {
+        top: 25% !important;
+        position: absolute !important;
+        width: 96%;
+    }
+    .searchField {
+        position: absolute;
+        top: 15%;
+        left: 10%;
+        width: 80% !important;
+    }
+    .paginatorList {
+        top: 55%;
+        left: 0% !important;
+        position: absolute;
+        /*background-color: greenyellow;*/
+        width: 90%;
+
+    }
+    .noBooks {
+        top: 70% !important;
+        position: absolute;
+        left: 20%;
+    }
+    .cardDiv {
+        width: 105%;
+    }
+    .bookImageDiv {
+        width: 80%;
+    }
+    .priceDivCard {
+        width: 25%;
+        /*left: -50% !important;*/
+        /*background-color: #666ee8;*/
+        /*right: -20% !important;*/
+        /*left: 10%;*/
+        position: relative;
+    }
+    .nameDivCard {
+        width: 10%;
+        /*left: -21% !important;*/
+        left: -25%;
+
+        position: relative;
+    }
+    .buttonViewMore {
+        border-width: 10px;
+        border: solid;
+
+        /*padding-left: 0px !important;*/
+        /*left: 50% !important;*/
+        height: 60px !important;
+        margin-bottom: 10%;
+        width: 130px !important;
+        /*background-color: #27a9e3;*/
+        position: relative;
+    }
+    .pagination {
+        left: 7% !important;
+        position: relative;
+    }
+
+    .uth-inner {
+        text-align: left;
+        left: 0 !important;
+        position: absolute;
+        width: 100%;
+    }
+    .toHide {
+        left: -55% !important;
+        position: absolute;
+        width: 100% !important;
+    }
+    .bookAuthor {
+        position: relative;
+        left: -22%;
+        width: 90% !important;
+        /*word-break: break-all !important;*/
+        overflow-wrap: break-word;
+    }
+    .empty1 {
+        /*position: relative;*/
+        top: 130%;
+        left: 30% !important;
+    }
+    .mainBox {
+        /*position: relative;*/
+        top: 50% !important;
+    }
+    .price {
+        top: 155% !important;
+        position: absolute;
+        left: 40%;
+    }
+    .number {
+        top: 180% !important;
+        position: absolute;
+        left: 23%;
+    }
+    .buttonAddDiv {
+        top: 220%;
+        position: absolute;
+        left: 15%;
+        width: 70%;
+    }
+    .commentInput {
+        top: 210%;
+        position: absolute;
+        /*background-color: #27a9e3;*/
+        left: 15%;
+        width: 90%;
+    }
+    .descriptionDiv {
+        top: 390% !important;
+        position: absolute;
+        overflow-wrap: break-word;
+        width: 95% !important;
+        overflow: scroll;
+        height: 300%;
+        left: 5%;
+    }
+    .description {
+        overflow-wrap: break-word;
+    }
+    .commentsDiv {
+        top: 790% !important;
+        position: absolute;
+    }
+    .infoModals {
+        left: -10% !important;
+        position: absolute;
+
+    }
+    .popupShare {
+        width: 90% !important;
+        /*height: 30% ;*/
+        position: absolute;
+        top: 20%;
+        /*right: -20%;*/
+        /*left: -70%;*/
+        right: -40%;
+        transform: translate(-50%, -50%);
+
+    }
+    .rightSide {
+        left: -10%;
+        width: 100vw !important;
+    }
+}
+

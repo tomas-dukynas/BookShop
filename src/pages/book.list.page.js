@@ -9,6 +9,7 @@ import OneBookView from '../components/OneBookView';
 import AuthContext from '../context/AuthContext';
 import UserContext from '../context/UserContext';
 import BASE_URL from '../config/IpAdress';
+import '../Styles/LoginMobile.css';
 
 const array = [];
 
@@ -168,7 +169,7 @@ const AllBooks = () => {
               <thead>
                 <tr>
                   <th>
-                    <div>
+                    <div className="bookImageDiv">
                       <img src={imgURL} alt="" className="bookImageCard" />
                     </div>
                   </th>
@@ -208,7 +209,7 @@ const AllBooks = () => {
           <tr>
             <th>
               <div className="filters">
-                <table>
+                <table className="filtersTable">
                   <CategoriesFilter
                     categories={categories}
                     bookList={bookList}
@@ -263,7 +264,7 @@ const AllBooks = () => {
                   ) : (
                     <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />
                   )}
-                  {/* <BooksList books={bookList} categories={categories} viewCount={viewCount} /> */}
+
                 </div>
               </div>
             </th>
@@ -275,3 +276,4 @@ const AllBooks = () => {
 };
 
 export default AllBooks;
+
