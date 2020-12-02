@@ -1,6 +1,9 @@
 @media only screen and (max-width: 600px) {
     body {
         /*background-color: lightblue;*/
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+
     }
     .App{
         /*background-color: #1a93ca;*/
@@ -67,7 +70,7 @@
         top: 0;
         /*right: -20%;*/
         /*left: -70%;*/
-        right: -10%;
+        right: -20%;
         transform: translate(-50%, -50%);
 
     }
@@ -83,6 +86,11 @@
     }
     table tr {
         display: table-cell;
+
+    }
+    th tr{
+        /*width: 80% !important;*/
+        /*background-color: #27a9e3;*/
 
     }
     .filters {
@@ -167,7 +175,7 @@
     }
     .empty1 {
         /*position: relative;*/
-        top: 126%;
+        top: 130%;
         left: 30% !important;
     }
     .mainBox {
@@ -177,17 +185,18 @@
     .price {
         top: 155% !important;
         position: absolute;
-        left: 25%;
+        left: 40%;
     }
     .number {
         top: 180% !important;
         position: absolute;
-        left: 12%;
+        left: 23%;
     }
     .buttonAddDiv {
         top: 220%;
         position: absolute;
-        left: 5%;
+        left: 15%;
+        width: 70%;
     }
     .commentInput {
         top: 210%;
@@ -197,12 +206,13 @@
         width: 90%;
     }
     .descriptionDiv {
-        top: 380% !important;
+        top: 390% !important;
         position: absolute;
         overflow-wrap: break-word;
-        width: 70% !important;
+        width: 95% !important;
         overflow: scroll;
         height: 300%;
+        left: 5%;
     }
     .description {
         overflow-wrap: break-word;
@@ -212,8 +222,24 @@
         position: absolute;
     }
     .infoModals {
-        left: -30% !important;
+        left: -10% !important;
         position: absolute;
-    }
 
+    }
+    .popupShare {
+        width: 90% !important;
+        /*height: 30% ;*/
+        position: absolute;
+        top: 20%;
+        /*right: -20%;*/
+        /*left: -70%;*/
+        right: -40%;
+        transform: translate(-50%, -50%);
+
+    }
+    .rightSide {
+        left: -10%;
+        width: 100vw !important;
+    }
 }
+
