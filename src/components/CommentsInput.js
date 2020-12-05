@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import BASE_URL from '../config/IpAdress';
 import SuccessModal from './SuccessModal';
 import AuthContext from '../context/AuthContext';
+import Error from './Error';
 
 const CommentsInput = ({ bookId }) => {
   const state = React.useContext(UserContext);
@@ -11,31 +12,34 @@ const CommentsInput = ({ bookId }) => {
   const [comment, setComment] = React.useState('');
   const [comModalIsOpen, setComModalIsOpen] = React.useState(false);
   const [cantModalIsOpen, setCantModalIsOpen] = React.useState(false);
+  const [error, setError] = React.useState(false);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.post(
-      `${BASE_URL}/comments/`,
-      {
-        comment,
-        name: state.user.email,
-        book: bookId,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${state.user?.token}`,
+    if (comment.length > 0 && comment.length < 1000) {
+      const response = await axios.post(
+        `${BASE_URL}/comments/`,
+        {
+          comment,
+          name: state.user.email,
+          book: bookId,
         },
-      },
-    );
-    if (response.status === 200) {
-      await axios.get(`${BASE_URL}/comments/`).then(({ data }) => {
-        console.log(data);
-      });
-      const newComments = state.comments;
-      newComments.push(comment);
-      addComment(newComments);
-      setComModalIsOpen(true);
+        {
+          headers: {
+            Authorization: `Bearer ${state.user?.token}`,
+          },
+        },
+      );
+      if (response.status === 200) {
+        const newComments = state.comments;
+        newComments.push(comment);
+        addComment(newComments);
+        setComModalIsOpen(true);
+      } else {
+        setCantModalIsOpen(true);
+      }
     } else {
-      setCantModalIsOpen(true);
+      setError(true);
     }
   };
   return (
@@ -64,6 +68,7 @@ const CommentsInput = ({ bookId }) => {
           setComment(e.target.value);
         }}
       />
+      {error ? <Error error="Comment Violation!" /> : null}
       <br />
       <button type="submit">Submit</button>
     </form>

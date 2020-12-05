@@ -4,7 +4,6 @@ import '../Styles/LoginMobile.css';
 import '../Styles/Checkout.css';
 
 const SuccessModal = ({ modalIsOpen, setModalIsOpen, text, handleModalClose }) => {
-
   return (
     <Modal
       isOpen={modalIsOpen}

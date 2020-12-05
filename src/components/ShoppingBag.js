@@ -6,10 +6,13 @@ import ListCart from './CartList';
 import '../Styles/BookList.css';
 import AuthContext from '../context/AuthContext';
 import SuccessModal from './SuccessModal';
+import Error from './Error';
 
 const ShoppingBag = () => {
   const [promo, setPromo] = React.useState('');
   const [promoModal, setPromoModal] = React.useState(false);
+  const [usedPromo, setUsedPromo] = React.useState(false);
+  const [error, setError] = React.useState(false);
   const state = React.useContext(UserContext);
   const { removeFromCart, setPrice } = React.useContext(AuthContext);
   const len = state?.cart?.length;
@@ -21,32 +24,39 @@ const ShoppingBag = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios
-      .get('http://localhost:1337/promo-codes', {
-        headers: {
-          Authorization: `Bearer ${state.user?.token}`,
-        },
-      })
-      .then(({ data, status }) => {
-        data.forEach((item) => {
-          if (item.promoCode === promo) {
-            const newPrice = state.price - state.price * 0.15;
-            setPrice(newPrice);
-            setPromoModal(true);
-            axios
-              .delete(`http://localhost:1337/promo-codes/${item.id}`, {
-                headers: {
-                  Authorization: `Bearer ${state.user?.token}`,
-                },
-              })
-              // eslint-disable-next-line no-shadow
-              .then(({ status }) => {
-                console.log(status);
-              });
-          }
-        });
-      })
-      .catch((e) => console.log(e));
+    if (state.price) {
+      axios
+        .get('http://localhost:1337/promo-codes', {
+          headers: {
+            Authorization: `Bearer ${state.user?.token}`,
+          },
+        })
+        .then(({ data, status }) => {
+          data.forEach((item) => {
+            if (item.promoCode === promo) {
+              const newPrice = state.price - state.price * 0.15;
+              setPrice(newPrice);
+              setUsedPromo(true);
+              setPromoModal(true);
+              axios
+                .delete(`http://localhost:1337/promo-codes/${item.id}`, {
+                  headers: {
+                    Authorization: `Bearer ${state.user?.token}`,
+                  },
+                })
+                // eslint-disable-next-line no-shadow
+                .then(({ status }) => {
+                  console.log(status);
+                });
+            } else {
+              setError(true);
+            }
+          });
+        })
+        .catch((e) => console.log(e));
+    } else {
+      setError(true);
+    }
   };
 
   return (
@@ -138,23 +148,29 @@ const ShoppingBag = () => {
           {state.user && (
             <div className="mb-3">
               <div className="pt-4">
-                Add a discount code (optional)
+                Add a discount code (only one promo code can be used)
                 <span>
                   <i className="fas fa-chevron-down pt-1" />
                 </span>
                 <div className="mt-3">
                   <div className="md-form md-outline mb-0">
-                    <form onSubmit={handleSubmit}>
-                      <input
-                        type="text"
-                        id="discount-code"
-                        className="form-control font-weight-light"
-                        placeholder="Enter discount code"
-                        value={promo}
-                        onChange={(e) => setPromo(e.target.value)}
-                      />
-                      <button type="submit">Enter</button>
-                    </form>
+                    {!usedPromo && (
+                      <form onSubmit={handleSubmit}>
+                        <input
+                          type="text"
+                          id="discount-code"
+                          className="form-control font-weight-light"
+                          placeholder="Enter discount code"
+                          value={promo}
+                          onChange={(e) => setPromo(e.target.value)}
+                        />
+                        <button type="submit">Enter</button>
+                      </form>
+                    )}
+                    {usedPromo && <h3>Thank you for using promo code</h3>}
+                    {error && (
+                      <Error error="Bad Promo Code or nothing in shopping bag please try again" />
+                    )}
                   </div>
                 </div>
               </div>
