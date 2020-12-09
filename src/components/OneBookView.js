@@ -13,10 +13,12 @@ import BASE_URL from '../config/IpAdress';
 import CommentList from './CommentList';
 import CommentsInput from './CommentsInput';
 import '../Styles/LoginMobile.css';
-
+import { useHistory } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 import ShareModal from './ShareModal';
 
-const OneBookView = ({ book, viewCount, setShow, img }) => {
+
+const OneBookView = (id) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);
   const state = React.useContext(UserContext);
   const [cartModalIsOpen, setCartModalIsOpen] = useState(false);
@@ -27,9 +29,40 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   const [rated, setRated] = useState(true);
   const [shareModal, setShareModal] = useState(false);
 
+  const [img, setImg] = React.useState('');
   const [modalIsOpenS, setModalIsOpenS] = useState(false);
 
-  // eslint-disable-next-line no-shadow
+  const [book, setBook] = useState('');
+  const addComment = React.useContext(AuthContext);
+  const [bookLoaded, setBookLoaded] = useState(false);
+  const history = useHistory();
+
+  React.useEffect(() => {
+    axios
+      .get('http://localhost:1337/books/' + id.match.params.id)
+      .then(({ data }) => {
+        setBook(data);
+        console.log(data);
+
+        if (data.PhotoOfTheBook?.name) {
+          setImg(data.PhotoOfTheBook.name);
+        } else {
+          setImg('https://www.liweddings.com/themes/default/assets/images/no-image.png');
+        }
+        const comments = [];
+        data.comments.forEach((item) => {
+          comments.push(item.comment);
+        });
+        addComment(comments);
+
+        setBookLoaded(true);
+      })
+      .catch((e) => console.log(e))
+      .finally(() => {
+        setBookLoaded(true);
+      });
+  }, []);
+
   const handleWishPress = async (book) => {
     if (state.wish.length >= 5) {
       setFullWishModalIsOpen(true);
@@ -101,6 +134,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
   };
 
   React.useEffect(() => {
+    console.log(book, 'RATINGS');
     axios
       .get('http://localhost:1337/ratings')
       .then(({ data }) => {
@@ -112,7 +146,7 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
         });
       })
       .catch((e) => console.log(e));
-  }, []);
+  }, [book]);
 
   let stars = (ratings.SumOfStars / ratings.NumberOfRatings).toFixed(2);
 
@@ -147,153 +181,167 @@ const OneBookView = ({ book, viewCount, setShow, img }) => {
       });
   };
 
+  const GoBack = () => {
+    history.push('/list-view');
+  };
+
   return (
-    <div className="uth-inner">
-      <div className="toHide">
-        <div className="infoModals">
-          <SuccessModal
-            modalIsOpen={cartModalIsOpen}
-            setModalIsOpen={setCartModalIsOpen}
-            text="Book was added to cart"
-            handleModalClose={() => setCartModalIsOpen(false)}
-          />
-          <SuccessModal
-            modalIsOpen={wishModalIsOpen}
-            setModalIsOpen={setWishModalIsOpen}
-            text="Book was added to wishlist"
-            handleModalClose={() => setWishModalIsOpen(false)}
-          />
-          <SuccessModal
-            modalIsOpen={fullWishModalIsOpen}
-            setModalIsOpen={setFullWishModalIsOpen}
-            text="Your wishlist is full, maximum 5 items"
-            handleModalClose={() => setFullWishModalIsOpen(false)}
-          />
-          <SuccessModal
-            modalIsOpen={wishAlreadyModalIsOpen}
-            setModalIsOpen={setWishAlreadyModalIsOpen}
-            text="Your wishlist already has this item"
-            handleModalClose={() => setWishAlreadyModalIsOpen(false)}
-          />
+    <div>
+      {!bookLoaded ? (
+        <Spinner animation="border" className="spinner" />
+      ) : (
+        <div className="uth-inner">
+          <div className="toHide">
+            <div className="infoModals">
+              <SuccessModal
+                modalIsOpen={cartModalIsOpen}
+                setModalIsOpen={setCartModalIsOpen}
+                text="Book was added to cart"
+                handleModalClose={() => setCartModalIsOpen(false)}
+              />
+              <SuccessModal
+                modalIsOpen={wishModalIsOpen}
+                setModalIsOpen={setWishModalIsOpen}
+                text="Book was added to wishlist"
+                handleModalClose={() => setWishModalIsOpen(false)}
+              />
+              <SuccessModal
+                modalIsOpen={fullWishModalIsOpen}
+                setModalIsOpen={setFullWishModalIsOpen}
+                text="Your wishlist is full, maximum 5 items"
+                handleModalClose={() => setFullWishModalIsOpen(false)}
+              />
+              <SuccessModal
+                modalIsOpen={wishAlreadyModalIsOpen}
+                setModalIsOpen={setWishAlreadyModalIsOpen}
+                text="Your wishlist already has this item"
+                handleModalClose={() => setWishAlreadyModalIsOpen(false)}
+              />
 
-          <ShareModal
-            book={book}
-            modalIsOpenS={modalIsOpenS}
-            setModalIsOpenS={setModalIsOpenS}
-            handleModalClose={() => setModalIsOpenS(false)}
-          />
-        </div>
-        <AddViewCount ViewCount={viewCount} id={book.id} />
-        <button type="button" className="buttonAdd" onClick={() => setShow(false)}>
-          Go back
-        </button>
-        <div className="bookAuthor">
-          {book.Author} - {book.NameOfTheBook}
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <div className="leftSide">
-                  <div className="mainBox">
-                    <Image img={img} />
-                  </div>
-                  <div className="commentInput">
-                    {state.user && <CommentsInput bookId={book.id} />}
-                  </div>
-                  <div className="empty1">
-                    {rated ? (
-                      <ReactStars
-                        count={5}
-                        onChange={ratingChanged}
-                        size={60}
-                        isHalf={false}
-                        emptyIcon={<i className="far fa-star"></i>}
-                        halfIcon={<i className="fa fa-star-half-alt"></i>}
-                        fullIcon={<i className="fa fa-star"></i>}
-                        activeColor="#ffd700"
-                      />
-                    ) : (
-                      <ReactStars
-                        count={5}
-                        size={60}
-                        isHalf={false}
-                        emptyIcon={<i className="far fa-star"></i>}
-                        halfIcon={<i className="fa fa-star-half-alt"></i>}
-                        fullIcon={<i className="fa fa-star"></i>}
-                        activeColor="#ffd700"
-                        value={stars}
-                        edit={rated}
-                      />
-                    )}
+              <ShareModal
+                book={book}
+                modalIsOpenS={modalIsOpenS}
+                setModalIsOpenS={setModalIsOpenS}
+                handleModalClose={() => setModalIsOpenS(false)}
+              />
+            </div>
+            {/*<AddViewCount ViewCount={viewCount} id={book.id} />*/}
+            <button
+              type="button"
+              className="buttonAdd"
+              onClick={() => GoBack()} /*setShow(false)}*/
+            >
+              Go back
+            </button>
+            <div className="bookAuthor">
+              {book.Author} - {book.NameOfTheBook}
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>
+                    <div className="leftSide">
+                      <div className="mainBox">
+                        <Image img={img} />
+                      </div>
+                      <div className="commentInput">
+                        {state.user && <CommentsInput bookId={book.id} />}
+                      </div>
+                      <div className="empty1">
+                        {rated ? (
+                          <ReactStars
+                            count={5}
+                            onChange={ratingChanged}
+                            size={60}
+                            isHalf={false}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                            activeColor="#ffd700"
+                          />
+                        ) : (
+                          <ReactStars
+                            count={5}
+                            size={60}
+                            isHalf={false}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                            activeColor="#ffd700"
+                            value={stars}
+                            edit={rated}
+                          />
+                        )}
 
-                    <p>
-                      {stars} stars (total of {ratings.NumberOfRatings} ratings)
-                    </p>
-                  </div>
-                </div>
-              </th>
-              <th>
-                <div className="rightSide">
-                  <h4 className="price">{book.Price}€</h4>
-                  <form>
-                    <table className="table1">
-                      <thead>
-                        <tr>
-                          <th>
-                            <input type="number" className="number" min="1" defaultValue="1" />
-                          </th>
-                          <th>
-                            <div className="buttonAddDiv">
-                              <button
-                                type="button"
-                                className="buttonAdd"
-                                onClick={() => {
-                                  setCartModalIsOpen(true);
-                                  addToCart(book);
-                                }}
-                              >
-                                Add to cart
-                              </button>
-                              {state.user && (
-                                <div>
+                        <p>
+                          {stars} stars (total of {ratings.NumberOfRatings} ratings)
+                        </p>
+                      </div>
+                    </div>
+                  </th>
+                  <th>
+                    <div className="rightSide">
+                      <h4 className="price">{book.Price}€</h4>
+                      <form>
+                        <table className="table1">
+                          <thead>
+                            <tr>
+                              <th>
+                                <input type="number" className="number" min="1" defaultValue="1" />
+                              </th>
+                              <th>
+                                <div className="buttonAddDiv">
                                   <button
                                     type="button"
                                     className="buttonAdd"
-                                    onClick={() => handleWishPress(book)}
+                                    onClick={() => {
+                                      setCartModalIsOpen(true);
+                                      addToCart(book);
+                                    }}
                                   >
-                                    Add to wishlist
+                                    Add to cart
                                   </button>
-                                  <button
-                                    type="button"
-                                    className="buttonAdd"
-                                    onClick={() => setModalIsOpenS(true)}
-                                  >
-                                    Share
-                                  </button>
+                                  {state.user && (
+                                    <div>
+                                      <button
+                                        type="button"
+                                        className="buttonAdd"
+                                        onClick={() => handleWishPress(book)}
+                                      >
+                                        Add to wishlist
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="buttonAdd"
+                                        onClick={() => setModalIsOpenS(true)}
+                                      >
+                                        Share
+                                      </button>
+                                    </div>
+                                  )}
                                 </div>
-                              )}
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                    </table>
-                  </form>
-                  <div className="descriptionDiv">
-                    <p className="description">Categories:</p>
-                    <BookCategories categories1={book.categories} className="description" />
-                    <p className="description">Description:</p>
-                    <BookDescription description={book.Description} />
-                  </div>
-                  <div className="commentsDiv">
-                    <CommentList comments={book.comments} />
-                  </div>
-                </div>
-              </th>
-            </tr>
-          </thead>
-        </table>
-      </div>
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                      </form>
+                      <div className="descriptionDiv">
+                        <p className="description">Categories:</p>
+                        <BookCategories categories1={book.categories} className="description" />
+                        <p className="description">Description:</p>
+                        <BookDescription description={book.Description} />
+                      </div>
+                      <div className="commentsDiv">
+                        <CommentList comments={book.comments} />
+                      </div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

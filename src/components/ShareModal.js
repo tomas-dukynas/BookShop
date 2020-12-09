@@ -9,7 +9,7 @@ const ShareModal = ({ book, modalIsOpenS, setModalIsOpenS, handleModalClose }) =
   const [email, setEmail] = React.useState('');
 
   const Share = () => {
-    const link = 'http://localhost:3000/list-view';
+    const link = 'http://localhost:3000/one-book-view/'+book.id;
 
     axios.post(`${BASE_URL}/email`, {
       to: email,
