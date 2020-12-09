@@ -10,6 +10,7 @@ import CheckoutForm from './CheckoutForm';
 import WishList from './WishList';
 import OrderTracking from './OrderTracking';
 import '../Styles/LoginMobile.css';
+import OneBookView from './OneBookView';
 
 const Hide = () => {
   const state = React.useContext(UserContext);
@@ -85,6 +86,7 @@ const NavBar = () => {
               <Route path="/wish-list" component={WishList} />
               <Route path="/checkout" component={CheckoutForm} />
               <Route path="/order-tracking" component={OrderTracking} />
+              <Route path="/one-book-view/:id" component ={OneBookView}/>
             </Switch>
           </div>
         </div>
