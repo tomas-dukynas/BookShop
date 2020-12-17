@@ -24,31 +24,34 @@ const ShoppingBag = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(error);
     if (state.price) {
+      console.log('ds');
       axios
         .get('http://localhost:1337/promo-codes', {
           headers: {
             Authorization: `Bearer ${state.user?.token}`,
           },
         })
-        .then(({ data, status }) => {
+        .then(({ data }) => {
           data.forEach((item) => {
             if (item.promoCode === promo) {
               const newPrice = state.price - state.price * 0.15;
               setPrice(newPrice);
               setUsedPromo(true);
               setPromoModal(true);
+              setError(false);
               axios
                 .delete(`http://localhost:1337/promo-codes/${item.id}`, {
                   headers: {
                     Authorization: `Bearer ${state.user?.token}`,
                   },
                 })
-                // eslint-disable-next-line no-shadow
                 .then(({ status }) => {
                   console.log(status);
                 });
             } else {
+              console.log(error);
               setError(true);
             }
           });
