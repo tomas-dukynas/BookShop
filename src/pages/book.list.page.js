@@ -11,6 +11,7 @@ import UserContext from '../context/UserContext';
 import BASE_URL from '../config/IpAdress';
 import '../Styles/LoginMobile.css';
 
+
 const array = [];
 
 const AllBooks = () => {
@@ -125,6 +126,10 @@ const AllBooks = () => {
   }
 
   const handleOnPress = (book) => {
+
+    console.log(book.id);
+    history.push('/one-book-view/'+book.id);
+
     if (book.PhotoOfTheBook?.name) {
       setImg(book.PhotoOfTheBook.name);
     } else {
@@ -186,6 +191,8 @@ const AllBooks = () => {
                         type="button"
                         className="buttonViewMore"
                         onClick={() => handleOnPress(book)}
+
+
                       >
                         View More
                       </button>
@@ -218,9 +225,12 @@ const AllBooks = () => {
                     filterBooks={(e) => setBookList(e)}
                     categoriesArray={categoriesArray}
                     setCategoriesArray={(e) => setCategoriesArray(e)}
+                    authors={authors}
+                    authorsArray={authorsArray}
+                    setAuthorsArray={(e) => setAuthorsArray(e)}
                   />
                   <br />
-                  <AuthorsFilter
+                  {/*<AuthorsFilter
                     authors={authors}
                     bookList={bookList}
                     listBooks={listBooks}
@@ -228,7 +238,7 @@ const AllBooks = () => {
                     filterBooks={(e) => setBookList(e)}
                     authorsArray={authorsArray}
                     setAuthorsArray={(e) => setAuthorsArray(e)}
-                  />
+                  />*/}
                 </table>
               </div>
             </th>
@@ -276,4 +286,3 @@ const AllBooks = () => {
 };
 
 export default AllBooks;
-
