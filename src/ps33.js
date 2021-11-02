@@ -1,4 +1,4 @@
-const auth = React.useMemo(
+const authentificationActions = React.useMemo(
     () => ({
       login: async (email, password) => {
         const { data } = await axios.post(`${BASE_URL}/auth/local`, {
@@ -10,13 +10,13 @@ const auth = React.useMemo(
           token: data.jwt,
           id: data.user.id,
         };
-        dispatch(createAction('SET_USER', user));
+        dispatch(createAction(AuthAction.SetUser, user));
       },
       logout: async () => {
-        dispatch(createAction('REMOVE_USER'));
+        dispatch(createAction(AuthAction.RemoveUser));
       },
       register: async (email, password) => {
-        // await Sleep(2000);
+
         const response = await axios.post(`${BASE_URL}/auth/local/register`, {
           username: email,
           email,
@@ -28,63 +28,74 @@ const auth = React.useMemo(
           email: data.user.email,
           token: data.jwt,
         };
-        dispatch(createAction('SET_USER', user));
+        dispatch(createAction(AuthAction.SetUser, user));
       },
-      addToCart: (oneBook) => {
-        let contains = false;
-        let count = 1;
-        totalPrice += oneBook.Price;
-        const book = Object.assign(oneBook);
+    }),
+    [],
+  );
+
+ const userActions = React.useMemo(
+    () => ({      
+      addToCart: (item) => {
+        var contains = false;
+        var count = 1;
+        totalPrice += item.Price;
+        const book = Object.assign(item);
+
         cart.forEach((bookO) => {
-          if (bookO.id === oneBook.id) {
+          if (bookO.id === item.id) {
             contains = true;
-            // eslint-disable-next-line no-plusplus
             count++;
           }
         });
+
         book.count = count;
         cart.push(book);
+
         if (!contains) {
           book.count = 1;
           newCart.push(book);
         }
-        dispatch(createAction('SET_CART', newCart));
-        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+        dispatch(createAction(UserAction.SetCart, newCart));
+        dispatch(createAction(UserAction.SetTotalPrice, totalPrice));
       },
-      removeFromCart: (oneBook) => {
-        const book = Object.assign(oneBook);
+      removeFromCart: (item) => {
+        const book = Object.assign(item);
+
         newCart.forEach((bookO, index) => {
-          if (bookO.id === oneBook.id) {
-            newCart.splice(index, 1);
+          if (bookO.id === item.id) {
+            newCart.remove(UserAction.RemoveItem, item.id);
           }
         });
 
         totalPrice -= book.Price * book.count;
-        // eslint-disable-next-line no-plusplus
         book.count--;
-        dispatch(createAction('SET_CART', newCart));
-        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+
+        dispatch(createAction(UserAction.SetCart, newCart));
+        dispatch(createAction(UserAction.SetTotalPrice,, totalPrice));
       },
-      decreaseCountAndPrice: (oneBook) => {
-        const book = Object.assign(oneBook);
+      decreaseCountAndPrice: (item) => {
+        const book = Object.assign(item);
+
         cart.forEach((bookO, index) => {
-          if (bookO.id === oneBook.id) {
-            cart.splice(index, 1);
+          if (bookO.id === item.id) {
+            cart.remove(UserAction.RemoveItem, item.id);
           }
         });
-        // eslint-disable-next-line no-plusplus
+
         book.count--;
         totalPrice -= book.Price;
-        dispatch(createAction('SET_CART', newCart));
-        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+
+        dispatch(createAction(UserAction.SetCart, newCart));
+        dispatch(createAction(UserAction.SetTotalPrice,, totalPrice));
       },
-      increaseCountAndPrice: (oneBook) => {
-        const book = Object.assign(oneBook);
-        // eslint-disable-next-line no-plusplus
+      increaseCountAndPrice: (item) => {
+        const book = Object.assign(item);
         book.count++;
         totalPrice += book.Price;
-        dispatch(createAction('SET_CART', newCart));
-        dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
+
+        dispatch(createAction(UserAction.SetCart, newCart));
+        dispatch(createAction(UserAction.SetTotalPrice,, totalPrice));
       },
     }),
     [],
