@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/ItemView.css';
 import ReactStars from 'react-rating-stars-component';
-import AddViewCount from '../functions.item.view/addViewCount';
+import { useHistory } from 'react-router-dom';
+import Spinner from 'react-bootstrap/Spinner';
 import BookCategories from './BookCategories';
 import Image from './Image';
 import BookDescription from './BookDescription';
@@ -13,10 +14,7 @@ import BASE_URL from '../config/IpAdress';
 import CommentList from './CommentList';
 import CommentsInput from './CommentsInput';
 import '../Styles/LoginMobile.css';
-import { useHistory } from 'react-router-dom';
-import Spinner from 'react-bootstrap/Spinner';
 import ShareModal from './ShareModal';
-
 
 const OneBookView = (id) => {
   const { addToCart, addToWish } = React.useContext(AuthContext);
@@ -27,22 +25,20 @@ const OneBookView = (id) => {
   const [wishAlreadyModalIsOpen, setWishAlreadyModalIsOpen] = useState(false);
   const [ratings, setRatings] = useState([]);
   const [rated, setRated] = useState(true);
-  const [shareModal, setShareModal] = useState(false);
 
   const [img, setImg] = React.useState('');
   const [modalIsOpenS, setModalIsOpenS] = useState(false);
 
   const [book, setBook] = useState('');
-  const addComment = React.useContext(AuthContext);
+  const { addComment } = React.useContext(AuthContext);
   const [bookLoaded, setBookLoaded] = useState(false);
   const history = useHistory();
 
   React.useEffect(() => {
     axios
-      .get('http://localhost:1337/books/' + id.match.params.id)
+      .get(`http://localhost:1337/books/${id.match.params.id}`)
       .then(({ data }) => {
         setBook(data);
-        console.log(data);
 
         if (data.PhotoOfTheBook?.name) {
           setImg(data.PhotoOfTheBook.name);
@@ -57,13 +53,15 @@ const OneBookView = (id) => {
 
         setBookLoaded(true);
       })
-      .catch((e) => console.log(e))
+      .catch((e) => {
+        throw new Error(e);
+      })
       .finally(() => {
         setBookLoaded(true);
       });
   }, []);
 
-  const handleWishPress = async (book) => {
+  const handleWishPress = async (_book) => {
     if (state.wish.length >= 5) {
       setFullWishModalIsOpen(true);
     } else {
@@ -76,7 +74,6 @@ const OneBookView = (id) => {
           },
         })
         .then(({ data }) => {
-          console.log(data);
           data.forEach((item) => {
             if (item.UsersEmail === state.user?.email) {
               contains = true;
@@ -84,13 +81,15 @@ const OneBookView = (id) => {
             }
           });
         })
-        .catch((e) => console.log(e));
+        .catch((e) => {
+          throw new Error(e);
+        });
 
       if (!contains) {
         await axios.post(
           `${BASE_URL}/wish-lists`,
           {
-            ListOfBooks: { arrayOfBooks: [book] },
+            ListOfBooks: { arrayOfBooks: [_book] },
             UsersEmail: state.user?.email,
             user: state.user?.email,
           },
@@ -105,14 +104,14 @@ const OneBookView = (id) => {
         const newWish = state.wish;
         let contain = false;
         state.wish.forEach((item) => {
-          if (book.id === item.id) {
+          if (_book.id === item.id) {
             contain = true;
             setWishAlreadyModalIsOpen(true);
           }
         });
 
         if (!contain) {
-          newWish.push(book);
+          newWish.push(_book);
           setWishModalIsOpen(true);
           addToWish(newWish);
         }
@@ -134,28 +133,27 @@ const OneBookView = (id) => {
   };
 
   React.useEffect(() => {
-    console.log(book, 'RATINGS');
     axios
       .get('http://localhost:1337/ratings')
       .then(({ data }) => {
-        data.map((rating) => {
+        data.forEach((rating) => {
           if (rating.IdOfBook.toString() === book.id.toString()) {
-            console.log(rating);
-            return setRatings(rating);
+            setRatings(rating);
           }
         });
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        throw new Error(e);
+      });
   }, [book]);
 
   let stars = (ratings.SumOfStars / ratings.NumberOfRatings).toFixed(2);
 
-  if (isNaN(stars)) {
+  if (typeof stars !== 'number') {
     stars = 0;
   }
 
-  const ratingChanged = (newRating) => {
-    console.log(ratings);
+  const onRatingsChanged = (newRating) => {
     setRated(false);
     const increaseRatings = ratings?.NumberOfRatings;
     const increaseStars = ratings?.SumOfStars;
@@ -166,22 +164,22 @@ const OneBookView = (id) => {
         SumOfStars: increaseStars + newRating,
       })
       .finally(() => {
-        //console.log('i should go second');
         axios
           .get('http://localhost:1337/ratings')
           .then(({ data }) => {
-            data.map((rating) => {
+            data.forEach((rating) => {
               if (rating.IdOfBook.toString() === book.id.toString()) {
-                //console.log('NEW', rating);
-                return setRatings(rating);
+                setRatings(rating);
               }
             });
           })
-          .catch((e) => console.log(e));
+          .catch((e) => {
+            throw new Error(e);
+          });
       });
   };
 
-  const GoBack = () => {
+  const goBack = () => {
     history.push('/list-view');
   };
 
@@ -225,12 +223,7 @@ const OneBookView = (id) => {
                 handleModalClose={() => setModalIsOpenS(false)}
               />
             </div>
-            {/*<AddViewCount ViewCount={viewCount} id={book.id} />*/}
-            <button
-              type="button"
-              className="buttonAdd"
-              onClick={() => GoBack()} /*setShow(false)}*/
-            >
+            <button type="button" className="buttonAdd" onClick={goBack}>
               Go back
             </button>
             <div className="bookAuthor">
@@ -251,12 +244,12 @@ const OneBookView = (id) => {
                         {rated ? (
                           <ReactStars
                             count={5}
-                            onChange={ratingChanged}
+                            onChange={onRatingsChanged}
                             size={60}
                             isHalf={false}
-                            emptyIcon={<i className="far fa-star"></i>}
-                            halfIcon={<i className="fa fa-star-half-alt"></i>}
-                            fullIcon={<i className="fa fa-star"></i>}
+                            emptyIcon={<i className="far fa-star" />}
+                            halfIcon={<i className="fa fa-star-half-alt" />}
+                            fullIcon={<i className="fa fa-star" />}
                             activeColor="#ffd700"
                           />
                         ) : (
@@ -264,9 +257,9 @@ const OneBookView = (id) => {
                             count={5}
                             size={60}
                             isHalf={false}
-                            emptyIcon={<i className="far fa-star"></i>}
-                            halfIcon={<i className="fa fa-star-half-alt"></i>}
-                            fullIcon={<i className="fa fa-star"></i>}
+                            emptyIcon={<i className="far fa-star" />}
+                            halfIcon={<i className="fa fa-star-half-alt" />}
+                            fullIcon={<i className="fa fa-star" />}
                             activeColor="#ffd700"
                             value={stars}
                             edit={rated}

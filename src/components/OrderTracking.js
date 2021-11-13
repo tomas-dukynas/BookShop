@@ -2,16 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../Styles/BookList.css';
 
-
 const OrderTracking = () => {
   const [trackingStatus, setTrackingStatus] = useState();
   const [ID, setID] = useState('');
   const [date, setDate] = useState('');
-  //console.log(ID);
 
-  const Searching = (event) => {
-    console.log(ID);
-
+  const onSearchClick = () => {
     axios
       .get('http://localhost:1337/trackings', {
         params: {
@@ -19,15 +15,16 @@ const OrderTracking = () => {
         },
       })
       .then(({ data }) => {
-        //console.log(data[0].Status);
         setTrackingStatus(data);
-        let string = data[0].Date.toString();
-        let date1 = new Date(string);
+        const string = data[0].Date.toString();
+        const date1 = new Date(string);
 
-        let readableDate = date1.toUTCString();
+        const readableDate = date1.toUTCString();
         setDate(readableDate);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        throw new Error(e);
+      });
   };
 
   return (
@@ -46,7 +43,7 @@ const OrderTracking = () => {
                   setID(e.target.value);
                 }}
               />
-              <button className="inputDiv" onClick={Searching}>
+              <button type="button" className="inputDiv" onClick={onSearchClick}>
                 Search
               </button>
             </div>
@@ -55,8 +52,8 @@ const OrderTracking = () => {
             ' '
           ) : (
             <div>
-              <p>Tracking ID: {trackingStatus[0].TrackingID}</p>
-              <p>Status: {trackingStatus[0].Status}</p>
+              <p>Tracking ID: {trackingStatus?.[0].TrackingID}</p>
+              <p>Status: {trackingStatus?.[0].Status}</p>
               <p>Order Date: {date} </p>
             </div>
           )}

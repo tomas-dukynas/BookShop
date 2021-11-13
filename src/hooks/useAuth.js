@@ -2,52 +2,49 @@ import React from 'react';
 import axios from 'axios';
 import BASE_URL from '../config/IpAdress';
 import createAction from '../utils/CreateAction';
-import Sleep from '../utils/Sleep';
-import { unmountComponentAtNode } from 'react-dom';
 
 export default function useAuth() {
   const [state, dispatch] = React.useReducer(
-    // eslint-disable-next-line no-shadow
-    (state, action) => {
+    (prevState, action) => {
       switch (action.type) {
         case 'SET_USER':
           return {
-            ...state,
+            ...prevState,
             loading: false,
             user: { ...action.payload },
           };
         case 'REMOVE_USER':
           return {
-            ...state,
+            ...prevState,
             user: undefined,
           };
         case 'SET_LOADING':
           return {
-            ...state,
+            ...prevState,
             loading: action.payload,
           };
         case 'SET_CART':
           return {
-            ...state,
+            ...prevState,
             cart: action.payload,
           };
         case 'SET_TOTAL_PRICE':
           return {
-            ...state,
+            ...prevState,
             price: action.payload,
           };
         case 'SET_WISH_LIST':
           return {
-            ...state,
+            ...prevState,
             wish: action.payload,
           };
         case 'SET_COMMENTS':
           return {
-            ...state,
+            ...prevState,
             comments: action.payload,
           };
         default:
-          return state;
+          return prevState;
       }
     },
     {
@@ -80,7 +77,6 @@ export default function useAuth() {
         dispatch(createAction('REMOVE_USER'));
       },
       register: async (email, password) => {
-        // await Sleep(2000);
         const response = await axios.post(`${BASE_URL}/auth/local/register`, {
           username: email,
           email,
@@ -102,8 +98,7 @@ export default function useAuth() {
         cart.forEach((bookO) => {
           if (bookO.id === oneBook.id) {
             contains = true;
-            // eslint-disable-next-line no-plusplus
-            count++;
+            count += 1;
           }
         });
         book.count = count;
@@ -126,13 +121,11 @@ export default function useAuth() {
         cart.forEach((bookO, index) => {
           if (bookO.id === oneBook.id) {
             cart.splice(index);
-            console.log(cart.splice(index));
           }
         });
 
         totalPrice -= book.Price * book.count;
-        // eslint-disable-next-line no-plusplus
-        book.count--;
+        book.count -= book.count;
         dispatch(createAction('SET_CART', newCart));
         dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
@@ -143,16 +136,14 @@ export default function useAuth() {
             cart.splice(index, 1);
           }
         });
-        // eslint-disable-next-line no-plusplus
-        book.count--;
+        book.count -= book.count;
         totalPrice -= book.Price;
         dispatch(createAction('SET_CART', newCart));
         dispatch(createAction('SET_TOTAL_PRICE', totalPrice));
       },
       increaseCountAndPrice: (oneBook) => {
         const book = Object.assign(oneBook);
-        // eslint-disable-next-line no-plusplus
-        book.count++;
+        book.count += book.count;
         totalPrice += book.Price;
         dispatch(createAction('SET_CART', newCart));
         dispatch(createAction('SET_TOTAL_PRICE', totalPrice));

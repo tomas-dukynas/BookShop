@@ -15,12 +15,9 @@ import OneBookView from './OneBookView';
 const Hide = () => {
   const state = React.useContext(UserContext);
   const { logout } = React.useContext(AuthContext);
-  const onClickLogOut = () => {
-    logout();
-  };
 
   return typeof state.user === 'undefined' ? (
-    <div /*className="collapse navbar-collapse" */id="navbarTogglerDemo02">
+    <div id="navbarTogglerDemo02">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/sign-in">
@@ -35,11 +32,11 @@ const Hide = () => {
       </ul>
     </div>
   ) : (
-    <div /*className="collapse navbar-collapse"*/ id="navbarTogglerDemo02">
+    <div id="navbarTogglerDemo02">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
-          <button type="button" className="nav-link" onClick={onClickLogOut}>
-             Logout
+          <button type="button" className="nav-link" onClick={logout}>
+            Logout
           </button>
         </li>
       </ul>
@@ -86,7 +83,7 @@ const NavBar = () => {
               <Route path="/wish-list" component={WishList} />
               <Route path="/checkout" component={CheckoutForm} />
               <Route path="/order-tracking" component={OrderTracking} />
-              <Route path="/one-book-view/:id" component ={OneBookView}/>
+              <Route path="/one-book-view/:id" component={OneBookView} />
             </Switch>
           </div>
         </div>

@@ -1,15 +1,15 @@
 import React from 'react';
 import axios from 'axios';
-import BASE_URL from '../config/IpAdress';
-
 import Modal from 'react-modal';
 
-const ShareModal = ({ book, modalIsOpenS, setModalIsOpenS, handleModalClose }) => {
+import BASE_URL from '../config/IpAdress';
+
+const ShareModal = ({ book, modalIsOpenS, setModalIsOpenS }) => {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
 
-  const Share = () => {
-    const link = 'http://localhost:3000/one-book-view/'+book.id;
+  const onSendSubmit = () => {
+    const link = `http://localhost:3000/one-book-view/${book.id}`;
 
     axios.post(`${BASE_URL}/email`, {
       to: email,
@@ -22,8 +22,6 @@ const ShareModal = ({ book, modalIsOpenS, setModalIsOpenS, handleModalClose }) =
         \n Press the link and check it out: ${link} `,
     });
     setModalIsOpenS(false);
-    console.log('AAAA');
-    //modalIsOpenS=true;
   };
 
   return (
@@ -31,10 +29,9 @@ const ShareModal = ({ book, modalIsOpenS, setModalIsOpenS, handleModalClose }) =
       <Modal
         isOpen={modalIsOpenS}
         onRequestClose={() => setModalIsOpenS(false)}
-        /*ariaHideApp={false}*/
         className="popupShare"
       >
-        <form onSubmit={Share}>
+        <form onSubmit={onSendSubmit}>
           <h5 className="popupH4">Enter your friend name</h5>
           <input
             type="text"
@@ -57,7 +54,7 @@ const ShareModal = ({ book, modalIsOpenS, setModalIsOpenS, handleModalClose }) =
               setEmail(e.target.value);
             }}
           />
-          <button type="submit" /*onClick={handleModalClose}*/ className="buttonClose">
+          <button type="submit" className="buttonClose">
             Send
           </button>
         </form>

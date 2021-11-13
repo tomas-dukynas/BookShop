@@ -2,8 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import AuthContext from '../context/AuthContext';
-import CheckPassword from '../components/CheckPassword';
-import CheckEmail from '../components/CheckEmail';
+import passwordRegex from '../components/PasswordRegex';
+import emailRegex from '../components/EmailRegex';
 import Error from '../components/Error';
 
 const Register = () => {
@@ -14,32 +14,40 @@ const Register = () => {
   const [error, setError] = React.useState('');
   const history = useHistory();
 
-  function onButtonPress(event) {
-    event.preventDefault();
-    if (CheckEmail.test(String(email).toLowerCase())) {
-      if (CheckPassword.test(String(password).toLowerCase())) {
-        (async () => {
-          setLoading(true);
-          try {
-            await register(email, password);
+  const handleError = (err) => {
+    setLoading(false);
+    setError(err);
+  };
 
-            console.log('success');
-
-            history.push('/sign-in');
-          } catch (e) {
-            setError(e.message);
-            setLoading(false);
-          }
-        })();
-      } else {
-        setLoading(false);
-        setError('Password must contain at least 8 characters');
-      }
-    } else {
-      setLoading(false);
-      setError('Invalid email or password');
+  const handleEmailInput = () => {
+    if (emailRegex.test(String(email).toLowerCase())) {
+      handleError('Invalid email or password');
     }
-  }
+  };
+
+  const handlePasswordInput = () => {
+    if (passwordRegex.test(String(password).toLowerCase())) {
+      handleError('Password must contain at least 8 characters');
+    }
+  };
+
+  const onButtonPress = async (event) => {
+    event.preventDefault();
+    handleEmailInput();
+    if (!error) {
+      handlePasswordInput();
+    }
+
+    if (!error) {
+      setLoading(true);
+      try {
+        await register(email, password);
+        history.push('/sign-in');
+      } catch (e) {
+        handleError(e.message);
+      }
+    }
+  };
 
   return (
     <form>

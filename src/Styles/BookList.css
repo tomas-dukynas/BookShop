@@ -3,12 +3,10 @@
     margin-left: 30px;
 }
 .cardDiv {
-
-    /*height: 300px;*/
     border-style: solid;
     margin-bottom: 20px;
     border-radius: 15px;
-    border-color: gray;/*#1C8EF9;*/
+    border-color: gray;
     background-color: white;
 }
 .bookImageCard {
@@ -24,16 +22,13 @@ ln, li, ul {
 .nameDivCard {
     margin-left: 150px;
     width: 300px;
-    /*background-color: rebeccapurple;*/
 }
 .priceDivCard {
     margin-left: 200px;
-    /*background-color: red;*/
 }
 .buttonViewMore {
     margin-left: -70px;
-    background-color: white;/*#1C8EF9;*/
-    /*border-style: none;*/
+    background-color: white;
     border-color: gray;
     border-radius: 5px;
     width: 200px;
@@ -97,8 +92,6 @@ ln, li, ul {
     position: absolute;
 }
 .pagination {
-    /*display: flex;*/
-    /*left: -100px;*/
     justify-content: space-around;
     list-style: none;
     cursor: pointer;

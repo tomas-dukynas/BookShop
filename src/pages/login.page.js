@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Spinner from 'react-bootstrap/Spinner';
 import AuthContext from '../context/AuthContext';
-import CheckEmail from '../components/CheckEmail';
+import emailRegex from '../components/EmailRegex';
 import '../Styles/LoginMobile.css';
 
 const Login = () => {
@@ -11,23 +11,18 @@ const Login = () => {
   const [password, setPassword] = React.useState('12345678');
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const loge = React.createContext(false);
+  const [, setLoggedIn] = useState(false);
   const history = useHistory();
   function onButtonPress(event) {
     event.preventDefault();
-    if (CheckEmail.test(String(email).toLowerCase())) {
+    if (emailRegex.test(String(email).toLowerCase())) {
       (async () => {
         setLoading(true);
         try {
           await login(email, password);
-
-          console.log('yey');
           setLoggedIn(true);
           history.push('/list-view');
         } catch (e) {
-          console.log(e);
-          // setError(e.message);
           setError('Invalid Email or Password');
           setLoading(false);
         }

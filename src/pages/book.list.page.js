@@ -4,13 +4,11 @@ import '../Styles/BookList.css';
 import ReactPaginate from 'react-paginate';
 import { useHistory } from 'react-router-dom';
 import CategoriesFilter from '../components/CategoriesFilter';
-import AuthorsFilter from '../components/AuthorsFilter';
 import OneBookView from '../components/OneBookView';
 import AuthContext from '../context/AuthContext';
 import UserContext from '../context/UserContext';
 import BASE_URL from '../config/IpAdress';
 import '../Styles/LoginMobile.css';
-
 
 const array = [];
 
@@ -114,10 +112,7 @@ const AllBooks = () => {
     ) {
       setBookList(listBooks);
     }
-    // console.log(authorsArray, 'AUTHORS ARRAY');
   }, [searchResults, searchTerm, categoriesArray, authorsArray]);
-
-  // console.log(categoriesArray, 'CATEG ARRAY');
 
   const PER_PAGE = 5;
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -126,9 +121,7 @@ const AllBooks = () => {
   }
 
   const handleOnPress = (book) => {
-
-    console.log(book.id);
-    history.push('/one-book-view/'+book.id);
+    history.push(`/one-book-view/${book.id}`);
 
     if (book.PhotoOfTheBook?.name) {
       setImg(book.PhotoOfTheBook.name);
@@ -143,24 +136,6 @@ const AllBooks = () => {
     });
     addComment(comments);
   };
-
-  if (
-    searchTerm.length !== 0 &&
-    listBooks !== bookList &&
-    searchResults !== bookList &&
-    searchResults.length === 0
-  ) {
-    setBookList(searchResults);
-  } else if (searchResults.length !== 0 && searchResults !== bookList) {
-    setBookList(searchResults);
-  } else if (
-    searchTerm.length === 0 &&
-    array.length === 0 &&
-    bookList.length === 0 &&
-    bookList !== listBooks
-  ) {
-    setBookList(listBooks);
-  }
 
   const offset = currentPage * PER_PAGE;
   const currentPageData = bookList.slice(offset, offset + PER_PAGE).map((book) => {
@@ -191,8 +166,6 @@ const AllBooks = () => {
                         type="button"
                         className="buttonViewMore"
                         onClick={() => handleOnPress(book)}
-
-
                       >
                         View More
                       </button>
@@ -230,15 +203,6 @@ const AllBooks = () => {
                     setAuthorsArray={(e) => setAuthorsArray(e)}
                   />
                   <br />
-                  {/*<AuthorsFilter
-                    authors={authors}
-                    bookList={bookList}
-                    listBooks={listBooks}
-                    array={array}
-                    filterBooks={(e) => setBookList(e)}
-                    authorsArray={authorsArray}
-                    setAuthorsArray={(e) => setAuthorsArray(e)}
-                  />*/}
                 </table>
               </div>
             </th>
@@ -274,7 +238,6 @@ const AllBooks = () => {
                   ) : (
                     <OneBookView book={oneBook} viewCount={viewCount} setShow={setShow} img={img} />
                   )}
-
                 </div>
               </div>
             </th>

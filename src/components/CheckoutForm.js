@@ -37,6 +37,50 @@ const CheckoutForm = () => {
   const [loading, setLoading] = React.useState(false);
   const state = React.useContext(UserContext);
   const history = useHistory();
+
+  const handleSubmitError = (_errorMessage) => {
+    setErrorMessage(_errorMessage);
+    setPaymentMethod(null);
+  };
+
+  const getClientSecret = async () => {
+    const { data } = await axios.post(`${BASE_URL}/stripe/checkout`, {
+      amount: state?.price * 100,
+    });
+
+    return data;
+  };
+
+  const createPaymentMethod = async () => {
+    const cardElement = elements.getElement(CardNumberElement);
+
+    return stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+        name,
+        address: {
+          postal_code: postal,
+        },
+      },
+    });
+  };
+
+  const confirmCardPayment = async (clientSecret, payload) => {
+    const confirmedCardPayment = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: payload.paymentMethod?.id,
+    });
+
+    if (confirmedCardPayment) {
+      setLoading(false);
+      if (!confirmedCardPayment.error) {
+        setModalIsOpen(true);
+      }
+    }
+
+    return confirmedCardPayment;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -45,52 +89,23 @@ const CheckoutForm = () => {
       // form submission until Stripe.js has loaded.
       return;
     }
-    const cardElement = elements.getElement(CardNumberElement);
-
-    console.log('CARD NUM', cardElement);
 
     try {
-      const { data: clientSecret } = await axios.post(`${BASE_URL}/stripe/checkout`, {
-        amount: state?.price * 100,
-      });
-      const payload = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-        billing_details: {
-          name,
-          address: {
-            postal_code: postal,
-          },
-        },
-      });
-
-      const confirmedCardPayment = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: payload.paymentMethod?.id,
-      });
-
-      console.log(confirmedCardPayment);
-      if (confirmedCardPayment) {
-        setLoading(false);
-        if (!confirmedCardPayment.error) {
-          setModalIsOpen(true);
-        }
-      }
+      const clientSecret = await getClientSecret();
+      const payload = await createPaymentMethod();
+      await confirmCardPayment(clientSecret, payload);
 
       if (payload.error) {
-        console.log('[error]', payload.error);
-        setErrorMessage(payload.error.message);
-        setPaymentMethod(null);
+        handleSubmitError(payload.error.message);
       } else {
-        console.log('[PaymentMethod]', payload.paymentMethod);
         setPaymentMethod(payload.paymentMethod);
         setErrorMessage(null);
       }
     } catch (err) {
-      console.log(err);
       if (err === '500') {
-        setErrorMessage('Wrong card number');
+        handleSubmitError('Wrong card number');
       }
-      setErrorMessage(err.messages);
+      handleSubmitError(err.messages);
     }
   };
 
@@ -101,21 +116,25 @@ const CheckoutForm = () => {
     const charactersLength = characters.length;
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 7; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      const array = new Uint32Array(10);
+      result += characters.charAt(
+        Math.floor(window.crypto.getRandomValues(array) * charactersLength),
+      );
     }
 
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 5; i++) {
-      promoCode += characters.charAt(Math.floor(Math.random() * charactersLength));
+      const array = new Uint32Array(10);
+      promoCode += characters.charAt(
+        Math.floor(window.crypto.getRandomValues(array) * charactersLength),
+      );
     }
 
     const date = new Date();
     let text = '';
-    console.log(result);
     state.cart.forEach((book) => {
       text = `${text + book.id},`;
     });
-    console.log(result);
 
     axios
       .post('http://localhost:1337/trackings', {
@@ -123,9 +142,6 @@ const CheckoutForm = () => {
         Status: 'Pending',
         BookID: text.toString(),
         Date: date,
-      })
-      .then((response) => {
-        console.log(response, ' POSTED');
       })
       .catch((e) => console.log(e));
 
@@ -142,9 +158,6 @@ const CheckoutForm = () => {
           },
         },
       )
-      .then((response) => {
-        console.log(response, ' POSTED');
-      })
       .catch((e) => console.log(e));
 
     setModalIsOpen(false);

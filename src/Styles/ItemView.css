@@ -2,15 +2,10 @@
 
 .mainBox {
     size: 1000px;
-    margin-left: 0px;
+    margin-left: 0;
     background-size: 1000px;
-    /*background-color: black;*/
-    /*width: 450px;*/
     width: 450px;
     height: 570px;
-    /*margin: auto;*/
-    /*background: pink;*/
-   /* box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);*/
     padding: 40px 55px 45px 55px;
 
     transition: all .3s;
@@ -27,21 +22,15 @@ body {
 }
 
 .uth-inner {
-   /* width: 1200px;*/
     width: 100%;
     height: 200%;
-   /* margin: auto;*/
     margin-top: 90px;
     margin-bottom: 50px;
     background: white;
     left: 0;
     top: 0;
-   /* left: 180px;*/
     position: absolute;
-    /*box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);*/
-    /*padding: 40px 55px 45px 55px;*/
     border-radius: 15px;
-    /*transition: all .3s;*/
 }
 .toHide {
     width: 1200px;
@@ -53,14 +42,11 @@ body {
 .bookName {
     text-align: right;
     margin-right: 100px;
-    /*background-color: greenyellow;*/
     width: 300px;
     font-family: 'Fira Sans', sans-serif;
 }
 .bookAuthor {
     text-align: left;
-    /*left: -1000px;*/
-    /*background-color: cornflowerblue;*/
     width: 700px;
     font-weight: 400;
     font-family: 'Fira Sans', sans-serif;
@@ -71,19 +57,13 @@ body {
 .nameDiv {
      text-align: left;
      left: -1000px;
-    /*background-color: green;*/
  }
 .bookImage {
     height: 100%;
     width: 100%;
 }
-.leftSide {
-    /*background-color: greenyellow;*/
-}
 .rightSide {
-    /*background-color: rebeccapurple;*/
     width: 500px;
-    /*margin: auto;*/
     position: absolute;
     margin-left: 75px;
     margin-top: -300px;
@@ -107,8 +87,7 @@ body {
 }
 .buttonAdd {
     margin-left: 50px;
-    background-color: white;/* #1C8EF9;*/
-    /*border-style: none;*/
+    background-color: white;
     border-color: gray;
     border-radius: 5px;
     width: 200px;
@@ -126,22 +105,16 @@ body {
 }
 .empty1 {
     height: 250px;
-    /*display: flex;*/
-    /*justify-content: center;
-    align-items: center;*/
     position: absolute;
     left: 100px;
     font-family: 'Fira Sans', sans-serif;
     font-size: 20px;
-    /*background-color: pink;*/
     text-align: center;
 }
 .descriptionDiv {
     margin-bottom: 50px;
-    /*height: 500px;*/
 }
 .popup {
-     /*align-self: center;*/
      height: 200px;
      width: 500px;
      background-color: white;
@@ -154,7 +127,6 @@ body {
     border-radius: 15px;
  }
 .popupH2 {
-    /*align-self: center;*/
     font-weight: 400;
     font-family: 'Fira Sans', sans-serif;
 
@@ -165,8 +137,7 @@ body {
 }
 .buttonClose {
     margin-top: 20px;
-    background-color: white;/* #1C8EF9;*/
-    /*border-style: none;*/
+    background-color: white;
     border-color: gray;
     border-radius: 5px;
     width: 200px;

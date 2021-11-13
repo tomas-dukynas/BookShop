@@ -24,9 +24,7 @@ const ShoppingBag = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(error);
     if (state.price) {
-      console.log('ds');
       axios
         .get('http://localhost:1337/promo-codes', {
           headers: {
@@ -41,22 +39,17 @@ const ShoppingBag = () => {
               setUsedPromo(true);
               setPromoModal(true);
               setError(false);
-              axios
-                .delete(`http://localhost:1337/promo-codes/${item.id}`, {
-                  headers: {
-                    Authorization: `Bearer ${state.user?.token}`,
-                  },
-                })
-                .then(({ status }) => {
-                  console.log(status);
-                });
+              axios.delete(`http://localhost:1337/promo-codes/${item.id}`, {
+                headers: {
+                  Authorization: `Bearer ${state.user?.token}`,
+                },
+              });
             } else {
-              console.log(error);
               setError(true);
             }
           });
         })
-        .catch((e) => console.log(e));
+        .catch(() => setError(true));
     } else {
       setError(true);
     }

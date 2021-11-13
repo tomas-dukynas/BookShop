@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import UserContext from '../context/UserContext';
 import ListCart from './CartList';
 import '../Styles/BookList.css';
@@ -11,7 +10,6 @@ const WishList = () => {
   const state = React.useContext(UserContext);
   const { addToWish } = React.useContext(AuthContext);
   const len = state?.wish?.length;
-  const history = useHistory();
 
   const removeFromWish = async (oneBook) => {
     let wishId = null;
@@ -31,7 +29,6 @@ const WishList = () => {
         },
       })
       .then(({ data }) => {
-        console.log(data);
         data.forEach((item) => {
           if (item.UsersEmail === state.user?.email) {
             wishId = item.id;
